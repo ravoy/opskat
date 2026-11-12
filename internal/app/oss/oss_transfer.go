@@ -10,11 +10,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/opskat/opskat/internal/pkg/transfer"
-	"github.com/opskat/opskat/internal/service/oss_svc"
+	"github.com/octays/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/service/oss_svc"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 )
 
@@ -27,7 +28,7 @@ func contentTypeFor(localPath string) string {
 }
 
 func (o *OSS) emitProgress(transferID string, p transfer.Progress) {
-	wailsRuntime.EventsEmit(o.ctx, "transfer:progress:"+transferID, p)
+	application.Get().Event.Emit("transfer:progress:"+transferID, p)
 }
 
 // emitTerminal 依据 err 发出 done/error/取消 终态(立即,不节流)。
@@ -49,7 +50,7 @@ func (o *OSS) emitTerminal(transferID string, err error) {
 // 前端先对目标 key 做同名检查,再逐个走 OSSUploadObjectPath 上传。
 func (o *OSS) OSSPickUploadFiles() ([]string, error) {
 	ctx := o.i18nCtx()
-	localPaths, err := wailsRuntime.OpenMultipleFilesDialog(o.ctx, wailsRuntime.OpenDialogOptions{
+	localPaths, err := desktop.OpenFiles(application.OpenFileDialogOptions{
 		Title: "选择上传文件",
 	})
 	if err != nil {
@@ -125,9 +126,9 @@ func (o *OSS) OSSDownloadObject(assetID int64, bucket, key string) (string, erro
 	if assetID <= 0 || bucket == "" || key == "" {
 		return "", fmt.Errorf("invalid request: assetID, bucket and key are required")
 	}
-	localPath, err := wailsRuntime.SaveFileDialog(o.ctx, wailsRuntime.SaveDialogOptions{
-		DefaultFilename: path.Base(key),
-		Title:           "保存到本地",
+	localPath, err := desktop.SaveFile(application.SaveFileDialogOptions{
+		Filename: path.Base(key),
+		Title:    "保存到本地",
 	})
 	if err != nil {
 		return "", fmt.Errorf("保存文件对话框失败: %w", err)
@@ -167,7 +168,7 @@ func (o *OSS) OSSDownloadFolder(assetID int64, bucket, prefix string) (string, e
 	if assetID <= 0 || bucket == "" || !strings.HasSuffix(prefix, "/") {
 		return "", fmt.Errorf("invalid request: assetID, bucket and a folder prefix ending in \"/\" are required")
 	}
-	localDir, err := wailsRuntime.OpenDirectoryDialog(o.ctx, wailsRuntime.OpenDialogOptions{
+	localDir, err := desktop.OpenDirectory(application.OpenFileDialogOptions{
 		Title: "选择保存目录",
 	})
 	if err != nil {

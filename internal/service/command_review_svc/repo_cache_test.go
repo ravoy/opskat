@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/model/entity/command_review_entity"
-	"github.com/opskat/opskat/internal/repository/command_review_repo/mock_command_review_repo"
+	"github.com/octays/opskat/internal/model/entity/command_review_entity"
+	"github.com/octays/opskat/internal/repository/command_review_repo/mock_command_review_repo"
 )
 
 func TestRepoCacheRoundTripsResult(t *testing.T) {

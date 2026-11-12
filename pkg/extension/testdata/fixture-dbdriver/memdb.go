@@ -16,8 +16,8 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	opskat "github.com/opskat/opskat/pkg/extsdk"
+	"github.com/octays/opskat/pkg/dbdriver"
+	opskat "github.com/octays/opskat/pkg/extsdk"
 )
 
 // memdb is the fixture's database: a fixed, read-only catalog held in guest

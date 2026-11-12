@@ -15,10 +15,10 @@ import (
 	"time"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/repository/credential_repo"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/repository/credential_repo"
+	"github.com/octays/opskat/internal/service/credential_svc"
 	"go.uber.org/zap"
 
 	gossh "golang.org/x/crypto/ssh"

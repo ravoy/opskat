@@ -7,13 +7,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/service/command_review_svc"
-	"github.com/opskat/opskat/internal/service/command_review_svc/reviewerreg"
-	"github.com/opskat/opskat/internal/service/extension_svc"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extension/extensiontest"
-	"github.com/opskat/opskat/pkg/extmanifest"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/service/command_review_svc"
+	"github.com/octays/opskat/internal/service/command_review_svc/reviewerreg"
+	"github.com/octays/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extension/extensiontest"
+	"github.com/octays/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 type runningReviewerView struct{ extension.ExtensionView }

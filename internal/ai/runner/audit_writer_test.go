@@ -7,8 +7,8 @@ import (
 
 	"github.com/cago-frame/agents/agent"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/repository/audit_repo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

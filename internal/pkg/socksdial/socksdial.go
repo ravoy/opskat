@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/netdial"
 
 	"golang.org/x/net/proxy"
 )

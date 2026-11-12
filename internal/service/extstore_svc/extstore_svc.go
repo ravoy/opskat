@@ -16,11 +16,11 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/internal/pkg/netproxy"
-	"github.com/opskat/opskat/internal/service/update_svc"
-	"github.com/opskat/opskat/pkg/extmanifest"
-	"github.com/opskat/opskat/pkg/extstore"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/service/update_svc"
+	"github.com/octays/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extstore"
 )
 
 const (

@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { ExecuteSQL, OpenTable } from "../../wailsjs/go/query/Query";
+import { ExecuteSQL, OpenTable } from "@clients/query";
 import { BUILTIN_DRIVERS, mockGridEditStatements, provideDrivers } from "./dbDriverFixtures";
 
 // Pasting a copied row into an editable table is the flow the report names: copy a row in

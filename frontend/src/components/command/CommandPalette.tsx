@@ -16,7 +16,8 @@ import { useSnippetStore } from "@/stores/snippetStore";
 import { useLayoutStore } from "@/stores/layoutStore";
 import { openPageTab, useTabStore, type Tab, type InfoTabMeta, type PageTabMeta } from "@/stores/tabStore";
 import { resolveTabLabel, getBuiltinPageMeta, builtinPageTabMeta } from "@/components/layout/pageTabMeta";
-import type { asset_entity, snippet_entity } from "../../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import type * as snippet_entity from "@bindings/github.com/octays/opskat/internal/model/entity/snippet_entity/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 // Max snippets shown in the palette: a small recency list when idle, a wider

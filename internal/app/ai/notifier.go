@@ -1,7 +1,7 @@
 package ai
 
 import (
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // dataChangeNotifier 实现 aictx.DataChangeNotifier，把 AI 触发的资产/分组变更
@@ -14,7 +14,7 @@ func (n *dataChangeNotifier) NotifyDataChanged(resource string) {
 	if n.ai == nil || n.ai.ctx == nil {
 		return
 	}
-	wailsRuntime.EventsEmit(n.ai.ctx, "data:changed", map[string]any{
+	application.Get().Event.Emit("data:changed", map[string]any{
 		"resource": resource,
 	})
 }

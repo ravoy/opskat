@@ -10,12 +10,12 @@ import (
 	"go.uber.org/mock/gomock"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/snippet_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
-	"github.com/opskat/opskat/internal/repository/snippet_repo"
-	"github.com/opskat/opskat/internal/repository/snippet_repo/mock_snippet_repo"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/snippet_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
+	"github.com/octays/opskat/internal/repository/snippet_repo"
+	"github.com/octays/opskat/internal/repository/snippet_repo/mock_snippet_repo"
 )
 
 type svcFixture struct {

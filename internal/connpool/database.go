@@ -11,12 +11,12 @@ import (
 	"github.com/pkg/sftp"
 	"go.uber.org/zap"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/netdial"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/internal/sshpool"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/sshpool"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // OpenDatabase 经配置里的驱动打开一条数据库会话。

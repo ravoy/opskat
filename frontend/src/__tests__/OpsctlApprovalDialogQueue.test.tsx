@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, act, fireEvent, waitFor } from "@testing-library/react";
 import { toast } from "sonner";
 import { OpsctlApprovalDialog } from "../components/approval/OpsctlApprovalDialog";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
-import { RespondOpsctlApproval } from "../../wailsjs/go/opsctl/Opsctl";
+import { EventsOn } from "@/lib/desktop";
+import { RespondOpsctlApproval } from "@clients/opsctl";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn(), warning: vi.fn(), info: vi.fn() } }));
 

@@ -17,7 +17,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // fakeRESPServer 是一个最小 RESP 服务端：记录每条连接 SELECT 到的库，

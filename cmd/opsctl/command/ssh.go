@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/opskat/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/helper"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

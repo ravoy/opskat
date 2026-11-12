@@ -1,3 +1,4 @@
+import { openWorkspace } from "@/lib/openWorkspace";
 import { useTranslation } from "react-i18next";
 import { MoreHorizontal } from "lucide-react";
 import {
@@ -64,6 +65,7 @@ export function TabPanelMenu({ mode, onOpenFilter }: TabPanelMenuProps) {
           <span className="flex-1">{t("shortcut.panel.filter")}</span>
           <span className="text-xs text-muted-foreground ml-4">{formatBinding(shortcuts["panel.filter"])}</span>
         </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => void openWorkspace()}>{t("tab.newWindow")}</DropdownMenuItem>
         <DropdownMenuItem onClick={closeAll}>{t("sideTabs.closeAll")}</DropdownMenuItem>
         {mode === "side" && (
           <>

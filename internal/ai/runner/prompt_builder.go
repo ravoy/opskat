@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/permission"
 )
 
 // TabInfo 当前打开的 Tab 信息

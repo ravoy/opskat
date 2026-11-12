@@ -36,6 +36,9 @@ if (process.env.TEST_WORKER_INDEX === undefined) {
 process.env.OPSKAT_DATA_DIR = dataDir;
 process.env.OPSKAT_MASTER_KEY = SUITE_MASTER_KEY;
 process.env.OPSKAT_E2E = "1";
+process.env.OPSKAT_E2E_PORT = String(PORTS.app);
+process.env.WAILS_MCP = "1";
+process.env.WAILS_MCP_PORT = String(PORTS.app + 2000);
 // The extension system runs for the whole suite: the extension specs need it, and the
 // app has one webServer, so it cannot be a per-spec choice. It costs one wasm compile
 // on a background goroutine at boot — it never blocks startup, and no other spec waits
@@ -86,14 +89,9 @@ export default defineConfig({
       stderr: "ignore" as const,
     })),
     {
-      // `wails dev -devserver` binds the IPC bridge to our dedicated port. frontend/dist
-      // prep happens in Node above (not in this command) so the command is just one
-      // shell-agnostic line. Output is redirected to a file (not Playwright's pipe):
-      // wails dev orphans its vite child on shutdown, and a piped stdout the orphan keeps
-      // open would stop the Node runner from ever exiting (teardown hang). The log file
-      // stays available for debugging; readiness is detected via `url` polling, not stdout.
-      // `> "file" 2>&1` is valid in both POSIX sh and Windows cmd.
-      command: `wails dev -devserver ${DEVSERVER} > "${WEBSERVER_LOG}" 2>&1`,
+      // The native v3 app exposes its test-only IPC bridge on PORTS.app;
+      // Vite uses app+1000. Output stays in a file for failure diagnosis.
+      command: `wails3 dev -port ${PORTS.app + 1000} > "${WEBSERVER_LOG}" 2>&1`,
       cwd: "..",
       url: BASE_URL,
       reuseExistingServer: !process.env.CI,

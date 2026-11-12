@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/model/entity/policy"
 )
 
 // 迁移建出的表必须能直接承载实体（列名、JSON 列），并对标识做唯一约束。

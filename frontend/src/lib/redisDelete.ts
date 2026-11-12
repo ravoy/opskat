@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import type { redis_svc } from "../../wailsjs/go/models";
+import type * as redis_svc from "@bindings/github.com/octays/opskat/internal/service/redis_svc/models";
 
 type Translate = (key: string, opts?: Record<string, unknown>) => string;
 

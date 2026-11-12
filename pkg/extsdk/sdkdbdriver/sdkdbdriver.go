@@ -14,11 +14,11 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
-	opskat "github.com/opskat/opskat/pkg/extsdk"
-	"github.com/opskat/opskat/pkg/extsdk/internal/registration"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
+	opskat "github.com/octays/opskat/pkg/extsdk"
+	"github.com/octays/opskat/pkg/extsdk/internal/registration"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // DriverOpen opens the database connection of one session and returns it with

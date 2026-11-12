@@ -22,7 +22,7 @@ import {
   resolveSaveProxyChainSecrets,
   type ConnectionFormFields,
 } from "@/components/asset/proxyConfig";
-import { GetDecryptedExtensionConfig, ValidateExtensionConfig } from "../../../wailsjs/go/extension/Extension";
+import { GetDecryptedExtensionConfig, ValidateExtensionConfig } from "@clients/extension";
 import type { AssetFormContext, AssetTestConfig, ConfigSectionProps } from "@/lib/assetTypes/formContract";
 import { defaultValues, passwordFields, visibleFields, type ExtensionConfigSchema } from "@/extension/configSchema";
 import type { ExtAuth, ExtConnection } from "@/extension/types";

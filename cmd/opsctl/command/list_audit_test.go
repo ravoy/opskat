@@ -10,12 +10,12 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/audit_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
-	"github.com/opskat/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/audit_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
+	"github.com/octays/opskat/internal/repository/audit_repo"
 )
 
 // listAuditRepoStub 记录收到的查询选项并返回预置行。它只为下面两个行为边界服务：

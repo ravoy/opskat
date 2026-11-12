@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/extreg"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/extreg"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // SettingsPoint is the settings contribution point (describe()'s settings): the

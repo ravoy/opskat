@@ -8,10 +8,10 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
-	"github.com/opskat/opskat/internal/repository/group_repo"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
+	"github.com/octays/opskat/internal/repository/group_repo"
 )
 
 // stubGroupRepo 简易 group repo stub,返回预设的 group 链。

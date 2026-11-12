@@ -18,9 +18,9 @@ import (
 	"go.uber.org/zap/zaptest/observer"
 	"golang.org/x/crypto/ssh"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/socksdial/socksdialtest"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/socksdial/socksdialtest"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 func TestBuildRedisOptionsByMode(t *testing.T) {

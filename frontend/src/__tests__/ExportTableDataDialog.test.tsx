@@ -2,8 +2,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ExportTableDataDialog } from "@/components/query/ExportTableDataDialog";
-import * as QueryBinder from "../../wailsjs/go/query/Query";
-import * as SystemBinder from "../../wailsjs/go/system/System";
+import * as QueryBinder from "@clients/query";
+import * as SystemBinder from "@clients/system";
 
 // 兼容旧测试代码中的 App.* 引用：聚合到一个对象。
 const App = {

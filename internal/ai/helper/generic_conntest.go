@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/connpool"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
 )
 
 // GenericConnTestInput 是通用资产「测试连接」（conntest 注册表，资产表单里尚未保存的内容）

@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MongoDBCollectionBrowser } from "../MongoDBCollectionBrowser";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { ListMongoCollections, ListMongoDatabases } from "../../../../wailsjs/go/query/Query";
+import { ListMongoCollections, ListMongoDatabases } from "@clients/query";
 
 const TAB = "query-7";
 

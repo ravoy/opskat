@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extmanifest"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // Describe is a describe() answer a test writes by hand: the presentation and,

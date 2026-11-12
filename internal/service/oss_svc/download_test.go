@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/transfer"
-	oss_svc "github.com/opskat/opskat/internal/service/oss_svc"
-	"github.com/opskat/opskat/internal/service/oss_svc/mock_ossclient"
+	"github.com/octays/opskat/internal/pkg/transfer"
+	oss_svc "github.com/octays/opskat/internal/service/oss_svc"
+	"github.com/octays/opskat/internal/service/oss_svc/mock_ossclient"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"

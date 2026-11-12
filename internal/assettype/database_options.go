@@ -5,10 +5,10 @@ import (
 	"maps"
 	"slices"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 驱动专属字段（Descriptor.DriverFields）在入参里是 driver_options 对象，存在资产配置的同名键下。

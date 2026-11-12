@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { OSSBucketTree } from "../OSSBucketTree";
 import type { OssPrefixRow } from "@/lib/ossPrefixTree";
-import type { oss_svc } from "../../../../wailsjs/go/models";
+import type * as oss_svc from "@bindings/github.com/octays/opskat/internal/service/oss_svc/models";
 
 const buckets: oss_svc.BucketItem[] = [
   { name: "b1", creationDate: 0 } as oss_svc.BucketItem,

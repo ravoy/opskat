@@ -14,17 +14,17 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/extreg"
-	"github.com/opskat/opskat/internal/model/entity/extension_data_entity"
-	"github.com/opskat/opskat/internal/model/entity/extension_settings_entity"
-	"github.com/opskat/opskat/internal/model/entity/extension_state_entity"
-	"github.com/opskat/opskat/internal/repository/extension_data_repo"
-	"github.com/opskat/opskat/internal/repository/extension_settings_repo"
-	"github.com/opskat/opskat/internal/repository/extension_state_repo"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extmanifest"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/extreg"
+	"github.com/octays/opskat/internal/model/entity/extension_data_entity"
+	"github.com/octays/opskat/internal/model/entity/extension_settings_entity"
+	"github.com/octays/opskat/internal/model/entity/extension_state_entity"
+	"github.com/octays/opskat/internal/repository/extension_data_repo"
+	"github.com/octays/opskat/internal/repository/extension_settings_repo"
+	"github.com/octays/opskat/internal/repository/extension_state_repo"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // settingsFixture is an extension service on a real database, with extension

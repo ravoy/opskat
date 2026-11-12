@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { SystemStatusSection } from "@/components/settings/SystemStatusSection";
-import { GetSystemStatus } from "../../wailsjs/go/system/System";
+import { GetSystemStatus } from "@clients/system";
 import type { ComponentType } from "react";
 
 vi.mock("react-i18next", () => ({

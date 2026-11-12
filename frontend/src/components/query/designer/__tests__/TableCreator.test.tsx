@@ -5,7 +5,9 @@ import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
 import { useAssetStore } from "@/stores/assetStore";
 import { notifySuccess } from "@/lib/notify";
-import { asset_entity, dbdriver, query_svc } from "../../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import {
   ExecuteSchemaStatements,
   GetAlterTableModel,
@@ -15,7 +17,7 @@ import {
   ListDatabaseObjects,
   ListDatabaseDrivers,
   ListTables,
-} from "../../../../../wailsjs/go/query/Query";
+} from "@clients/query";
 import { BUILTIN_DRIVERS, fakeAlterDriver, provideDrivers } from "@/__tests__/dbDriverFixtures";
 import { TableCreator } from "../TableCreator";
 import { TableDesigner } from "../TableDesigner";
@@ -200,7 +202,11 @@ describe("新建表的设计器", () => {
 
   it("没声明索引编辑的驱动:请求里没有索引,列上不标主键", async () => {
     provideDrivers([
-      fakeAlterDriver({ capabilities: ["create_table", "alter_table"], columnTypes: undefined, id: "fakedb" }),
+      fakeAlterDriver({
+        capabilities: [dbdriver.Capability.CapCreateTable, dbdriver.Capability.CapAlterTable],
+        columnTypes: undefined,
+        id: "fakedb",
+      }),
     ]);
     await openCreate("fakedb");
     fireEvent.change(tableNameInput(), { target: { value: "t" } });
@@ -217,8 +223,8 @@ describe("新建表的设计器", () => {
   it("改表能写注释、但没声明建表注释的驱动(如已发布的 Oracle 扩展):没有注释输入,请求不带注释", async () => {
     provideDrivers([
       fakeAlterDriver({
-        capabilities: ["create_table", "alter_table"],
-        alterTableAttributes: ["table_comment", "column_comment"],
+        capabilities: [dbdriver.Capability.CapCreateTable, dbdriver.Capability.CapAlterTable],
+        alterTableAttributes: [dbdriver.AlterAttribute.AlterTableComment, dbdriver.AlterAttribute.AlterColumnComment],
         columnTypes: undefined,
         id: "fakedb",
       }),
@@ -279,7 +285,16 @@ describe("新建表的设计器", () => {
       new dbdriver.AlterTableModel({
         name: "users",
         comment: "",
-        columns: [{ name: "id", type: "bigint", nullable: false, defaultValue: "", defaultKind: "none", comment: "" }],
+        columns: [
+          {
+            name: "id",
+            type: "bigint",
+            nullable: false,
+            defaultValue: "",
+            defaultKind: dbdriver.DefaultKind.DefaultKindNone,
+            comment: "",
+          },
+        ],
         indexes: [],
       })
     );
@@ -322,7 +337,16 @@ describe("新建表的设计器", () => {
       new dbdriver.AlterTableModel({
         name: "users",
         comment: "",
-        columns: [{ name: "id", type: "BIGINT", nullable: false, defaultValue: "", defaultKind: "none", comment: "" }],
+        columns: [
+          {
+            name: "id",
+            type: "BIGINT",
+            nullable: false,
+            defaultValue: "",
+            defaultKind: dbdriver.DefaultKind.DefaultKindNone,
+            comment: "",
+          },
+        ],
         indexes: [],
       })
     );

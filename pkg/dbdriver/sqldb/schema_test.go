@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 列定义里 DEFAULT 写在 NOT NULL 之前：Oracle 只接受这个次序（反过来报 ORA-00907），其余方言两种

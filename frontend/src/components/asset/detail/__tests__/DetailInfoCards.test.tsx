@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { render, cleanup, within, screen } from "@testing-library/react";
-import { asset_entity, system } from "../../../../../wailsjs/go/models";
-import { ListDatabaseDrivers } from "../../../../../wailsjs/go/query/Query";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
+import { ListDatabaseDrivers } from "@clients/query";
 import { refreshDatabaseDrivers } from "@/lib/dbDrivers";
 import { BUILTIN_DRIVERS, EXT_DRIVER } from "@/__tests__/dbDriverFixtures";
 import { SSHDetailInfoCard } from "../SSHDetailInfoCard";
@@ -23,7 +24,7 @@ afterEach(() => {
 let agentDetail: Partial<system.AgentAssetDetail> | null = null;
 let agentDetailError: string | null = null;
 
-vi.mock("../../../../../wailsjs/go/system/System", () => ({
+vi.mock("@clients/system", () => ({
   GetAgentAssetDetail: (id: number, fp: string) =>
     agentDetailError
       ? Promise.reject(new Error(agentDetailError))

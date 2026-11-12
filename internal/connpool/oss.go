@@ -15,9 +15,9 @@ import (
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/netdial"
 	"go.uber.org/zap"
 )
 

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { asset_entity } from "../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { isRunnableCategoryId, runSnippetOnAsset } from "../components/snippet/snippetRun";
 import { registerSnippetRunner } from "../lib/snippetRunners";
 

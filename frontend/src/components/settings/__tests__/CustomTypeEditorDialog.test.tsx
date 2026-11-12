@@ -8,7 +8,7 @@ vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn(), warning: v
 
 describe("CustomTypeEditorDialog", () => {
   beforeEach(async () => {
-    const mod = await import("../../../../wailsjs/go/customtype/CustomType");
+    const mod = await import("@clients/customtype");
     vi.mocked(mod.SaveCustomType).mockReset();
     vi.mocked(mod.GetCustomType).mockReset();
     vi.mocked(mod.GetCustomTypeUsage).mockReset();
@@ -28,7 +28,7 @@ describe("CustomTypeEditorDialog", () => {
   });
 
   it("renders backend validation issues next to the field they belong to instead of a generic error", async () => {
-    const { SaveCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     vi.mocked(SaveCustomType).mockResolvedValue({
       issues: [{ path: "name", code: "name_required" }],
     } as any);
@@ -42,7 +42,7 @@ describe("CustomTypeEditorDialog", () => {
 
   // 问题所在的标签页没打开时,保存被拒必须切过去——否则对话框原地不动、没有任何提示。
   it("switches to the tab that holds the rejected field when it is not the open one", async () => {
-    const { SaveCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     vi.mocked(SaveCustomType).mockResolvedValue({
       issues: [{ path: "http.base_url", code: "base_url_required" }],
     } as any);
@@ -56,7 +56,7 @@ describe("CustomTypeEditorDialog", () => {
   });
 
   it("stays on the open tab when it already shows one of the rejected fields", async () => {
-    const { SaveCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     vi.mocked(SaveCustomType).mockResolvedValue({
       issues: [
         { path: "fields[0].name", code: "field_name_invalid" },
@@ -76,8 +76,7 @@ describe("CustomTypeEditorDialog", () => {
   // 打开「编辑 A」后立刻关掉再点「新建」:A 的加载结果晚到时不能灌进新建表单(带着 A 的 id,
   // 一保存就覆盖 A)。
   it("ignores a type that finishes loading after the dialog moved on to another target", async () => {
-    const { GetCustomType, GetCustomTypeUsage, SaveCustomType } =
-      await import("../../../../wailsjs/go/customtype/CustomType");
+    const { GetCustomType, GetCustomTypeUsage, SaveCustomType } = await import("@clients/customtype");
     let resolveA!: (ct: any) => void;
     vi.mocked(GetCustomType).mockReturnValue(new Promise((r) => (resolveA = r)) as any);
     vi.mocked(GetCustomTypeUsage).mockResolvedValue([]);
@@ -99,8 +98,7 @@ describe("CustomTypeEditorDialog", () => {
 
   // 默认策略里引用的权限组不在编辑器里编辑(导入的类型可能带着),保存不能把它们丢掉。
   it("keeps the default policy's groups it does not edit", async () => {
-    const { GetCustomType, GetCustomTypeUsage, SaveCustomType } =
-      await import("../../../../wailsjs/go/customtype/CustomType");
+    const { GetCustomType, GetCustomTypeUsage, SaveCustomType } = await import("@clients/customtype");
     vi.mocked(GetCustomType).mockResolvedValue({
       id: 3,
       slug: "grafana",
@@ -128,7 +126,7 @@ describe("CustomTypeEditorDialog", () => {
   });
 
   it("closes and reports success once the backend accepts the save", async () => {
-    const { SaveCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     vi.mocked(SaveCustomType).mockResolvedValue({
       type: { id: 5, slug: "grafana", name: "Grafana", execMode: "http", fields: [] },
     } as any);
@@ -142,7 +140,7 @@ describe("CustomTypeEditorDialog", () => {
   });
 
   it("surfaces the non-blocking save warnings to the user even though the dialog closes", async () => {
-    const { SaveCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     const { toast } = await import("sonner");
     vi.mocked(toast.warning).mockReset();
     vi.mocked(SaveCustomType).mockResolvedValue({
@@ -160,7 +158,7 @@ describe("CustomTypeEditorDialog", () => {
   });
 
   it("prefills the default policy by execution mode for a new type and saves it", async () => {
-    const { SaveCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     vi.mocked(SaveCustomType).mockResolvedValue({ issues: [{ path: "name", code: "name_required" }] } as any);
     render(<CustomTypeEditorDialog open onOpenChange={vi.fn()} />);
     const user = userEvent.setup();
@@ -202,7 +200,7 @@ describe("CustomTypeEditorDialog", () => {
   });
 
   it("drops a field's validation message as soon as that field is edited, without saving again", async () => {
-    const { SaveCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     vi.mocked(SaveCustomType).mockResolvedValue({
       issues: [
         { path: "name", code: "name_required" },
@@ -223,7 +221,7 @@ describe("CustomTypeEditorDialog", () => {
   });
 
   it("drops the message of a template input once its value is edited", async () => {
-    const { SaveCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     vi.mocked(SaveCustomType).mockResolvedValue({
       issues: [{ path: "http.base_url", code: "base_url_required" }],
     } as any);

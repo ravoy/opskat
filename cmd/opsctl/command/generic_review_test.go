@@ -9,10 +9,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/tool"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/tool"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/repository/asset_repo"
 )
 
 // reviewedGenericHTTPExec 把 echo-prod（setupGenericHTTPExec）设成 Autopilot、审核一律通过，

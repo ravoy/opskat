@@ -1,4 +1,4 @@
-import { StatLocalPaths } from "../../../wailsjs/go/system/System";
+import { StatLocalPaths } from "@clients/system";
 import type { FileConflictSide } from "./FileConflictDialog";
 
 /**

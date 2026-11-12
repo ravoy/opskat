@@ -12,8 +12,8 @@ import {
   Label,
 } from "@opskat/ui";
 import { CheckCircle2, Loader2, PlugZap, XCircle } from "lucide-react";
-import { CancelTest, TestNetworkProxy } from "../../../wailsjs/go/system/System";
-import type { system } from "../../../wailsjs/go/models";
+import { CancelTest, TestNetworkProxy } from "@clients/system";
+import type * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
 import { isNetworkProxyFormValid, toNetworkProxyInput, type NetworkProxyForm } from "./networkProxyForm";
 import { errorMessage } from "@/lib/errorMessage";
 

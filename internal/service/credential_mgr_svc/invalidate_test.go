@@ -6,8 +6,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

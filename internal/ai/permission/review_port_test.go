@@ -7,9 +7,9 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
 )
 
 // 权限模式 × 审核结果：只有审核通过能把"需要确认"改成放行；未通过、失败在辅助审批下问人，

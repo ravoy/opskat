@@ -17,7 +17,7 @@ import (
 	"mvdan.cc/sh/v3/pattern"
 	"mvdan.cc/sh/v3/syntax"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/cmdline"
 )
 
 // MaxCommandBytes 是判断前的长度上限：更长的命令不解析，报 ErrTooLong。它同时限住了解析与

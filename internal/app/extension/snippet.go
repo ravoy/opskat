@@ -1,9 +1,9 @@
 package extension
 
 import (
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/snippet_entity"
-	"github.com/opskat/opskat/internal/service/snippet_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/snippet_entity"
+	"github.com/octays/opskat/internal/service/snippet_svc"
 )
 
 // ListSnippetCategories 返回所有片段分类（内置 + 扩展提供）

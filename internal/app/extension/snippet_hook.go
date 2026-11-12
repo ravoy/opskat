@@ -6,9 +6,9 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/extreg"
-	"github.com/opskat/opskat/internal/service/snippet_svc"
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/internal/extreg"
+	"github.com/octays/opskat/internal/service/snippet_svc"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // CollectExtensionCategories 遍历扩展管理器当前已加载扩展，收集其 describe() 贡献的 snippet 分类。

@@ -14,15 +14,15 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/connpool"
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	_ "github.com/opskat/opskat/internal/dbdriver/builtin"
-	"github.com/opskat/opskat/internal/dbdriver/dbdrivertest"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
-	"github.com/opskat/opskat/internal/service/query_svc"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/connpool"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	_ "github.com/octays/opskat/internal/dbdriver/builtin"
+	"github.com/octays/opskat/internal/dbdriver/dbdrivertest"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
+	"github.com/octays/opskat/internal/service/query_svc"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 type stubLang struct{}

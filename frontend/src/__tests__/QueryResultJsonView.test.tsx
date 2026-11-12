@@ -8,7 +8,7 @@ import { TableDataTab } from "@/components/query/TableDataTab";
 import { CELL_DISPLAY_MAX_CHARS } from "@/lib/cellValue";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { ExecuteSQL, OpenTable } from "../../wailsjs/go/query/Query";
+import { ExecuteSQL, OpenTable } from "@clients/query";
 import { BUILTIN_DRIVERS, mockGridEditStatements, provideDrivers } from "./dbDriverFixtures";
 
 vi.mock("@/components/CodeEditor", () => ({

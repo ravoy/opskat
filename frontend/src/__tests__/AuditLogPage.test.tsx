@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { AuditLogPage } from "@/components/audit/AuditLogPage";
-import { ListAuditLogs, ListAuditSessions } from "../../wailsjs/go/system/System";
-import { GetSSHPoolConnections } from "../../wailsjs/go/ssh/SSH";
+import { ListAuditLogs, ListAuditSessions } from "@clients/system";
+import { GetSSHPoolConnections } from "@clients/ssh";
 
 describe("AuditLogPage result status", () => {
   beforeEach(() => {

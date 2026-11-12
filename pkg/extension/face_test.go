@@ -6,8 +6,8 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // face is what an extension's raw contributions say, decoded with the wire types

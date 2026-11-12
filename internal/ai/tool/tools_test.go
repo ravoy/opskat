@@ -5,7 +5,7 @@ import (
 
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/permission"
 
 	"github.com/cago-frame/agents/agent"
 	"github.com/cago-frame/agents/tool"

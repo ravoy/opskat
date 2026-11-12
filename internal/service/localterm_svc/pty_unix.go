@@ -5,12 +5,13 @@ package localterm_svc
 import (
 	"os"
 	"os/exec"
+	"runtime"
 	"syscall"
 	"time"
 
 	"github.com/creack/pty"
 
-	"github.com/opskat/opskat/internal/pkg/shellutil"
+	"github.com/octays/opskat/internal/pkg/shellutil"
 )
 
 type unixPTY struct {
@@ -33,6 +34,15 @@ func startPTY(spec ptySpec) (ptyProcess, error) {
 	// 关掉 24-bit 输出。补这个变量让"看 COLORTERM 才发真彩 SGR"的程序也能出真彩；
 	// 前端 xterm 本就按 24-bit 渲染，两端对齐。
 	cmd.Env = append(os.Environ(), "TERM=xterm-256color", "COLORTERM=truecolor")
+	// GUI launches may have no locale. Without one, zsh edits UTF-8 input as
+	// individual bytes and displays <00xx> escapes. Preserve explicit locales.
+	if os.Getenv("LC_ALL") == "" && os.Getenv("LC_CTYPE") == "" && os.Getenv("LANG") == "" {
+		locale := "C.UTF-8"
+		if runtime.GOOS == "darwin" {
+			locale = "en_US.UTF-8"
+		}
+		cmd.Env = append(cmd.Env, "LANG="+locale)
+	}
 
 	cols, rows := clampSize(spec.Cols, spec.Rows)
 	f, err := pty.StartWithSize(cmd, &pty.Winsize{Cols: uint16(cols), Rows: uint16(rows)})

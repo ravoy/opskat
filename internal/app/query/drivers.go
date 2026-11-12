@@ -1,9 +1,9 @@
 package query
 
 import (
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	"github.com/opskat/opskat/internal/extreg"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	"github.com/octays/opskat/internal/extreg"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // ListDatabaseDrivers 返回全部已注册数据库驱动的描述，按各驱动声明的展示顺序排列，扩展驱动

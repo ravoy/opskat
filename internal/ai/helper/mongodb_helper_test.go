@@ -8,7 +8,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/opskat/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/connpool"
 )
 
 func TestMongoDBCacheContext(t *testing.T) {

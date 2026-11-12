@@ -33,9 +33,9 @@ import type {
   AssetTestResult,
   ConfigSectionProps,
 } from "@/lib/assetTypes/formContract";
-import { CancelTest } from "../../../wailsjs/go/system/System";
-import { RedisProbe } from "../../../wailsjs/go/query/Query";
-import { redis_svc } from "../../../wailsjs/go/models";
+import { CancelTest } from "@clients/system";
+import { RedisProbe } from "@clients/query";
+import * as redis_svc from "@bindings/github.com/octays/opskat/internal/service/redis_svc/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 type Translate = (key: string, opts?: Record<string, unknown>) => string;

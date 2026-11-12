@@ -4,11 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
 )
 
 // 通用资产（asset_entity.AssetTypeGeneric）只有一个执行器：它按资产所属自定义类型的

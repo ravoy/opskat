@@ -4,8 +4,8 @@ contact_links:
     url: https://opskat.dev/
     about: 使用说明、安装指南、扩展开发文档
   - name: 💬 讨论 / Discussions
-    url: https://github.com/opskat/opskat/discussions
+    url: https://github.com/octays/opskat/discussions
     about: 使用疑问、经验分享、非明确 Bug 的问题请走 Discussions
   - name: 🔒 安全问题 / Security Issues
-    url: https://github.com/opskat/opskat/security/advisories/new
+    url: https://github.com/octays/opskat/security/advisories/new
     about: 请通过 Security Advisory 私密报告安全漏洞，不要公开 Issue

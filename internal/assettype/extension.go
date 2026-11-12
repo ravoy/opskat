@@ -7,10 +7,10 @@ import (
 	"slices"
 	"sync"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
 )
 
 // ExtensionTypeSpec 是一个扩展提供的资产类型的声明，由 manifest 推导而来。

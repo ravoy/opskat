@@ -7,9 +7,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extmanifest"
 	"go.uber.org/zap"
 )
 

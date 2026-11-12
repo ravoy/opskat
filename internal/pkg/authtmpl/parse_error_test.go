@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/authtmpl"
+	"github.com/octays/opskat/internal/pkg/authtmpl"
 )
 
 // 类型编辑器与导入预览按 Code 翻译、用 Params 填文案（跟随界面语言），所以 Parse 的

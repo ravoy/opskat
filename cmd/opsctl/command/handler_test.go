@@ -5,9 +5,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/audit"
-	"github.com/opskat/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/audit"
+	"github.com/octays/opskat/internal/ai/tool"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

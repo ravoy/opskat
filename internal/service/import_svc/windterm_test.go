@@ -5,10 +5,10 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/group_repo"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/group_repo"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

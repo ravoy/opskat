@@ -7,11 +7,11 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/model/entity/policy_group_entity"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/ai/permission"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/model/entity/policy_group_entity"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 var policyIDRe = regexp.MustCompile(`^ext:[a-z0-9][a-z0-9_-]{0,63}(:[a-z0-9][a-z0-9_-]{0,63})*$`)

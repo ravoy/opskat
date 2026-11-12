@@ -20,19 +20,12 @@ import { SecretInput } from "@/components/SecretInput";
 import { ConfigTabs } from "@/components/asset/ConfigTabs";
 import { useConfigSection } from "@/components/asset/useConfigSection";
 import { buildConfigGroups, type ConfigGroupSchema } from "@/components/asset/configFields";
-import {
-  GetSSHConnectionSettings,
-  InspectAgentSource,
-  ListAgentSources,
-  ListCredentialsByType,
-} from "../../../wailsjs/go/system/System";
-import { ListLocalSSHKeys, SelectSSHKeyFile } from "../../../wailsjs/go/ssh/SSH";
-import {
-  credential_entity,
-  ssh as ssh_models,
-  ssh_agent_svc,
-  system as system_models,
-} from "../../../wailsjs/go/models";
+import { GetSSHConnectionSettings, InspectAgentSource, ListAgentSources, ListCredentialsByType } from "@clients/system";
+import { ListLocalSSHKeys, SelectSSHKeyFile } from "@clients/ssh";
+import * as credential_entity from "@bindings/github.com/octays/opskat/internal/model/entity/credential_entity/models";
+import * as ssh_models from "@bindings/github.com/octays/opskat/internal/app/ssh/models";
+import * as ssh_agent_svc from "@bindings/github.com/octays/opskat/internal/service/ssh_agent_svc/models";
+import * as system_models from "@bindings/github.com/octays/opskat/internal/app/system/models";
 import { useAssetCredential } from "./useAssetCredential";
 import { resolveSaveCredential, resolveTestCredential } from "./credentialConfig";
 import {

@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 	"go.uber.org/zap"
 )
 

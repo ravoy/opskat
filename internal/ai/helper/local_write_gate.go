@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
 )
 
 // LocalWriteGate 是"一次本地写要先过 local_write 门禁"的接缝。

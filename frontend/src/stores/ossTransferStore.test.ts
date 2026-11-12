@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
+import { EventsOn, EventsOff } from "@/lib/desktop";
 import {
   OSSPickUploadFiles,
   OSSUploadObjectPath,
@@ -7,7 +7,7 @@ import {
   OSSDownloadFolder,
   OSSStartTransfer,
   OSSCancelTransfer,
-} from "../../wailsjs/go/oss/OSS";
+} from "@clients/oss";
 import { useOssTransferStore } from "./ossTransferStore";
 import { useOssBrowserStore } from "./ossBrowserStore";
 import { toast } from "sonner";

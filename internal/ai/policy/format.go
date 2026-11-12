@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	"github.com/opskat/opskat/internal/repository/group_repo"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/repository/group_repo"
 )
 
 // FormatDenyMessage 生成拒绝命令的用户提示，含资产名、命令和提示规则。

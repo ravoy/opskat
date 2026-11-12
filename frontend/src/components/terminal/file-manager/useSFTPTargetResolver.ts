@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { SFTPStatTargets } from "../../../../wailsjs/go/ssh/SSH";
+import { SFTPStatTargets } from "@clients/ssh";
 import { type FileConflictKind, type FileConflictSide } from "@/components/common/FileConflictDialog";
 import { useWriteTargetSettler, type PendingWriteConflict } from "@/components/common/useWriteTargetSettler";
 import { errorMessage } from "@/lib/errorMessage";

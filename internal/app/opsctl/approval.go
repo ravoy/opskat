@@ -6,15 +6,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/model/entity/grant_entity"
-	"github.com/opskat/opskat/internal/repository/grant_repo"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/model/entity/grant_entity"
+	"github.com/octays/opskat/internal/repository/grant_repo"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 )
 
@@ -23,7 +23,7 @@ import (
 func (o *Opsctl) handleRequest(ctx context.Context, req approval.ApprovalRequest) approval.ApprovalResponse {
 	// 数据变更通知：opsctl 通知前端刷新
 	if req.Type == "notify" {
-		wailsRuntime.EventsEmit(o.ctx, "data:changed", map[string]any{
+		application.Get().Event.Emit("data:changed", map[string]any{
 			"resource": req.Detail,
 		})
 		return approval.ApprovalResponse{Approved: true}
@@ -82,6 +82,15 @@ func (o *Opsctl) requestSingleApproval(ctx context.Context, req approval.Approva
 	parsed, reason := o.awaitSingleApproval(ctx, item, req.SessionID)
 	switch parsed.Decision {
 	case permission.ApprovalAllow:
+		return approval.ApprovalResponse{Approved: true}
+	case permission.ApprovalAllowTimed:
+		// 限时全量授权（"30分钟内不再询问"）：本次照常放行，同时落一条带到期时间的
+		// `*` grant，授权期内同范围的命令在 CheckPermissions 的 grant 匹配里直接通过。
+		if req.SessionID == "" {
+			return approval.ApprovalResponse{Approved: false, Reason: "approval does not support a grant without a session"}
+		}
+		ctx := i18n.Ctx(o.ctx, o.lang.Lang())
+		permission.SaveTimedAllowGrant(ctx, req.SessionID, req.AssetID, req.AssetName, req.Type, parsed.TimedAllow.Minutes, parsed.TimedAllow.AllAssets)
 		return approval.ApprovalResponse{Approved: true}
 	case permission.ApprovalAllowAll:
 		if req.SessionID == "" {

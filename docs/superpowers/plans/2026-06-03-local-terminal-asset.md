@@ -456,7 +456,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -524,7 +524,7 @@ package assettype
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 type localHandler struct{}
@@ -1233,7 +1233,7 @@ package local
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/service/localterm_svc"
+	"github.com/octays/opskat/internal/service/localterm_svc"
 )
 
 // LangProvider 由 system binder 实现。
@@ -1274,9 +1274,9 @@ import (
 	"encoding/base64"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/localterm_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/localterm_svc"
 
 	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
@@ -1388,7 +1388,7 @@ import (
 	"context"
 	"sync/atomic"
 
-	"github.com/opskat/opskat/internal/service/localterm_svc"
+	"github.com/octays/opskat/internal/service/localterm_svc"
 )
 
 type Local struct {
@@ -1432,7 +1432,7 @@ git commit -m "✨ local binder(本地终端 IPC) #70"
 	serialMgr := serial_svc.NewManager()
 	localMgr := localterm_svc.NewManager()
 ```
-并在文件顶部 import 块加 `"github.com/opskat/opskat/internal/service/localterm_svc"` 和 `"github.com/opskat/opskat/internal/app/local"`。
+并在文件顶部 import 块加 `"github.com/octays/opskat/internal/service/localterm_svc"` 和 `"github.com/octays/opskat/internal/app/local"`。
 
 - [ ] **Step 2: 构造 binder**(约第 125 行,`serialB := serial.New(...)` 之后)
 

@@ -6,7 +6,7 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // snippetView is an extension contributing exactly the given raw describe() entries.

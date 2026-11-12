@@ -37,12 +37,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@opskat/ui";
-import {
-  ExecuteSQL,
-  GetDropTableStatements,
-  GetStarterQuery,
-  GetTruncateTableStatements,
-} from "../../../wailsjs/go/query/Query";
+import { ExecuteSQL, GetDropTableStatements, GetStarterQuery, GetTruncateTableStatements } from "@clients/query";
 import { useShallow } from "zustand/shallow";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore, type QueryTabMeta } from "@/stores/tabStore";

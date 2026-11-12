@@ -25,7 +25,7 @@ import {
 import { Check, ChevronDown, Download, ExternalLink, FolderOpen, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { notifySuccess } from "@/lib/notify";
-import { OpenDirectory } from "../../../wailsjs/go/system/System";
+import { OpenDirectory } from "@clients/system";
 import {
   CloseTableExport,
   ExportTableToXlsx,
@@ -34,8 +34,10 @@ import {
   ReadTableExport,
   SelectTableExportFile,
   WriteTableExportFile,
-} from "../../../wailsjs/go/query/Query";
-import { dbdriver, query, query_svc } from "../../../wailsjs/go/models";
+} from "@clients/query";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as query from "@bindings/github.com/octays/opskat/internal/app/query/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import type { TableSortRequestItem } from "@/lib/tableFilter";
 import {
   buildTableExportContent,

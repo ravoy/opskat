@@ -1,6 +1,6 @@
 package aictx
 
-import "github.com/opskat/opskat/pkg/extwire"
+import "github.com/octays/opskat/pkg/extwire"
 
 // ReviewOutcome 是一次模型审核的结果。
 type ReviewOutcome string

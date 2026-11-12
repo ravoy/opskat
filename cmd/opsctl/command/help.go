@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/opskat/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/ai/tool"
 )
 
 // cmdHelp is the CLI counterpart of the AI "help" tool (see

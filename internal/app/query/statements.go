@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/app/i18n"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // ClassifySQLStatements 用资产的驱动切分并分类 sqlText，不连数据库。查询面板在资产的驱动声明了

@@ -7,7 +7,7 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // ExecMongoOnAsset is the permission-check-free execution entry point used by the

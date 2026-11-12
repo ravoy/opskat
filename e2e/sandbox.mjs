@@ -1,4 +1,4 @@
-// The verification sandbox launcher: `node sandbox.mjs up | down | status`.
+// The verification sandbox launcher: `bun sandbox.mjs up | down | status`.
 //
 // It is the ONE thing you start. `up` brings an isolated OpsKat online with a headless
 // browser attached, records the session, and **returns** — nothing to keep in the
@@ -7,7 +7,7 @@
 // full harness restart.
 //
 //   make dev-sandbox                 # up (idempotent — a second call just reports)
-//   node e2e/drive.mjs snapshot      # …then drive it from anywhere
+//   bun e2e/drive.mjs snapshot      # …then drive it from anywhere
 //   make dev-sandbox-down            # when you're done
 //
 // Isolation: the app boots with OPSKAT_DATA_DIR pointing at this checkout's own
@@ -53,7 +53,7 @@ const option = (name, fallback) => {
 const PORTS = ports();
 
 if (flag("help")) {
-  process.stdout.write(`Usage: node e2e/sandbox.mjs [up|down|status] [options]
+  process.stdout.write(`Usage: bun e2e/sandbox.mjs [up|down|status] [options]
 
   up        start the sandbox and return (default; idempotent)
   down      stop it — the data dir survives unless you pass --reset
@@ -119,6 +119,7 @@ async function up() {
     OPSKAT_DATA_DIR: dataDir,
     OPSKAT_MASTER_KEY: SANDBOX_MASTER_KEY,
     OPSKAT_E2E: "1",
+    OPSKAT_E2E_PORT: String(port),
     OPSKAT_EXTENSIONS: extensions ? "1" : "0",
   };
 
@@ -137,9 +138,9 @@ async function up() {
 
   log("starting the app (first run builds Go + Vite, this takes a few minutes)");
   log(`build output → ${logFile}`);
-  // Output to a file rather than a pipe: `wails dev` orphans its vite child, and an
+  // Output to a file rather than a pipe: `wails3 dev` orphans its vite child, and an
   // inherited pipe the orphan keeps open would stop this process from ever exiting.
-  pids.wails = spawnDetached(`wails dev -devserver localhost:${port} > "${logFile}" 2>&1`, {
+  pids.wails = spawnDetached(`wails3 dev -port ${port + 1000} > "${logFile}" 2>&1`, {
     cwd: repoRoot,
     env: appEnv,
   });
@@ -183,7 +184,7 @@ async function down() {
     return;
   }
   for (const [name, pid] of Object.entries(session.pids ?? {})) killTree(pid, name);
-  // `wails dev` orphans vite into its own process group, so the group kill can miss
+  // `wails3 dev` orphans vite into its own process group, so the group kill can miss
   // it; give the tree a moment, then sweep by command line (scoped to this checkout,
   // so a concurrently-running worktree is never touched).
   await new Promise((r) => setTimeout(r, 1500));
@@ -233,8 +234,8 @@ function report(session, state) {
       `  browser     ${session.cdpEndpoint ?? "not started (--no-browser)"}` +
       `${session.cdpEndpoint ? (session.headed ? " (headed)" : " (headless)") : ""}\n` +
       `${"─".repeat(66)}\n` +
-      "  drive it:   node e2e/drive.mjs snapshot\n" +
-      "  read it:    node e2e/oracle.mjs assets\n" +
+      "  drive it:   bun e2e/drive.mjs snapshot\n" +
+      "  read it:    bun e2e/oracle.mjs assets\n" +
       "  stop it:    make dev-sandbox-down\n" +
       `${"─".repeat(66)}\n\n`,
   );

@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { toast } from "sonner";
 import { OSSPresignDialog } from "../OSSPresignDialog";
-import { OSSPresignGet, OSSPresignPut } from "../../../../wailsjs/go/oss/OSS";
+import { OSSPresignGet, OSSPresignPut } from "@clients/oss";
 
 beforeEach(() => {
   vi.mocked(OSSPresignGet)

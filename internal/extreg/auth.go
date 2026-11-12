@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/pkg/authtmpl"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/pkg/authtmpl"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // AuthDef is the credential injection an asset type declares in describe(): the

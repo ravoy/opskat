@@ -3,8 +3,8 @@ package policy
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // checkMongoPolicyRules 检查 MongoDB 命令是否符合给定策略（不合并默认策略）。

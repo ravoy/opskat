@@ -10,7 +10,7 @@ import (
 	"github.com/cago-frame/cago/database/db"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/model/entity/snippet_entity"
+	"github.com/octays/opskat/internal/model/entity/snippet_entity"
 )
 
 // snippetRepo 默认 GORM 实现

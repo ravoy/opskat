@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/service/credential_svc"
 )
 
 // TestMain 初始化 credential_svc，使各 handler 中的 password 加密路径可在单测中执行。

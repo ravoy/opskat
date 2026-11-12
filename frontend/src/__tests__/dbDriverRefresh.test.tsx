@@ -7,10 +7,10 @@ import { DatabaseConfigSection } from "@/components/asset/DatabaseConfigSection"
 import { DatabasePanel } from "@/components/query/DatabasePanel";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
-import { ListInstalledExtensions } from "../../wailsjs/go/extension/Extension";
-import { ListDatabaseDrivers, ListDatabases } from "../../wailsjs/go/query/Query";
-import { dbdriver } from "../../wailsjs/go/models";
+import { EventsOn } from "@/lib/desktop";
+import { ListInstalledExtensions } from "@clients/extension";
+import { ListDatabaseDrivers, ListDatabases } from "@clients/query";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import i18n from "../i18n";
 import { BUILTIN_DRIVERS, EXT_DRIVER, provideDrivers } from "./dbDriverFixtures";
 
@@ -41,7 +41,7 @@ async function emit(event: "ext:reload" | "ext:ready") {
   const handler = vi.mocked(EventsOn).mock.calls.find(([name]) => name === event)?.[1];
   if (!handler) throw new Error(`no ${event} listener`);
   await act(async () => {
-    handler();
+    handler(undefined);
   });
 }
 
@@ -85,7 +85,15 @@ describe("驱动注册或移除后不重启即反映", () => {
 
     const upgraded = new dbdriver.Descriptor({
       ...EXT_DRIVER,
-      driverFields: [...EXT_DRIVER.driverFields, { key: "pool_size", type: "number", tab: "advanced", default: 8 }],
+      driverFields: [
+        ...EXT_DRIVER.driverFields,
+        {
+          key: "pool_size",
+          type: dbdriver.DriverFieldType.FieldTypeNumber,
+          tab: dbdriver.FormTab.TabAdvanced,
+          default: 8,
+        },
+      ],
     });
     registry(upgraded, ...BUILTIN_DRIVERS);
     await emit("ext:reload");

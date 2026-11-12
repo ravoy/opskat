@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/permission"
 )
 
 // An invalid answer fails closed at the IPC boundary: it is refused with an error and

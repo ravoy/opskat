@@ -11,11 +11,11 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/service/asset_put_svc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/service/asset_put_svc"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

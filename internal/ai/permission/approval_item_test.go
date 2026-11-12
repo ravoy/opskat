@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // ApprovalItemFor is the one approval-item builder every single approval shares —

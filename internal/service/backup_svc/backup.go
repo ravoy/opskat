@@ -3,13 +3,13 @@ package backup_svc
 import (
 	"encoding/json"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/model/entity/forward_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	"github.com/opskat/opskat/internal/model/entity/policy_group_entity"
-	"github.com/opskat/opskat/internal/model/entity/ssh_agent_source_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/model/entity/forward_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/model/entity/policy_group_entity"
+	"github.com/octays/opskat/internal/model/entity/ssh_agent_source_entity"
 )
 
 // CredentialCrypto 凭证加解密接口

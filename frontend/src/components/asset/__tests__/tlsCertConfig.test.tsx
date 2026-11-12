@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { useState } from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import { SelectTLSCertFile } from "../../../../wailsjs/go/system/System";
+import { SelectTLSCertFile } from "@clients/system";
 import { Fields } from "@/components/asset/configFields";
 import {
   TLS_CERT_DEFAULTS,

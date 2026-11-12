@@ -6,8 +6,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // PageSlots 是页面可以声明的插槽，由宿主定义。前端在 frontend/src/extension/slots.ts 里

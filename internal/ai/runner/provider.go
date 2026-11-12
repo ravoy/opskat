@@ -1,6 +1,6 @@
 package runner
 
-import "github.com/opskat/opskat/internal/ai/permission"
+import "github.com/octays/opskat/internal/ai/permission"
 
 // Role 消息角色
 type Role string

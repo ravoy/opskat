@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/ssh"
 
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 // startSSHServer 起一个免认证的进程内 SSH 服务器，每条连接的通道请求交给 serve 处理，返回监听地址。

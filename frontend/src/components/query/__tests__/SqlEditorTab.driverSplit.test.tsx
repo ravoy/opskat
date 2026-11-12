@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { SqlEditorTab } from "@/components/query/SqlEditorTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { ClassifySQLStatements, ExecuteSQLPaged } from "../../../../wailsjs/go/query/Query";
+import { ClassifySQLStatements, ExecuteSQLPaged } from "@clients/query";
 import { fakeDriverWith, provideDrivers } from "@/__tests__/dbDriverFixtures";
 import { mounted } from "./fakeSqlEditor";
 

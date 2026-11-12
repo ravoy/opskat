@@ -15,8 +15,8 @@ import {
   ChevronDown,
   ScrollText,
 } from "lucide-react";
-import type { asset_entity } from "../../../wailsjs/go/models";
-import { GetK8sClusterInfo } from "../../../wailsjs/go/k8s/K8s";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import { GetK8sClusterInfo } from "@clients/k8s";
 import {
   GetK8sNamespaceResources,
   GetK8sNamespacePods,
@@ -25,7 +25,7 @@ import {
   GetK8sNamespaceConfigMaps,
   GetK8sNamespaceSecrets,
   GetK8sPodDetail,
-} from "../../../wailsjs/go/k8s/K8s";
+} from "@clients/k8s";
 import { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator } from "@opskat/ui";
 import { InfoItem } from "@/components/asset/detail/InfoItem";
 import { K8sSectionCard } from "./K8sSectionCard";
@@ -1183,7 +1183,7 @@ export function K8sClusterPage({ asset }: Props) {
     if (id.startsWith("log:") || id.startsWith("log-deploy:")) {
       const state = logTabStates[id];
       if (state?.logStreamID) {
-        import("../../../wailsjs/go/k8s/K8s").then(({ StopK8sPodLogs }) => {
+        import("@clients/k8s").then(({ StopK8sPodLogs }) => {
           StopK8sPodLogs(state.logStreamID!);
         });
       }
@@ -1207,7 +1207,7 @@ export function K8sClusterPage({ asset }: Props) {
       if (id.startsWith("log:") || id.startsWith("log-deploy:")) {
         const state = logTabStates[id];
         if (state?.logStreamID) {
-          import("../../../wailsjs/go/k8s/K8s").then(({ StopK8sPodLogs }) => {
+          import("@clients/k8s").then(({ StopK8sPodLogs }) => {
             StopK8sPodLogs(state.logStreamID!);
           });
         }

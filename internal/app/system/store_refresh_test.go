@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/bootstrap"
 )
 
 func TestOnlineChecksDue(t *testing.T) {

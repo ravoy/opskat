@@ -46,7 +46,7 @@ import {
   ConfirmDialog,
   cn,
 } from "@opskat/ui";
-import { OnFileDrop, OnFileDropOff } from "../../../wailsjs/runtime/runtime";
+import { OnFileDrop, OnFileDropOff } from "@/lib/desktop";
 import {
   GenerateSSHKey,
   ImportSSHKeyPath,
@@ -69,9 +69,12 @@ import {
   CreateAgentSource,
   UpdateAgentSource,
   GetAgentSource,
-} from "../../../wailsjs/go/system/System";
-import { SelectSSHKeyFile } from "../../../wailsjs/go/ssh/SSH";
-import { credential_entity, ssh as ssh_models, system, ssh_agent_svc } from "../../../wailsjs/go/models";
+} from "@clients/system";
+import { SelectSSHKeyFile } from "@clients/ssh";
+import * as credential_entity from "@bindings/github.com/octays/opskat/internal/model/entity/credential_entity/models";
+import * as ssh_models from "@bindings/github.com/octays/opskat/internal/app/ssh/models";
+import * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
+import * as ssh_agent_svc from "@bindings/github.com/octays/opskat/internal/service/ssh_agent_svc/models";
 import { AgentSourceRow } from "@/components/settings/AgentSourceRow";
 import { SecretInput } from "@/components/SecretInput";
 import { AgentSourceDialog, type AgentSourceDraft } from "@/components/settings/AgentSourceDialog";

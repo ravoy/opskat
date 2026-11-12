@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/service/conntest"
-	"github.com/opskat/opskat/internal/service/testreg"
+	"github.com/octays/opskat/internal/service/conntest"
+	"github.com/octays/opskat/internal/service/testreg"
 )
 
 func newTestSystem() *System {

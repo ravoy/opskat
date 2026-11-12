@@ -15,7 +15,7 @@ import {
   ContinueExternalEditSession,
   ReadExternalEditSessionText,
   SaveExternalEditSessionText,
-} from "../../wailsjs/go/external_edit/ExternalEdit";
+} from "@clients/external_edit";
 
 // 内置编辑器在后端编辑器列表里的固定 ID（internal/service/external_edit_svc/types.go）：
 // 命中它时后端不拉起外部进程，会话由应用内的编辑器承载并显式保存。

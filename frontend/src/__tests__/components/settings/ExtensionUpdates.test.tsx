@@ -5,13 +5,8 @@ import { SettingsPage } from "../../../components/settings/SettingsPage";
 import { ExtensionSection } from "../../../components/settings/ExtensionSection";
 import { useExtensionUpdates } from "../../../components/settings/extensionUpdates";
 import { useStoreInstallState } from "../../../components/settings/useStoreInstalls";
-import {
-  InstallStoreExtension,
-  ListInstalledExtensions,
-  ListStore,
-  RefreshStore,
-} from "../../../../wailsjs/go/extension/Extension";
-import { EventsOff, EventsOn } from "../../../../wailsjs/runtime/runtime";
+import { InstallStoreExtension, ListInstalledExtensions, ListStore, RefreshStore } from "@clients/extension";
+import { EventsOff, EventsOn } from "@/lib/desktop";
 
 vi.mock("../../../lib/notify", () => ({ notifySuccess: vi.fn(), notifyCopied: vi.fn() }));
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn(), warning: vi.fn(), info: vi.fn() } }));

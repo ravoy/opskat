@@ -5,8 +5,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { TooltipProvider } from "@opskat/ui";
 import { AssetDetail } from "@/components/asset/AssetDetail";
 import { AssetForm } from "@/components/asset/AssetForm";
-import { asset_entity } from "../../wailsjs/go/models";
-import { GetCommandReviewState } from "../../wailsjs/go/extension/Extension";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import { GetCommandReviewState } from "@clients/extension";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), info: vi.fn() } }));
 vi.mock("@/lib/notify", () => ({ notifySuccess: vi.fn(), notifyCopied: vi.fn() }));

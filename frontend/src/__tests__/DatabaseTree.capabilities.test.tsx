@@ -5,8 +5,9 @@ import { DatabasePanel } from "../components/query/DatabasePanel";
 import { useQueryStore } from "../stores/queryStore";
 import { useTabStore } from "../stores/tabStore";
 import { useAssetStore } from "../stores/assetStore";
-import { ListDatabaseDrivers, ListDatabaseObjects, ListDatabases, ListTables } from "../../wailsjs/go/query/Query";
-import { asset_entity, query_svc } from "../../wailsjs/go/models";
+import { ListDatabaseDrivers, ListDatabaseObjects, ListDatabases, ListTables } from "@clients/query";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import { BUILTIN_DRIVERS, fakeDriverWith, provideDrivers } from "./dbDriverFixtures";
 
 vi.mock("@/components/CodeEditor", () => ({

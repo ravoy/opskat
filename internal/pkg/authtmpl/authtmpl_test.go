@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/authtmpl"
+	"github.com/octays/opskat/internal/pkg/authtmpl"
 )
 
 func mustParse(t *testing.T, src string, opts authtmpl.ParseOptions) *authtmpl.Template {

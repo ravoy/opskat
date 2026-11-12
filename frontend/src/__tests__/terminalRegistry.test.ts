@@ -70,7 +70,7 @@ const hoisted = vi.hoisted(() => {
   };
 });
 
-vi.mock("../../wailsjs/runtime/runtime", () => ({
+vi.mock("@/lib/desktop", () => ({
   EventsOn: (event: string, handler: (...args: unknown[]) => void) => {
     hoisted.eventHandlers.set(event, handler);
   },
@@ -80,7 +80,7 @@ vi.mock("../../wailsjs/runtime/runtime", () => ({
   BrowserOpenURL: hoisted.browserOpenURLSpy,
 }));
 
-vi.mock("../../wailsjs/go/ssh/SSH", () => ({
+vi.mock("@clients/ssh", () => ({
   WriteSSH: vi.fn().mockResolvedValue(undefined),
   ResizeSSH: vi.fn().mockResolvedValue(undefined),
   ConnectSSHAsync: vi.fn().mockResolvedValue("conn-ssh"),
@@ -88,14 +88,14 @@ vi.mock("../../wailsjs/go/ssh/SSH", () => ({
   SplitSSH: vi.fn().mockResolvedValue("split-ssh"),
 }));
 
-vi.mock("../../wailsjs/go/serial/Serial", () => ({
+vi.mock("@clients/serial", () => ({
   WriteSerial: vi.fn().mockResolvedValue(undefined),
   ResizeSerialTerminal: vi.fn().mockResolvedValue(undefined),
   ConnectSerialAsync: vi.fn().mockResolvedValue("conn-serial"),
   DisconnectSerial: vi.fn(),
 }));
 
-vi.mock("../../wailsjs/go/local/Local", () => ({
+vi.mock("@clients/local", () => ({
   WriteLocal: vi.fn().mockResolvedValue(undefined),
   ResizeLocalTerminal: vi.fn().mockResolvedValue(undefined),
   ConnectLocalAsync: vi.fn().mockResolvedValue("conn-local"),
@@ -304,8 +304,8 @@ import {
   uploadFilesWithRz,
 } from "@/components/terminal/terminalRegistry";
 import { TRANSPORTS, transportForAsset, inferTransportFromSessionId } from "@/stores/terminalStore";
-import { WriteSSH } from "../../wailsjs/go/ssh/SSH";
-import { ReadClipboardText } from "../../wailsjs/go/system/System";
+import { WriteSSH } from "@clients/ssh";
+import { ReadClipboardText } from "@clients/system";
 
 interface TestTerminalLink {
   text: string;

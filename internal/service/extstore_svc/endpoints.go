@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/pkg/ociclient"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/pkg/ociclient"
 )
 
 // OfficialIndexURL is the official index on the extensions repo's main branch;

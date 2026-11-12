@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/conversation_entity"
-	"github.com/opskat/opskat/internal/pkg/dbutil"
-	"github.com/opskat/opskat/internal/repository/conversation_repo"
-	"github.com/opskat/opskat/internal/repository/conversation_repo/mock_conversation_repo"
+	"github.com/octays/opskat/internal/model/entity/conversation_entity"
+	"github.com/octays/opskat/internal/pkg/dbutil"
+	"github.com/octays/opskat/internal/repository/conversation_repo"
+	"github.com/octays/opskat/internal/repository/conversation_repo/mock_conversation_repo"
 
 	"github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/assert"

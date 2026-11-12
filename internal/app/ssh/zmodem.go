@@ -6,10 +6,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/opskat/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/pkg/transfer"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 )
 
@@ -36,9 +37,9 @@ type ZmodemChunk struct {
 // ZmodemBeginDownload 弹原生 Save 对话框并创建本地文件，返回 transferID。
 // 用户取消对话框时返回空字符串（前端据此 offer.skip()）。
 func (s *SSH) ZmodemBeginDownload(sessionID, suggestedName string, size int64) (string, error) {
-	localPath, err := wailsRuntime.SaveFileDialog(s.ctx, wailsRuntime.SaveDialogOptions{
-		DefaultFilename: suggestedName,
-		Title:           "保存接收的文件",
+	localPath, err := desktop.SaveFile(application.SaveFileDialogOptions{
+		Filename: suggestedName,
+		Title:    "保存接收的文件",
 	})
 	if err != nil {
 		return "", fmt.Errorf("保存文件对话框失败: %w", err)
@@ -81,7 +82,7 @@ func (s *SSH) ZmodemAbortDownload(transferID string) error {
 // ZmodemPickUploadFiles 弹原生多选对话框，逐个打开并登记上传句柄，返回文件列表。
 // 用户取消时返回空列表（前端据此 session.close()）。
 func (s *SSH) ZmodemPickUploadFiles(sessionID string) ([]ZmodemUploadFile, error) {
-	paths, err := wailsRuntime.OpenMultipleFilesDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+	paths, err := desktop.OpenFiles(application.OpenFileDialogOptions{
 		Title: "选择上传文件",
 	})
 	if err != nil {

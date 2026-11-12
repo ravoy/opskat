@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BackupSection } from "@/components/settings/BackupSection";
-import { system } from "../../wailsjs/go/models";
+import * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
 import {
   ClearGitHubToken,
   GetGitHubToken,
@@ -9,7 +9,7 @@ import {
   GetStoredGitHubUser,
   GetWebDAVConfig,
   ListBackupGists,
-} from "../../wailsjs/go/system/System";
+} from "@clients/system";
 
 describe("BackupSection GitHub auth restore", () => {
   beforeEach(() => {

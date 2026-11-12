@@ -12,8 +12,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // ErrDriverUnavailable 表示配置里的驱动 id 不在注册表中（驱动未内置，或提供它的扩展没有

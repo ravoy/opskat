@@ -9,7 +9,7 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/cmdline"
 )
 
 // ExecRequest 是 etcd 服务层操作请求,既给 IPC 用,也给 Dispatch 用。

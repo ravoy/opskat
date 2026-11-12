@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/extstore"
+	"github.com/octays/opskat/pkg/extstore"
 )
 
 func listingByName(t *testing.T, ls []Listing, name string) Listing {

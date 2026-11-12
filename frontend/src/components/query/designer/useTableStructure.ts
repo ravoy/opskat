@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { GetAlterTableModel, GetTableDDL, GetTableMetadata } from "../../../../wailsjs/go/query/Query";
+import { GetAlterTableModel, GetTableDDL, GetTableMetadata } from "@clients/query";
 import { structureFromAlterModel, structureFromMetadata, type TableStructure } from "./model";
 import { errorMessage } from "@/lib/errorMessage";
 

@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { computeInsertionPoint, rowKey } from "../insertionPoint";
 import type { Row } from "../flattenTree";
-import { group_entity } from "../../../../wailsjs/go/models";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
 
 function g(id: number, parentID = 0): group_entity.Group {
-  return new group_entity.Group({ ID: id, ParentID: parentID, Status: 1 });
+  return new group_entity.Group({ ID: id, ParentID: parentID });
 }
 
 function makeRects(rows: Row[], rowHeight = 24): Map<string, { top: number; bottom: number; height: number }> {

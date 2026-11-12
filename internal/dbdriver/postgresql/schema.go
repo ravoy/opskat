@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // 清空与新建数据库：TRUNCATE TABLE；CREATE DATABASE 的编码用 ENCODING，排序规则同时设 LC_COLLATE 与 LC_CTYPE，

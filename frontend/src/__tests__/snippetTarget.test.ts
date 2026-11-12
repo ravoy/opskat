@@ -2,7 +2,9 @@
 import { describe, it, expect } from "vitest";
 import { resolveSnippetTarget } from "../lib/snippetTarget";
 import type { Tab } from "../stores/tabStore";
-import type { asset_entity, snippet_entity, snippet_svc } from "../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import type * as snippet_entity from "@bindings/github.com/octays/opskat/internal/model/entity/snippet_entity/models";
+import type * as snippet_svc from "@bindings/github.com/octays/opskat/internal/service/snippet_svc/models";
 
 type Asset = asset_entity.Asset;
 

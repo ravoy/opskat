@@ -7,13 +7,14 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/extreg"
-	"github.com/opskat/opskat/internal/service/extension_svc"
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/extreg"
+	"github.com/octays/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/pkg/extension"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 )
 
@@ -199,9 +200,9 @@ func (e *Extension) InstallExtension() (*extension_svc.ExtensionInfo, error) {
 		return nil, fmt.Errorf("extension system not initialized")
 	}
 
-	selected, err := wailsRuntime.OpenFileDialog(e.ctx, wailsRuntime.OpenDialogOptions{
+	selected, err := desktop.OpenFile(application.OpenFileDialogOptions{
 		Title: "Select Extension Package",
-		Filters: []wailsRuntime.FileFilter{
+		Filters: []application.FileFilter{
 			{DisplayName: "Extension Package (*.zip)", Pattern: "*.zip"},
 		},
 	})
@@ -221,7 +222,7 @@ func (e *Extension) InstallExtensionFromDirectory() (*extension_svc.ExtensionInf
 		return nil, fmt.Errorf("extension system not initialized")
 	}
 
-	selected, err := wailsRuntime.OpenDirectoryDialog(e.ctx, wailsRuntime.OpenDialogOptions{
+	selected, err := desktop.OpenDirectory(application.OpenFileDialogOptions{
 		Title: "Select Extension Directory",
 	})
 	if err != nil {

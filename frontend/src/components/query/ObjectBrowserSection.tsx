@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronDown, ChevronRight, Eye, FunctionSquare, Workflow, Zap } from "lucide-react";
 import { toast } from "sonner";
-import { GetObjectSource } from "../../../wailsjs/go/query/Query";
-import type { query_svc } from "../../../wailsjs/go/models";
+import { GetObjectSource } from "@clients/query";
+import type * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import { useQueryStore } from "@/stores/queryStore";
 import { errorMessage } from "@/lib/errorMessage";
 

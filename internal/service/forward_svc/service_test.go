@@ -5,12 +5,12 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/forward_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
-	"github.com/opskat/opskat/internal/repository/forward_repo"
-	"github.com/opskat/opskat/internal/repository/forward_repo/mock_forward_repo"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/forward_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
+	"github.com/octays/opskat/internal/repository/forward_repo"
+	"github.com/octays/opskat/internal/repository/forward_repo/mock_forward_repo"
 
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"

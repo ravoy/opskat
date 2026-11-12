@@ -5,7 +5,8 @@ import userEvent from "@testing-library/user-event";
 import { TooltipProvider } from "@opskat/ui";
 import { AgentSourceRow } from "@/components/settings/AgentSourceRow";
 import type { AgentSourceRuntimeStatus } from "@/components/settings/agentSource";
-import { system, ssh_agent_svc } from "../../../../wailsjs/go/models";
+import * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
+import * as ssh_agent_svc from "@bindings/github.com/octays/opskat/internal/service/ssh_agent_svc/models";
 
 function makeSource(id = 1, type = "unix_socket"): system.AgentSourceSummary {
   return { id, name: `agent-${id}`, endpoint_type: type, description: "" } as system.AgentSourceSummary;

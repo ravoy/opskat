@@ -11,21 +11,22 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/buildinfo"
-	"github.com/opskat/opskat/internal/embedded"
-	"github.com/opskat/opskat/internal/model/entity/audit_entity"
-	"github.com/opskat/opskat/internal/pkg/executil"
-	"github.com/opskat/opskat/internal/repository/audit_repo"
-	"github.com/opskat/opskat/internal/service/backup_svc"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/internal/service/import_svc"
-	"github.com/opskat/opskat/internal/service/update_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/buildinfo"
+	"github.com/octays/opskat/internal/embedded"
+	"github.com/octays/opskat/internal/model/entity/audit_entity"
+	"github.com/octays/opskat/internal/pkg/executil"
+	"github.com/octays/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/internal/service/backup_svc"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/service/import_svc"
+	"github.com/octays/opskat/internal/service/update_svc"
 
 	"github.com/cago-frame/cago/configs"
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 )
 
@@ -219,9 +220,9 @@ func (s *System) ImportRDPSelected(sourceID string, selectedIndexes []int, overw
 
 // readRDPFiles 多选 .rdp 文件并读入内存；用户取消时返回 nil
 func (s *System) readRDPFiles() ([]import_svc.RDPFileData, error) {
-	paths, err := wailsRuntime.OpenMultipleFilesDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+	paths, err := desktop.OpenFiles(application.OpenFileDialogOptions{
 		Title: "选择 RDP 连接文件",
-		Filters: []wailsRuntime.FileFilter{
+		Filters: []application.FileFilter{
 			{DisplayName: "RDP Files", Pattern: "*.rdp"},
 			{DisplayName: "All Files", Pattern: "*"},
 		},
@@ -246,7 +247,7 @@ func (s *System) readRDPFiles() ([]import_svc.RDPFileData, error) {
 // PreviewRDPExcel 预览用户选中的 RDP 批量导入 Excel（不写数据库）
 func (s *System) PreviewRDPExcel() (*import_svc.RDPExcelPreviewResult, error) {
 	// 仅支持 OOXML 的 .xlsx；旧式二进制 .xls 不在解析能力内，不提供选择
-	data, err := s.readImportFile("选择 RDP 批量导入 Excel", []wailsRuntime.FileFilter{
+	data, err := s.readImportFile("选择 RDP 批量导入 Excel", []application.FileFilter{
 		{DisplayName: "Excel Files", Pattern: "*.xlsx"},
 		{DisplayName: "All Files", Pattern: "*"},
 	})
@@ -310,10 +311,10 @@ func (s *System) DownloadRDPExcelTemplate() (string, error) {
 		log.Error("rdp excel template download failed", zap.Error(err))
 		return "", err
 	}
-	path, err := wailsRuntime.SaveFileDialog(s.ctx, wailsRuntime.SaveDialogOptions{
-		Title:           "保存 RDP 导入模板",
-		DefaultFilename: "rdp-import-template.xlsx",
-		Filters: []wailsRuntime.FileFilter{
+	path, err := desktop.SaveFile(application.SaveFileDialogOptions{
+		Title:    "保存 RDP 导入模板",
+		Filename: "rdp-import-template.xlsx",
+		Filters: []application.FileFilter{
 			{DisplayName: "Excel Files", Pattern: "*.xlsx"},
 		},
 	})
@@ -339,8 +340,8 @@ func (s *System) DownloadRDPExcelTemplate() (string, error) {
 }
 
 // readImportFile 通用导入文件选择：用户取消时返回 nil
-func (s *System) readImportFile(title string, filters []wailsRuntime.FileFilter) ([]byte, error) {
-	filePath, err := wailsRuntime.OpenFileDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+func (s *System) readImportFile(title string, filters []application.FileFilter) ([]byte, error) {
+	filePath, err := desktop.OpenFile(application.OpenFileDialogOptions{
 		Title:   title,
 		Filters: filters,
 	})
@@ -362,9 +363,9 @@ func (s *System) readSSHConfig() ([]byte, error) {
 	filePath := import_svc.DetectSSHConfigPath()
 	if filePath == "" {
 		var err error
-		filePath, err = wailsRuntime.OpenFileDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+		filePath, err = desktop.OpenFile(application.OpenFileDialogOptions{
 			Title: "选择 SSH Config 文件",
-			Filters: []wailsRuntime.FileFilter{
+			Filters: []application.FileFilter{
 				{DisplayName: "All Files", Pattern: "*"},
 			},
 		})
@@ -384,9 +385,9 @@ func (s *System) readSSHConfig() ([]byte, error) {
 
 // readWindTermConfig 读取 WindTerm user.sessions 文件内容
 func (s *System) readWindTermConfig() ([]byte, error) {
-	filePath, err := wailsRuntime.OpenFileDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+	filePath, err := desktop.OpenFile(application.OpenFileDialogOptions{
 		Title: "选择 WindTerm 配置文件：profiles/default.v10/terminal/user.sessions",
-		Filters: []wailsRuntime.FileFilter{
+		Filters: []application.FileFilter{
 			{DisplayName: "WindTerm user.sessions", Pattern: "user.sessions"},
 			{DisplayName: "All Files", Pattern: "*"},
 		},
@@ -409,9 +410,9 @@ func (s *System) readTabbyConfig() ([]byte, error) {
 	filePath := detectTabbyConfigPath()
 	if filePath == "" {
 		var err error
-		filePath, err = wailsRuntime.OpenFileDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+		filePath, err = desktop.OpenFile(application.OpenFileDialogOptions{
 			Title: "选择 Tabby 配置文件",
-			Filters: []wailsRuntime.FileFilter{
+			Filters: []application.FileFilter{
 				{DisplayName: "YAML Files", Pattern: "*.yaml;*.yml"},
 				{DisplayName: "All Files", Pattern: "*"},
 			},
@@ -513,9 +514,9 @@ func (s *System) ExportToFile(password string, opts backup_svc.ExportOptions) er
 		defaultName = fmt.Sprintf("opskat-backup-%s.json", time.Now().Format("20060102"))
 	}
 
-	filePath, err := wailsRuntime.SaveFileDialog(s.ctx, wailsRuntime.SaveDialogOptions{
-		DefaultFilename: defaultName,
-		Filters: []wailsRuntime.FileFilter{
+	filePath, err := desktop.SaveFile(application.SaveFileDialogOptions{
+		Filename: defaultName,
+		Filters: []application.FileFilter{
 			{DisplayName: "JSON Files", Pattern: "*.json"},
 		},
 	})
@@ -538,9 +539,9 @@ type ImportFileInfo struct {
 
 // SelectImportFile 选择备份文件并检测是否加密，返回概览信息
 func (s *System) SelectImportFile() (*ImportFileInfo, error) {
-	filePath, err := wailsRuntime.OpenFileDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+	filePath, err := desktop.OpenFile(application.OpenFileDialogOptions{
 		Title: "导入备份",
-		Filters: []wailsRuntime.FileFilter{
+		Filters: []application.FileFilter{
 			{DisplayName: "JSON Files", Pattern: "*.json"},
 		},
 	})
@@ -1576,7 +1577,7 @@ func (s *System) updateInstalledTools() {
 				// 重装失败不阻塞启动，但要通知用户——事件由 App.tsx 全局监听（重装在启动时
 				// 触发，设置页未必挂载，不能只靠 UpdateSection 的监听器），否则失败完全无感知。
 				logger.Default().Warn("update installed opsctl failed", zap.Error(err))
-				wailsRuntime.EventsEmit(s.ctx, "update:opsctl-error", err.Error())
+				application.Get().Event.Emit("update:opsctl-error", err.Error())
 			} else {
 				logger.Default().Info("updated installed opsctl", zap.String("path", opsctlInfo.Path))
 			}
@@ -1590,7 +1591,7 @@ func (s *System) updateInstalledTools() {
 	}
 	if err := s.updateInstalledSkills(home); err != nil {
 		logger.Default().Warn("update installed skill failed", zap.Error(err))
-		wailsRuntime.EventsEmit(s.ctx, "update:skill-error", err.Error())
+		application.Get().Event.Emit("update:skill-error", err.Error())
 	}
 }
 
@@ -1904,7 +1905,7 @@ func (s *System) startAutoUpdateCheck() {
 		}
 
 		if info.HasUpdate {
-			wailsRuntime.EventsEmit(s.ctx, "update:available", info)
+			application.Get().Event.Emit("update:available", info)
 		}
 	}()
 }
@@ -2084,7 +2085,7 @@ func (s *System) CheckForUpdate() (*update_svc.UpdateInfo, error) {
 // 更新完成后需要用户重启应用
 func (s *System) DownloadAndInstallUpdate(skipChecksum bool) error {
 	err := update_svc.DownloadAndUpdate(s.GetUpdateChannel(), s.GetDownloadMirror(), skipChecksum, func(downloaded, total int64) {
-		wailsRuntime.EventsEmit(s.ctx, "update:progress", map[string]int64{
+		application.Get().Event.Emit("update:progress", map[string]int64{
 			"downloaded": downloaded,
 			"total":      total,
 		})

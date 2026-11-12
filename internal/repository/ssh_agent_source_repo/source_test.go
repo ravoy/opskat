@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/model/entity/ssh_agent_source_entity"
+	"github.com/octays/opskat/internal/model/entity/ssh_agent_source_entity"
 )
 
 func setupRepo(t *testing.T) (context.Context, SSHAgentSourceRepo) {

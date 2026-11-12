@@ -3,7 +3,7 @@ package extension
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/assetconn"
 )
 
 // AssetHTTPCacheInvalidator is the part of a loaded extension's host provider

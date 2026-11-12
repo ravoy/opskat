@@ -23,8 +23,8 @@ import {
   PreviewSSHConfig,
   PreviewTabbyConfig,
   PreviewWindTermConfig,
-} from "../../../wailsjs/go/system/System";
-import { import_svc } from "../../../wailsjs/go/models";
+} from "@clients/system";
+import * as import_svc from "@bindings/github.com/octays/opskat/internal/service/import_svc/models";
 import { ImportDialog, ImportCallOptions } from "@/components/settings/ImportDialog";
 import { CircleHelp, FileSpreadsheet, Import } from "lucide-react";
 import { toast } from "sonner";
@@ -38,7 +38,7 @@ export function ImportSection() {
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [importDialogTitle, setImportDialogTitle] = useState("");
   const [importFn, setImportFn] = useState<
-    ((indexes: number[], options: ImportCallOptions) => Promise<import_svc.ImportResult>) | null
+    ((indexes: number[], options: ImportCallOptions) => Promise<import_svc.ImportResult | null>) | null
   >(null);
   const [tabbyLoading, setTabbyLoading] = useState(false);
   const [windTermLoading, setWindTermLoading] = useState(false);

@@ -17,3 +17,7 @@ understand its intended implementation sequence. A statement such as “planned�
 “not implemented” is therefore historical, not a claim about the current branch.
 Do not copy facts from this archive into maintained docs without checking them
 against committed code first.
+
+Current migration work is recorded in the dated
+[Wails v3 plan](plans/2026-11-12-wails3-migration.md); its execution record distinguishes
+implemented behavior from unobserved platform checks.

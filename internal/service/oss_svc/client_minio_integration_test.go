@@ -9,8 +9,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/opskat/opskat/internal/connpool"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 	"github.com/stretchr/testify/require"
 )
 

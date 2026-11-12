@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/runner"
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/ai_provider_entity"
-	"github.com/opskat/opskat/internal/service/ai_provider_svc"
+	"github.com/octays/opskat/internal/ai/runner"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/ai_provider_entity"
+	"github.com/octays/opskat/internal/service/ai_provider_svc"
 
 	"golang.org/x/net/http/httpguts"
 )

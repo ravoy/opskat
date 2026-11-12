@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/helper"
 )
 
 // TestKafkaPolicyCommandMapping 锁住 7 个 Kafka*Command 的输出串。

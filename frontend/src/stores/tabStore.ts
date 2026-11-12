@@ -1,3 +1,5 @@
+import { workspaceStorage, isMainWorkspace } from "@/lib/workspace";
+import { currentWindowPage, openPageWindow } from "@/lib/openPageWindow";
 import { create } from "zustand";
 import { useRecentAssetStore } from "./recentAssetStore";
 import { useSettingsUiStore, type SettingsTab } from "./settingsUiStore";
@@ -151,6 +153,7 @@ function _fireRestoreHooks() {
 // === Store ===
 
 interface TabStoreState {
+  closeCancellation: number;
   tabs: Tab[];
   activeTabId: string | null;
   /** 有未落盘改动的 tab；关闭这些 tab 前必须先向用户确认。 */
@@ -182,6 +185,7 @@ interface TabStoreState {
 }
 
 export const useTabStore = create<TabStoreState>((set, get) => ({
+  closeCancellation: 0,
   tabs: [],
   activeTabId: null,
   unsavedTabIds: [],
@@ -258,7 +262,8 @@ export const useTabStore = create<TabStoreState>((set, get) => ({
     });
   },
 
-  cancelPendingClose: () => set({ pendingCloseTabId: null }),
+  cancelPendingClose: () =>
+    set((state) => ({ pendingCloseTabId: null, closeCancellation: state.closeCancellation + 1 })),
 
   activateTab: (id) => {
     set({ activeTabId: id });
@@ -312,7 +317,7 @@ export const useTabStore = create<TabStoreState>((set, get) => ({
     runClose(pending.action);
   },
 
-  cancelCloseConfirm: () => set({ closeConfirm: null }),
+  cancelCloseConfirm: () => set((state) => ({ closeConfirm: null, closeCancellation: state.closeCancellation + 1 })),
 }));
 
 function closeTargets(state: TabStoreState, action: CloseAction): Tab[] {
@@ -415,18 +420,31 @@ function bulkCloseTabs(state: TabStoreState, candidates: Tab[], fallbackActiveId
 // === Tab openers ===
 
 /**
- * 内置页面(设置 / 转发 / 密钥 / 审计 / 片段)各只有一个 tab,id 就是页面 id;已开着时 openTab 的
- * 同 id 去重直接聚焦。标签文字由 resolveTabLabel 按页面翻译,label 只是占位。
+ * 管理工具默认在当前工作区打开标签；设置单独使用原生窗口。
+ * 标签文字由 resolveTabLabel 按页面翻译，label 只是占位。
  */
 export function openPageTab(pageId: string) {
+  if (pageId === "settings" && currentWindowPage() !== "settings") {
+    void openPageWindow({ page: "settings" });
+    return;
+  }
   useTabStore.getState().openTab({ id: pageId, type: "page", label: pageId, meta: { type: "page", pageId } });
 }
 
 /**
- * 设置页只有一个 tab；重复调用由 openTab 的同 id 去重直接聚焦。
+ * 设置入口复用专用原生窗口；窗口内的本地标签承载既有设置组件。
  * 给了 item 时落到该设置项，否则保持上次停留的项。
  */
 export function openSettingsTab(label: string, item?: SettingsTab) {
+  if (currentWindowPage() !== "settings") {
+    const settings = useSettingsUiStore.getState();
+    void openPageWindow({
+      page: "settings",
+      ...(item ? { section: item } : {}),
+      ...(item === "extensions" && settings.extensionDetail ? { extensionName: settings.extensionDetail } : {}),
+    });
+    return;
+  }
   if (item) useSettingsUiStore.getState().setActiveTab(item);
   useTabStore.getState().openTab({ id: "settings", type: "page", label, meta: { type: "page", pageId: "settings" } });
 }
@@ -496,7 +514,7 @@ useTabStore.subscribe((state, prevState) => {
   if (!_persistReady) return;
   if (state.tabs !== prevState.tabs || state.activeTabId !== prevState.activeTabId) {
     const data: SavedTabStore = { tabs: state.tabs, activeTabId: state.activeTabId };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    workspaceStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   }
 });
 
@@ -707,7 +725,7 @@ function _migrateOldKeys(): SavedTabStore | null {
 // Restore on startup
 (function _restoreTabStore() {
   // Try new format first
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = workspaceStorage.getItem(STORAGE_KEY);
   if (raw) {
     try {
       const data: SavedTabStore = JSON.parse(raw);
@@ -716,7 +734,7 @@ function _migrateOldKeys(): SavedTabStore | null {
         const restored = applyStartupPreference(normalized);
         useTabStore.setState({ ...restored, restoredTabIds: restored.tabs.map((tab) => tab.id) });
         if (restored !== normalized) {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(restored));
+          workspaceStorage.setItem(STORAGE_KEY, JSON.stringify(restored));
         }
         _persistReady = true;
         _fireRestoreHooks();
@@ -728,12 +746,12 @@ function _migrateOldKeys(): SavedTabStore | null {
   }
 
   // Try migration from old format
-  const migrated = _migrateOldKeys();
+  const migrated = isMainWorkspace ? _migrateOldKeys() : null;
   if (migrated) {
     const restored = applyStartupPreference(migrated);
     useTabStore.setState({ ...restored, restoredTabIds: restored.tabs.map((tab) => tab.id) });
     // Save in new format immediately
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(restored));
+    workspaceStorage.setItem(STORAGE_KEY, JSON.stringify(restored));
   }
 
   _persistReady = true;

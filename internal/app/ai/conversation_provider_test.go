@@ -5,11 +5,11 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/runner"
-	"github.com/opskat/opskat/internal/model/entity/ai_provider_entity"
-	"github.com/opskat/opskat/internal/model/entity/conversation_entity"
-	"github.com/opskat/opskat/internal/repository/ai_provider_repo"
-	"github.com/opskat/opskat/internal/repository/ai_provider_repo/mock_ai_provider_repo"
+	"github.com/octays/opskat/internal/ai/runner"
+	"github.com/octays/opskat/internal/model/entity/ai_provider_entity"
+	"github.com/octays/opskat/internal/model/entity/conversation_entity"
+	"github.com/octays/opskat/internal/repository/ai_provider_repo"
+	"github.com/octays/opskat/internal/repository/ai_provider_repo/mock_ai_provider_repo"
 
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"

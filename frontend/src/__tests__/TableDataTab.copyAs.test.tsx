@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { GetRowStatements, OpenTable } from "../../wailsjs/go/query/Query";
+import { GetRowStatements, OpenTable } from "@clients/query";
 import { fakeDriverWith, provideDrivers } from "./dbDriverFixtures";
 
 vi.mock("@/components/CodeEditor", () => ({

@@ -13,9 +13,9 @@ import (
 	"github.com/pkg/sftp"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/sftpio"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/sftpio"
 )
 
 // sshAdapter 是 SSH 端点，走 SFTP。

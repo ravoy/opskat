@@ -12,11 +12,11 @@ import (
 	"go.uber.org/mock/gomock"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
-	"github.com/opskat/opskat/internal/repository/extension_state_repo/mock_extension_state_repo"
-	"github.com/opskat/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
+	"github.com/octays/opskat/internal/repository/extension_state_repo/mock_extension_state_repo"
+	"github.com/octays/opskat/pkg/extmanifest"
 )
 
 func useApp(t *testing.T, info appversion.Info) {

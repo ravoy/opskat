@@ -3,7 +3,7 @@ package audit
 import (
 	"strconv"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/aictx"
 )
 
 // 注册工具名 → 命令摘要提取器。每个工具各自注册，不互相借用：exec 曾经靠

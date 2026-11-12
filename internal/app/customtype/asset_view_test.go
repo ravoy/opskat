@@ -7,11 +7,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/service/credential_mgr_svc"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/service/credential_mgr_svc"
+	"github.com/octays/opskat/internal/service/credential_svc"
 )
 
 // viewType 覆盖详情页要区分的几种字段：有默认值的普通字段、直接输入的密钥、托管凭据引用的

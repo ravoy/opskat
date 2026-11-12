@@ -1,5 +1,5 @@
 import { vi } from "vitest";
-import { dbdriver } from "../../wailsjs/go/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import {
   GetCreateDatabaseStatements,
   GetCreateTableStatements,
@@ -8,7 +8,7 @@ import {
   GetImportStatements,
   GetTruncateTableStatements,
   ListDatabaseDrivers,
-} from "../../wailsjs/go/query/Query";
+} from "@clients/query";
 import { refreshDatabaseDrivers } from "@/lib/dbDrivers";
 import builtinDrivers from "./builtinDbDrivers.json";
 
@@ -23,7 +23,7 @@ function driver(d: {
   form: FormSpec;
   capabilities?: string[];
 }): dbdriver.Descriptor {
-  return new dbdriver.Descriptor({
+  return dbdriver.Descriptor.createFrom({
     id: d.id,
     name: d.name,
     icon: d.icon,
@@ -40,7 +40,7 @@ function driver(d: {
  * 内容就是注册表序列化出来的 JSON,由 Go 侧 internal/archtest 的
  * TestFrontendBuiltinDriverFixtureMatchesRegistry 核对:驱动描述变了而它没跟着改,那条测试先红。
  */
-export const BUILTIN_DRIVERS: dbdriver.Descriptor[] = builtinDrivers.map((d) => new dbdriver.Descriptor(d));
+export const BUILTIN_DRIVERS: dbdriver.Descriptor[] = builtinDrivers.map((d) => dbdriver.Descriptor.createFrom(d));
 
 /** 前端从未听说过的驱动:带用户名/库名、TLS 与 SSL 模式,不用口令认证。 */
 export const FAKE_DRIVER: dbdriver.Descriptor = driver({
@@ -60,7 +60,7 @@ export const FAKE_DRIVER: dbdriver.Descriptor = driver({
  * 扩展提供的驱动:除了内置表单字段,还声明了各类专属字段(标签与说明已由扩展的多语言解析好)。
  * 专属字段分布在连接 Tab(表单本来就有)和高级 / TLS Tab(表单没声明,由专属字段带出来)。
  */
-export const EXT_DRIVER: dbdriver.Descriptor = new dbdriver.Descriptor({
+export const EXT_DRIVER: dbdriver.Descriptor = dbdriver.Descriptor.createFrom({
   ...driver({
     id: "extdb",
     name: "ExtDB",
@@ -72,22 +72,45 @@ export const EXT_DRIVER: dbdriver.Descriptor = new dbdriver.Descriptor({
   driverFields: [
     {
       key: "service_name",
-      type: "text",
-      tab: "connection",
+      type: dbdriver.DriverFieldType.FieldTypeText,
+      tab: dbdriver.FormTab.TabConnection,
       required: true,
       label: "Service name",
       description: "Listener service",
     },
-    { key: "wallet_password", type: "password", tab: "connection", label: "Wallet password" },
-    { key: "role", type: "enum", tab: "advanced", enum: ["normal", "sysdba"], default: "normal", label: "Role" },
-    { key: "fetch_size", type: "number", tab: "advanced", default: 100, label: "Fetch size" },
-    { key: "native_encryption", type: "switch", tab: "tls", label: "Native encryption" },
+    {
+      key: "wallet_password",
+      type: dbdriver.DriverFieldType.FieldTypePassword,
+      tab: dbdriver.FormTab.TabConnection,
+      label: "Wallet password",
+    },
+    {
+      key: "role",
+      type: dbdriver.DriverFieldType.FieldTypeEnum,
+      tab: dbdriver.FormTab.TabAdvanced,
+      enum: ["normal", "sysdba"],
+      default: "normal",
+      label: "Role",
+    },
+    {
+      key: "fetch_size",
+      type: dbdriver.DriverFieldType.FieldTypeNumber,
+      tab: dbdriver.FormTab.TabAdvanced,
+      default: 100,
+      label: "Fetch size",
+    },
+    {
+      key: "native_encryption",
+      type: dbdriver.DriverFieldType.FieldTypeSwitch,
+      tab: dbdriver.FormTab.TabTLS,
+      label: "Native encryption",
+    },
   ],
 });
 
 /** 一个只在测试里存在的驱动,功能集合由测试指定,用来证明界面入口跟随驱动的声明。 */
 export function fakeDriverWith(capabilities: string[], id = FAKE_DRIVER.id): dbdriver.Descriptor {
-  return new dbdriver.Descriptor({ ...FAKE_DRIVER, id, name: "FakeDB", capabilities });
+  return dbdriver.Descriptor.createFrom({ ...FAKE_DRIVER, id, name: "FakeDB", capabilities });
 }
 
 /**
@@ -95,7 +118,7 @@ export function fakeDriverWith(capabilities: string[], id = FAKE_DRIVER.id): dbd
  * 由测试给出,用来证明设计器只按声明渲染。
  */
 export function fakeAlterDriver(declared: Partial<dbdriver.Descriptor>): dbdriver.Descriptor {
-  return new dbdriver.Descriptor({ ...fakeDriverWith(["alter_table"]), alterTableAttributes: [], ...declared });
+  return dbdriver.Descriptor.createFrom({ ...fakeDriverWith(["alter_table"]), alterTableAttributes: [], ...declared });
 }
 
 /**

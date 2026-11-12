@@ -8,12 +8,12 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/pkg/shelldecode"
-	"github.com/opskat/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/pkg/shelldecode"
+	"github.com/octays/opskat/internal/service/asset_svc"
 )
 
 // applyReviews 按权限模式就地处理 results 里"需要人确认"的结果，不区分资产类型：

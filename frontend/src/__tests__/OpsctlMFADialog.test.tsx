@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, act, fireEvent } from "@testing-library/react";
 import { OpsctlMFADialog } from "../components/approval/OpsctlMFADialog";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
-import { RespondOpsctlMFA, CancelOpsctlMFA } from "../../wailsjs/go/opsctl/Opsctl";
+import { EventsOn } from "@/lib/desktop";
+import { RespondOpsctlMFA, CancelOpsctlMFA } from "@clients/opsctl";
 
 function captureHandlers() {
   const handlers = new Map<string, (data: unknown) => void>();

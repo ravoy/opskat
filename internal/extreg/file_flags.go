@@ -9,7 +9,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/cmdline"
 )
 
 // MaxFileParamBytes caps what one `--<flag>-file` may read: the same 16 MiB the host

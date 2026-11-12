@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/pkg/netproxy"
 )
 
 // 错误类别，调用方用 errors.Is 区分。

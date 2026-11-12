@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/service/credential_query_svc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/service/credential_query_svc"
 	"go.uber.org/zap"
 )
 

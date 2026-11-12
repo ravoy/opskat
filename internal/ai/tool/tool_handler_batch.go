@@ -7,12 +7,12 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/assetref"
-	"github.com/opskat/opskat/internal/ai/audit"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/assetref"
+	"github.com/octays/opskat/internal/ai/audit"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // batchCommandItem 是 LLM 提交的批量项：对 N 个资产并发跑同一类命令。

@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	"github.com/opskat/opskat/internal/dbdriver/dbdrivertest"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	"github.com/octays/opskat/internal/dbdriver/dbdrivertest"
 )
 
 // 测试连接经配置的驱动建立会话，测完即关；假驱动的会话不是 *sql.DB。

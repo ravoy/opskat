@@ -1,0 +1,24 @@
+version: '3'
+info:
+  companyName: OpsKat
+  productName: OpsKat
+  productIdentifier: com.wails.opskat
+  description: Infrastructure management desktop
+  version: 1.16.0
+dev_mode:
+  root_path: .
+  log_level: warn
+  debounce: 1000
+  ignore:
+    dir: [.git, node_modules, frontend, build/bin, e2e/scratch]
+    file: ["*_test.go", .DS_Store]
+    watched_extension: ["*.go"]
+    git_ignore: true
+  executes:
+    - cmd: bun scripts/desktop.mjs build --dev
+      type: blocking
+    - cmd: bun scripts/desktop.mjs frontend
+      type: background
+    - cmd: bun scripts/desktop.mjs run
+      type: primary
+      exit_policy: shutdown

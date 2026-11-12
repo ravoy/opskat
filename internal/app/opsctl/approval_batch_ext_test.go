@@ -6,9 +6,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/approval"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/approval"
 )
 
 // answeringBatchDialog stands in for the frontend's batch approval dialog: it

@@ -2,7 +2,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BackupSection } from "@/components/settings/BackupSection";
-import { backup_svc, system } from "../../../../wailsjs/go/models";
+import * as backup_svc from "@bindings/github.com/octays/opskat/internal/service/backup_svc/models";
+import * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
 import {
   GetGitHubToken,
   GetGitHubUser,
@@ -14,7 +15,7 @@ import {
   ListWebDAVBackups,
   PreviewGistBackup,
   PreviewWebDAVBackup,
-} from "../../../../wailsjs/go/system/System";
+} from "@clients/system";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn(), warning: vi.fn(), info: vi.fn() } }));
 
@@ -100,7 +101,7 @@ describe("BackupSection remote restore", () => {
     vi.mocked(GetStoredGitHubUser).mockResolvedValue("octo");
     vi.mocked(GetGitHubUser).mockResolvedValue(new backup_svc.GitHubUser({ login: "octo" }));
     vi.mocked(ListBackupGists).mockResolvedValue([
-      new backup_svc.GistInfo({ id: "gist-1", description: "OpsKat backup", updated_at: "" }),
+      new backup_svc.GistInfo({ id: "gist-1", description: "OpsKat backup", updatedAt: "" }),
     ]);
     vi.mocked(PreviewGistBackup).mockResolvedValue(summary);
     vi.mocked(ImportFromGist).mockResolvedValue(emptyResult);

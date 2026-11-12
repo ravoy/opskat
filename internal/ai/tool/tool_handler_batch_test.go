@@ -17,16 +17,16 @@ import (
 	"go.uber.org/mock/gomock"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/helper"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/audit_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/audit_repo"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
-	"github.com/opskat/opskat/migrations"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/audit_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/migrations"
 )
 
 // batchTestEnv is the fixture shared by the TestHandleBatch_* tests below: a ctx wired

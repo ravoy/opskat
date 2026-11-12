@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/skills"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/skills"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // TestKafkaSkillDoc_FlagReferenceMatchesFlagRules 把 SKILL.md 的 "## Flag reference"

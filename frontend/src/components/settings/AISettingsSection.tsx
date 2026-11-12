@@ -18,7 +18,7 @@ import {
   DialogTitle,
   ConfirmDialog,
 } from "@opskat/ui";
-import { DetectOpsctl } from "../../../wailsjs/go/system/System";
+import { DetectOpsctl } from "@clients/system";
 import {
   GetOpsctlInstallDir,
   InstallOpsctl,
@@ -31,15 +31,15 @@ import {
   GetAppVersion,
   OpenDirectory,
   GetPluginReferenceDir,
-} from "../../../wailsjs/go/system/System";
+} from "@clients/system";
 import {
   ListAIProviders,
   CreateAIProvider,
   UpdateAIProvider,
   DeleteAIProvider,
   SetActiveAIProvider,
-} from "../../../wailsjs/go/ai/AI";
-import { ai } from "../../../wailsjs/go/models";
+} from "@clients/ai";
+import * as ai from "@bindings/github.com/octays/opskat/internal/app/ai/models";
 import {
   Check,
   Loader2,
@@ -55,7 +55,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { notifySuccess } from "@/lib/notify";
-import { BrowserOpenURL } from "../../../wailsjs/runtime/runtime";
+import { BrowserOpenURL } from "@/lib/desktop";
 import { AIProviderForm, type AIProviderFormValues, type ReasoningEffort } from "@/components/ai/AIProviderForm";
 import { useAIStore } from "@/stores/aiStore";
 import { errorMessage } from "@/lib/errorMessage";
@@ -313,7 +313,7 @@ function IntegrationSection() {
                     variant="link"
                     size="sm"
                     className="h-auto p-0 text-xs"
-                    onClick={() => BrowserOpenURL("https://github.com/opskat/opskat/releases")}
+                    onClick={() => BrowserOpenURL("https://github.com/octays/opskat/releases")}
                   >
                     <ExternalLink className="h-3 w-3 mr-1" />
                     GitHub Releases

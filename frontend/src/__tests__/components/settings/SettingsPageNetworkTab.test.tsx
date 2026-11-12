@@ -4,8 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { TooltipProvider } from "@opskat/ui";
 import { SettingsPage } from "../../../components/settings/SettingsPage";
 import { useSettingsUiStore, type SettingsTab } from "@/stores/settingsUiStore";
-import { GetAvailableMirrors, GetDownloadMirror, GetNetworkProxySettings } from "../../../../wailsjs/go/system/System";
-import { EventsOn } from "../../../../wailsjs/runtime/runtime";
+import { GetAvailableMirrors, GetDownloadMirror, GetNetworkProxySettings } from "@clients/system";
+import { EventsOn } from "@/lib/desktop";
 
 vi.mock("@/components/settings/AISettingsSection", () => ({ AISettingsSection: () => null }));
 vi.mock("@/components/settings/ExtensionSection", () => ({ ExtensionSection: () => null }));

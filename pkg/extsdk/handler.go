@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/opskat/opskat/pkg/extsdk/internal/registration"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/extsdk/internal/registration"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // dispatch routes a function call to the registered handler.

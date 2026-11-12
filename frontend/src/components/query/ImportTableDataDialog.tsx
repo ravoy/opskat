@@ -28,8 +28,8 @@ import {
 import { FilePlus2, Link, Loader2, Play, Table2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { notifySuccess } from "@/lib/notify";
-import { ExecuteSQL, ExecuteTableImport, GetImportStatements, ParseXlsx } from "../../../wailsjs/go/query/Query";
-import { dbdriver } from "../../../wailsjs/go/models";
+import { ExecuteSQL, ExecuteTableImport, GetImportStatements, ParseXlsx } from "@clients/query";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { findDatabaseDriver, useDatabaseDrivers } from "@/lib/dbDrivers";
 import {
   buildImportIntent,

@@ -10,7 +10,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/opskat/opskat/internal/sshagent"
+	"github.com/octays/opskat/internal/sshagent"
 
 	"github.com/smartystreets/goconvey/convey"
 	"golang.org/x/crypto/ssh"

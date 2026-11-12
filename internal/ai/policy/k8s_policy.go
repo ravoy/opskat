@@ -3,8 +3,8 @@ package policy
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 func CheckK8sPolicy(ctx context.Context, policy *asset_entity.K8sPolicy, command string) aictx.CheckResult {

@@ -10,11 +10,7 @@ import { ReviewNotice } from "@/components/approval/ReviewNotice";
 import { ExtensionConfigForm } from "@/components/asset/ExtensionConfigForm";
 import { defaultValues, visibleFields, type ExtensionConfigSchema } from "@/extension/configSchema";
 import type { ExtAuth } from "@/extension/types";
-import {
-  GetExtensionSettings,
-  SaveExtensionSettings,
-  TestCommandReviewer,
-} from "../../../wailsjs/go/extension/Extension";
+import { GetExtensionSettings, SaveExtensionSettings, TestCommandReviewer } from "@clients/extension";
 
 /** 宿主读回的设置表单：声明（已按扩展语言翻译）、非密钥的已存值、各密钥是否已设置。 */
 interface SettingsFormData {

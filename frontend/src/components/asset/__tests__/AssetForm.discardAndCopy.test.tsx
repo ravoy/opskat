@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AssetForm } from "@/components/asset/AssetForm";
-import { asset_entity } from "../../../../wailsjs/go/models";
-import { CreateAsset, GetSSHConnectionSettings, ListAssets } from "../../../../wailsjs/go/system/System";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import { CreateAsset, GetSSHConnectionSettings, ListAssets } from "@clients/system";
 
 const mocks = vi.hoisted(() => ({ openSettingsTab: vi.fn() }));
 

@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/pkg/dbutil"
+	"github.com/octays/opskat/internal/pkg/dbutil"
 )
 
 func TestDefaultPolicyRuleDelegatesTransactionBoundary(t *testing.T) {

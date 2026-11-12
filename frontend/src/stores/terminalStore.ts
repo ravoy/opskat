@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { ConnectSSHAsync } from "../../wailsjs/go/ssh/SSH";
+import { ConnectSSHAsync } from "@clients/ssh";
 import {
   CancelSSHConnect,
   RespondAuthChallenge,
@@ -10,22 +10,12 @@ import {
   SplitSSH,
   UpdateAssetPassword,
   WriteSSH,
-} from "../../wailsjs/go/ssh/SSH";
-import {
-  WriteSerial,
-  ConnectSerialAsync,
-  DisconnectSerial,
-  ResizeSerialTerminal,
-} from "../../wailsjs/go/serial/Serial";
-import {
-  WriteLocal,
-  ConnectLocalAsync,
-  DisconnectLocal,
-  ResizeLocalTerminal,
-  SplitLocal,
-} from "../../wailsjs/go/local/Local";
-import { ssh as ssh_models, asset_entity } from "../../wailsjs/go/models";
-import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
+} from "@clients/ssh";
+import { WriteSerial, ConnectSerialAsync, DisconnectSerial, ResizeSerialTerminal } from "@clients/serial";
+import { WriteLocal, ConnectLocalAsync, DisconnectLocal, ResizeLocalTerminal, SplitLocal } from "@clients/local";
+import * as ssh_models from "@bindings/github.com/octays/opskat/internal/app/ssh/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import { EventsOn, EventsOff } from "@/lib/desktop";
 import { bytesToBase64 } from "../lib/terminalEncode";
 import { errorMessage } from "../lib/errorMessage";
 import { createOrderedQueue, type OrderedQueue } from "../lib/orderedQueue";
@@ -43,12 +33,18 @@ export type TerminalTransport = "ssh" | "serial" | "local";
 interface TransportSpec {
   connectAsync: (
     assetId: number,
-    opts: { cols: number; rows: number; password: string; initialWorkdir?: string }
+    opts: { cols: number; rows: number; password: string; connectionId: string; initialWorkdir?: string }
   ) => Promise<string>;
   write: (sessionId: string, dataB64: string) => Promise<void>;
   resize: (sessionId: string, cols: number, rows: number) => Promise<void>;
   disconnect: (sessionId: string) => void;
   eventPrefix: string;
+  /**
+   * 预生成连接 ID。进度事件走 `${eventPrefix}:connect:${id}` 事件名，而事件可能
+   * 跑赢绑定调用的响应——订阅必须先于连接发起，因此 id 只能由前端先定，随请求
+   * 带给后端（后端原样采纳）。local 前缀保留：恢复期 transport 靠它反推。
+   */
+  newConnectionID: () => string;
   canSplit: boolean;
   /** 分屏:基于现有会话开一个新会话,返回新 sessionId。canSplit 为 true 时必须提供。 */
   split?: (existingSessionId: string, cols: number, rows: number) => Promise<string>;
@@ -85,7 +81,7 @@ export function orderedBySession(
 // 取代散落各处的 isSerial 二分支。新增 transport 只需在此登记一行。
 export const TRANSPORTS: Record<TerminalTransport, TransportSpec> = {
   ssh: {
-    connectAsync: (assetId, { cols, rows, password, initialWorkdir }) =>
+    connectAsync: (assetId, { cols, rows, password, initialWorkdir, connectionId }) =>
       ConnectSSHAsync(
         new ssh_models.SSHConnectRequest({
           assetId,
@@ -94,31 +90,35 @@ export const TRANSPORTS: Record<TerminalTransport, TransportSpec> = {
           cols,
           rows,
           initialWorkdir: initialWorkdir ?? "",
+          connectionId,
         })
       ),
     write: orderedBySession(WriteSSH),
     resize: ResizeSSH,
     disconnect: DisconnectSSH,
     eventPrefix: "ssh",
+    newConnectionID: () => `conn-${crypto.randomUUID()}`,
     canSplit: true,
     split: SplitSSH,
     hasDirectorySync: true,
   },
   serial: {
-    connectAsync: (assetId) => ConnectSerialAsync({ assetId }),
+    connectAsync: (assetId, { connectionId }) => ConnectSerialAsync({ assetId, connectionId }),
     write: orderedBySession(WriteSerial),
     resize: ResizeSerialTerminal,
     disconnect: DisconnectSerial,
     eventPrefix: "serial",
+    newConnectionID: () => `conn-${crypto.randomUUID()}`,
     canSplit: false,
     hasDirectorySync: false,
   },
   local: {
-    connectAsync: (assetId, { cols, rows }) => ConnectLocalAsync({ assetId, cols, rows }),
+    connectAsync: (assetId, { cols, rows, connectionId }) => ConnectLocalAsync({ assetId, cols, rows, connectionId }),
     write: orderedBySession(WriteLocal),
     resize: ResizeLocalTerminal,
     disconnect: DisconnectLocal,
     eventPrefix: "local",
+    newConnectionID: () => `local-conn-${crypto.randomUUID()}`,
     // 本地无连接可复用,分屏即再起一个同 shell 配置的 PTY(同 iTerm/tmux),由 SplitLocal 实现。
     canSplit: true,
     split: SplitLocal,
@@ -557,41 +557,41 @@ function replaceSlotWithConnection(tabId: string, slotId: string, conn: Connecti
 }
 
 /**
- * 为窗格 slotId 发起一次连接。owningTab 在后端返回时判定这次尝试是否仍被需要
- * (返回所在 tab id),窗格已关闭/取消时返回 undefined,迟到的后端连接随即被取消。
- * 后端直接拒绝时窗格进入 error 态并显示原因。
+ * 为窗格 slotId 发起一次连接。进度事件可能跑赢绑定调用的响应，所以先落连接节点
+ * 并订阅事件，再发起连接（id 由前端预生成随请求带给后端）。owningTab 只做发起前的
+ * 早退判定（窗格已关闭/作废）；发起后由预落的连接条目接管取消语义——tab 关闭钩子
+ * 与 cancelConnect 都作用在现役条目上。后端直接拒绝时，窗格仍在连接中（未被取消/
+ * 关闭）才落 error 态显示原因。
  */
 function startPaneConnection(slotId: string, attempt: ConnectAttempt, owningTab: () => string | undefined) {
-  TRANSPORTS[attempt.transport]
+  const spec = TRANSPORTS[attempt.transport];
+  const connectionId = spec.newConnectionID();
+  const tabId = owningTab();
+  if (!tabId) return;
+  replaceSlotWithConnection(tabId, slotId, newConnectionEntry(connectionId, attempt));
+  watchConnection(connectionId);
+  spec
     .connectAsync(attempt.assetId, {
       cols: 80,
       rows: 24,
       password: attempt.password,
+      connectionId,
       initialWorkdir: attempt.initialWorkdir ?? "",
     })
-    .then(
-      (connectionId: string) => {
-        const tabId = owningTab();
-        if (!tabId) {
-          CancelSSHConnect(connectionId);
-          return;
-        }
-        replaceSlotWithConnection(tabId, slotId, newConnectionEntry(connectionId, attempt));
-        watchConnection(connectionId);
-      },
-      (err: unknown) => {
-        console.error("Connect failed:", err);
-        const tabId = owningTab();
-        if (!tabId) return;
-        const message = errorMessage(err);
-        replaceSlotWithConnection(tabId, slotId, {
-          ...newConnectionEntry(`failed-${++failedAttemptSeq}`, attempt),
-          status: "error",
-          error: message,
-          logs: [{ message, timestamp: Date.now(), type: "error" }],
-        });
-      }
-    );
+    .catch((err: unknown) => {
+      console.error("Connect failed:", err);
+      EventsOff(`${spec.eventPrefix}:connect:${connectionId}`);
+      // 被取消/关闭的窗格保留 cancelled 态，不覆盖成失败。
+      const conn = useTerminalStore.getState().connections[connectionId];
+      if (!conn || conn.status !== "connecting") return;
+      const message = errorMessage(err);
+      replaceSlotWithConnection(tabId, connectionId, {
+        ...newConnectionEntry(`failed-${++failedAttemptSeq}`, attempt),
+        status: "error",
+        error: message,
+        logs: [{ message, timestamp: Date.now(), type: "error" }],
+      });
+    });
 }
 
 /** 连上后把连接节点换成终端窗格;首个连接新开的标签同时把 tab id 换成会话 id。 */
@@ -759,26 +759,11 @@ export const useTerminalStore = create<TerminalState>((set, get) => ({
     try {
       const transport = transportForAsset(asset.Type);
       const spec = TRANSPORTS[transport];
-      const connectionId = await spec.connectAsync(assetId, { cols: 80, rows: 24, password });
-
-      // Create tab in tabStore
-      tabStore.openTab({
-        id: connectionId,
-        type: "terminal",
-        label: assetPath,
-        icon: assetIcon || undefined,
-        meta: {
-          type: "terminal",
-          assetId,
-          assetName: assetPath,
-          assetIcon: assetIcon || "",
-          host: metadata?.host || "",
-          port: metadata?.port || 22,
-          username: metadata?.username || "",
-        },
-      });
-
-      // Create business data
+      // 进度事件（含首个 progress / host_key_verify，乃至握手飞快时的 connected）
+      // 可能跑赢绑定调用的响应：连接条目、tab 与事件订阅都必须先于连接发起，id 由
+      // 前端预生成随请求带给后端。tab 若晚于 connected 建立，attachSession 的重键
+      // （connectionId → sessionId）找不到 tab，会留下一个空壳 tab。
+      const connectionId = spec.newConnectionID();
       set((state) => ({
         tabData: {
           ...state.tabData,
@@ -801,8 +786,21 @@ export const useTerminalStore = create<TerminalState>((set, get) => ({
           }),
         },
       }));
-
-      // Clear connectingAssetIds on connected or error
+      tabStore.openTab({
+        id: connectionId,
+        type: "terminal",
+        label: assetPath,
+        icon: assetIcon || undefined,
+        meta: {
+          type: "terminal",
+          assetId,
+          assetName: assetPath,
+          assetIcon: assetIcon || "",
+          host: metadata?.host || "",
+          port: metadata?.port || 22,
+          username: metadata?.username || "",
+        },
+      });
       watchConnection(connectionId, () => {
         set((s) => {
           const next = new Set(s.connectingAssetIds);
@@ -810,6 +808,20 @@ export const useTerminalStore = create<TerminalState>((set, get) => ({
           return { connectingAssetIds: next };
         });
       });
+
+      try {
+        await spec.connectAsync(assetId, { cols: 80, rows: 24, password, connectionId });
+      } catch (e) {
+        // 后端直接拒绝：关掉预开的 tab——terminal tab 的关闭钩子会取消这次连接、
+        // 注销订阅并清掉 tabData/connections，这里只需再清 connectingAssetIds。
+        tabStore.closeTab(connectionId);
+        set((state) => {
+          const next = new Set(state.connectingAssetIds);
+          next.delete(assetId);
+          return { connectingAssetIds: next };
+        });
+        throw e;
+      }
 
       return connectionId;
     } catch (e) {

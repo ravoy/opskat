@@ -10,10 +10,10 @@ import (
 	"slices"
 	"sort"
 
-	"github.com/opskat/opskat/internal/extreg"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/extreg"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // Extension settings: the one form an extension declares (SettingsPoint), filled

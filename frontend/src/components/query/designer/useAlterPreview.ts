@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { GetAlterTableStatements, GetCreateTableStatements } from "../../../../wailsjs/go/query/Query";
-import type { dbdriver } from "../../../../wailsjs/go/models";
+import { GetAlterTableStatements, GetCreateTableStatements } from "@clients/query";
+import type * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 /** 草稿停止变化多久之后再请驱动生成语句。 */

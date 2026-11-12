@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/pkg/dirsync"
+	"github.com/octays/opskat/internal/pkg/dirsync"
 	"go.uber.org/zap"
 )
 

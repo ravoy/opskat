@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/dbdriver/dbdrivertest"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/dbdriver/dbdrivertest"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 func expectColumns(mock sqlmock.Sqlmock, schema, table string, columns ...[2]string) {

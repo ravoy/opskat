@@ -4,8 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { CountTableRows, ExecuteSQL, OpenTable, QueryTableRows } from "../../wailsjs/go/query/Query";
-import type { query_svc } from "../../wailsjs/go/models";
+import { CountTableRows, ExecuteSQL, OpenTable, QueryTableRows } from "@clients/query";
+import type * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import { BUILTIN_DRIVERS, provideDrivers } from "./dbDriverFixtures";
 
 // 构造 OpenTable 返回的 JSON 字符串(与后端 query_svc.OpenTableResult 对齐)。

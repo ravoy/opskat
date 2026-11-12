@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 func liveStandaloneConfig(t *testing.T, addr string) *asset_entity.RedisConfig {

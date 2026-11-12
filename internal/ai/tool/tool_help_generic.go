@@ -9,14 +9,14 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/helper"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/connpool"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
 )
 
 // 通用资产的 help 内容：类型层（help <自定义类型标识>）与资产层（help <资产>）。它们经

@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/opskat/opskat/pkg/extmanifest"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extwire"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

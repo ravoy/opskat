@@ -6,7 +6,7 @@ import { ErrorBlock } from "@/components/ai/ErrorBlock";
 import { PermissionDialog } from "@/components/ai/PermissionDialog";
 import { RetryBanner } from "@/components/ai/RetryBanner";
 import { ThinkingBlock } from "@/components/ai/ThinkingBlock";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { EventsOn } from "@/lib/desktop";
 
 describe("selectable AI diagnostic content", () => {
   it("makes error and retry details selectable", () => {

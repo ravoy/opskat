@@ -2,8 +2,8 @@
 package builtin
 
 import (
-	_ "github.com/opskat/opskat/internal/dbdriver/mssql"
-	_ "github.com/opskat/opskat/internal/dbdriver/mysql"
-	_ "github.com/opskat/opskat/internal/dbdriver/postgresql"
-	_ "github.com/opskat/opskat/internal/dbdriver/sqlite"
+	_ "github.com/octays/opskat/internal/dbdriver/mssql"
+	_ "github.com/octays/opskat/internal/dbdriver/mysql"
+	_ "github.com/octays/opskat/internal/dbdriver/postgresql"
+	_ "github.com/octays/opskat/internal/dbdriver/sqlite"
 )

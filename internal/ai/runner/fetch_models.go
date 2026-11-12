@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/ai_provider_entity"
-	"github.com/opskat/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/model/entity/ai_provider_entity"
+	"github.com/octays/opskat/internal/pkg/netproxy"
 )
 
 // ModelInfo 从 API 返回的模型信息

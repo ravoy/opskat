@@ -147,7 +147,7 @@ Expected: PASS。
 func (s *stubHandler) PolicyKind() string { return "" }
 ```
 
-新增断言(放在 `TestRegistry` 之后,`package assettype`,需 import `policyent "github.com/opskat/opskat/internal/model/entity/policy"`):
+新增断言(放在 `TestRegistry` 之后,`package assettype`,需 import `policyent "github.com/octays/opskat/internal/model/entity/policy"`):
 
 ```go
 func TestHandlerPolicyKind(t *testing.T) {
@@ -198,7 +198,7 @@ Expected: 编译失败(`h.PolicyKind undefined` / 各 handler 缺方法)。
 	PolicyKind() string
 ```
 
-import 加 `"github.com/opskat/opskat/internal/model/entity/policy"`(包名 `policy`);`Register` 改为:
+import 加 `"github.com/octays/opskat/internal/model/entity/policy"`(包名 `policy`);`Register` 改为:
 
 ```go
 func Register(h AssetTypeHandler) {
@@ -240,7 +240,7 @@ Expected: PASS(含既有 handler 测试)。
 
 - [ ] **Step 1: 改 TestResolvePolicyKind 为 seed-fixture 单测**
 
-`ai/policy` 不 import `assettype`,隔离测试时 `AssetKindOf` 为空 → 测试自行 seed。改 `TestResolvePolicyKind`(import `policyent "github.com/opskat/opskat/internal/model/entity/policy"`):
+`ai/policy` 不 import `assettype`,隔离测试时 `AssetKindOf` 为空 → 测试自行 seed。改 `TestResolvePolicyKind`(import `policyent "github.com/octays/opskat/internal/model/entity/policy"`):
 
 ```go
 func TestResolvePolicyKind(t *testing.T) {
@@ -297,7 +297,7 @@ Expected: 编译失败(`undefined: policyent` import 未用/`UnregisterAssetKind
 
 - [ ] **Step 3: 改 policy_kind.go**
 
-import 加 `policyent "github.com/opskat/opskat/internal/model/entity/policy"`。常量块改 alias:
+import 加 `policyent "github.com/octays/opskat/internal/model/entity/policy"`。常量块改 alias:
 
 ```go
 const (

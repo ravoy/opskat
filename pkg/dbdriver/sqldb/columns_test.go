@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // designerDialect 在 tablesDialect 之上实现默认值写法的判定与自增：表设计器的两项列能力都开启。

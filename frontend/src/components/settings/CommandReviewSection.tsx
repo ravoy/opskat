@@ -9,9 +9,10 @@ import { useWailsEvent } from "@/hooks/useWailsEvent";
 import { failReasonLabel, unusableReasonLabel } from "@/lib/commandReview";
 import { Segmented } from "@/components/asset/fields";
 import { useSettingsUiStore } from "@/stores/settingsUiStore";
-import { GetCommandReviewSettings, SaveCommandReviewTimeout } from "../../../wailsjs/go/system/System";
-import { GetCommandReviewState, SetCommandReviewer } from "../../../wailsjs/go/extension/Extension";
-import type { command_review_svc, system } from "../../../wailsjs/go/models";
+import { GetCommandReviewSettings, SaveCommandReviewTimeout } from "@clients/system";
+import { GetCommandReviewState, SetCommandReviewer } from "@clients/extension";
+import type * as command_review_svc from "@bindings/github.com/octays/opskat/internal/service/command_review_svc/models";
+import type * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 type FailStatus = Pick<system.CommandReviewSettings, "lastFailReason" | "lastFailAt">;

@@ -5,13 +5,13 @@ import (
 	"context"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/conntest"
-	"github.com/opskat/opskat/internal/service/rdp_svc"
-	"github.com/opskat/opskat/internal/sshpool"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/conntest"
+	"github.com/octays/opskat/internal/service/rdp_svc"
+	"github.com/octays/opskat/internal/sshpool"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 )
 
@@ -32,7 +32,7 @@ func New(lang LangProvider, pool *sshpool.Pool) *RDP {
 		if r.ctx == nil {
 			return
 		}
-		wailsRuntime.EventsEmit(r.ctx, "rdp:event:"+event.SessionID, event)
+		application.Get().Event.Emit("rdp:event:"+event.SessionID, event)
 	}, pool)
 	conntest.Register(asset_entity.AssetTypeRDP, r.testConnection)
 	assetconn.Register("rdp", func(_ context.Context, assetID int64) error {

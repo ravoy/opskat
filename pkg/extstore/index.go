@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/opskat/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extmanifest"
 )
 
 // FormatVersion is the only index format this build understands. A publisher

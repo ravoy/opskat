@@ -7,8 +7,8 @@ import (
 	"slices"
 	"strconv"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // 改表：列照 pragma_table_info 读，SQLite 没有注释。ALTER TABLE 只能改表名、新增列、给列改名与删除列，

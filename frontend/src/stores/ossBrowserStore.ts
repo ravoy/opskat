@@ -8,8 +8,8 @@ import {
   OSSCopyObject,
   OSSMoveObject,
   OSSCreateFolder,
-} from "../../wailsjs/go/oss/OSS";
-import { oss_svc } from "../../wailsjs/go/models";
+} from "@clients/oss";
+import * as oss_svc from "@bindings/github.com/octays/opskat/internal/service/oss_svc/models";
 import { registerTabCloseHook, type QueryTabMeta } from "./tabStore";
 import type { OssPrefixNode } from "@/lib/ossPrefixTree";
 import { errorMessage } from "@/lib/errorMessage";

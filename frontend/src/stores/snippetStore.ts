@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { errorMessage } from "@/lib/errorMessage";
-import { snippet_entity, snippet_svc } from "../../wailsjs/go/models";
-import { ListSnippetCategories } from "../../wailsjs/go/extension/Extension";
+import * as snippet_entity from "@bindings/github.com/octays/opskat/internal/model/entity/snippet_entity/models";
+import * as snippet_svc from "@bindings/github.com/octays/opskat/internal/service/snippet_svc/models";
+import { ListSnippetCategories } from "@clients/extension";
 import {
   ListSnippets,
   CreateSnippet,
@@ -11,7 +12,7 @@ import {
   RecordSnippetUse,
   SetSnippetLastAssets,
   GetSnippetLastAssets,
-} from "../../wailsjs/go/extension/Extension";
+} from "@clients/extension";
 
 type Snippet = snippet_entity.Snippet;
 type Category = snippet_svc.Category;

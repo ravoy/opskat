@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 func isWildcardAll(rule string) bool {

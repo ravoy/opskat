@@ -13,12 +13,12 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/skills"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/repository/custom_type_repo"
-	"github.com/opskat/opskat/internal/repository/custom_type_repo/mock_custom_type_repo"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/skills"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/repository/custom_type_repo"
+	"github.com/octays/opskat/internal/repository/custom_type_repo/mock_custom_type_repo"
 )
 
 // SKILL.md 是**喂给模型**的那份文档：模型照着它写命令。在此之前没有任何测试读过它，

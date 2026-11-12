@@ -6,9 +6,9 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/service/command_review_svc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/service/command_review_svc"
 )
 
 // GetCommandReviewState 返回审核状态：提供命令审核器的扩展（审核器注册表里的候选）、设置里选的，

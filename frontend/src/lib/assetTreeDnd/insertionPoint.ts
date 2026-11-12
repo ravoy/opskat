@@ -1,4 +1,4 @@
-import { group_entity } from "../../../wailsjs/go/models";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
 import type { Row } from "./flattenTree";
 
 export type InsertionPoint =

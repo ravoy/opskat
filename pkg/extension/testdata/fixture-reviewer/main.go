@@ -19,7 +19,7 @@ import (
 	"strings"
 	"time"
 
-	opskat "github.com/opskat/opskat/pkg/extsdk"
+	opskat "github.com/octays/opskat/pkg/extsdk"
 )
 
 func main() {}

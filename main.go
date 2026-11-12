@@ -12,60 +12,57 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/opskat/opskat/internal/app/ai"
-	"github.com/opskat/opskat/internal/app/customtype"
-	"github.com/opskat/opskat/internal/app/etcd"
-	"github.com/opskat/opskat/internal/app/extension"
-	"github.com/opskat/opskat/internal/app/external_edit"
-	"github.com/opskat/opskat/internal/app/k8s"
-	"github.com/opskat/opskat/internal/app/kafka"
-	"github.com/opskat/opskat/internal/app/local"
-	"github.com/opskat/opskat/internal/app/opsctl"
-	"github.com/opskat/opskat/internal/app/oss"
-	"github.com/opskat/opskat/internal/app/query"
-	quitapp "github.com/opskat/opskat/internal/app/quit"
-	"github.com/opskat/opskat/internal/app/rdp"
-	"github.com/opskat/opskat/internal/app/redis"
-	"github.com/opskat/opskat/internal/app/serial"
-	"github.com/opskat/opskat/internal/app/ssh"
-	"github.com/opskat/opskat/internal/app/sshadapt"
-	"github.com/opskat/opskat/internal/app/system"
-	"github.com/opskat/opskat/internal/app/vnc"
+	"github.com/octays/opskat/internal/app/ai"
+	"github.com/octays/opskat/internal/app/customtype"
+	"github.com/octays/opskat/internal/app/etcd"
+	"github.com/octays/opskat/internal/app/extension"
+	"github.com/octays/opskat/internal/app/external_edit"
+	"github.com/octays/opskat/internal/app/k8s"
+	"github.com/octays/opskat/internal/app/kafka"
+	"github.com/octays/opskat/internal/app/local"
+	"github.com/octays/opskat/internal/app/opsctl"
+	"github.com/octays/opskat/internal/app/oss"
+	"github.com/octays/opskat/internal/app/query"
+	quitapp "github.com/octays/opskat/internal/app/quit"
+	"github.com/octays/opskat/internal/app/rdp"
+	"github.com/octays/opskat/internal/app/redis"
+	"github.com/octays/opskat/internal/app/serial"
+	"github.com/octays/opskat/internal/app/ssh"
+	"github.com/octays/opskat/internal/app/sshadapt"
+	"github.com/octays/opskat/internal/app/system"
+	"github.com/octays/opskat/internal/app/vnc"
 
-	aipermission "github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/extreg"
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/internal/pkg/portable"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/audit_repo"
-	"github.com/opskat/opskat/internal/repository/extension_data_repo"
-	"github.com/opskat/opskat/internal/repository/extension_settings_repo"
-	"github.com/opskat/opskat/internal/repository/extension_state_repo"
-	"github.com/opskat/opskat/internal/service/command_review_svc/reviewerreg"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
-	"github.com/opskat/opskat/internal/service/extension_svc"
-	"github.com/opskat/opskat/internal/service/external_edit_svc"
-	"github.com/opskat/opskat/internal/service/extstore_svc"
-	"github.com/opskat/opskat/internal/service/localterm_svc"
-	"github.com/opskat/opskat/internal/service/serial_svc"
-	"github.com/opskat/opskat/internal/service/sftp_svc"
-	"github.com/opskat/opskat/internal/service/snippet_svc"
-	"github.com/opskat/opskat/internal/service/ssh_svc"
-	"github.com/opskat/opskat/internal/service/vnc_svc"
-	"github.com/opskat/opskat/internal/sshpool"
-	extpkg "github.com/opskat/opskat/pkg/extension"
-	skillplugin "github.com/opskat/opskat/plugin"
+	aipermission "github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/extreg"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/internal/pkg/portable"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/internal/repository/extension_data_repo"
+	"github.com/octays/opskat/internal/repository/extension_settings_repo"
+	"github.com/octays/opskat/internal/repository/extension_state_repo"
+	"github.com/octays/opskat/internal/service/command_review_svc/reviewerreg"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/internal/service/external_edit_svc"
+	"github.com/octays/opskat/internal/service/extstore_svc"
+	"github.com/octays/opskat/internal/service/localterm_svc"
+	"github.com/octays/opskat/internal/service/serial_svc"
+	"github.com/octays/opskat/internal/service/sftp_svc"
+	"github.com/octays/opskat/internal/service/snippet_svc"
+	"github.com/octays/opskat/internal/service/ssh_svc"
+	"github.com/octays/opskat/internal/service/vnc_svc"
+	"github.com/octays/opskat/internal/sshpool"
+	extpkg "github.com/octays/opskat/pkg/extension"
+	skillplugin "github.com/octays/opskat/plugin"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/wailsapp/wails/v2"
-	"github.com/wailsapp/wails/v2/pkg/options"
-	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
-	"github.com/wailsapp/wails/v2/pkg/options/mac"
-	"github.com/wailsapp/wails/v2/pkg/options/windows"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/wailsapp/wails/v3/pkg/events"
 	"go.uber.org/zap"
 )
 
@@ -272,81 +269,34 @@ func main() {
 	var forceQuit atomic.Bool
 	sys.SetConfirmQuitHandler(func() { forceQuit.Store(true) })
 
-	appOptions := &options.App{
-		Title:     "OpsKat",
-		Width:     windowWidth,
-		Height:    windowHeight,
-		MinWidth:  minWindowWidth,
-		MinHeight: minWindowHeight,
-		Frameless: runtime.GOOS == "windows",
-		AssetServer: &assetserver.Options{
-			Assets:  assets,
-			Handler: opsctl.NewExtensionAssetHandler(filepath.Join(dataDir, "extensions"), nil),
+	verificationTransport, err := desktop.VerificationTransport()
+	if err != nil {
+		log.Fatalf("验证传输初始化失败: %v", err)
+	}
+	appOptions := application.Options{
+		Transport: verificationTransport,
+		Name:      "OpsKat",
+		Assets:    application.AssetOptions{Handler: opsctl.NewExtensionAssetHandler(filepath.Join(dataDir, "extensions"), application.AssetFileServerFS(assets))},
+		Services: []application.Service{
+			application.NewService(sys),
+			application.NewService(sshB),
+			application.NewService(queryB),
+			application.NewService(redisB),
+			application.NewService(rdpB),
+			application.NewService(etcdB),
+			application.NewService(kafkaB),
+			application.NewService(k8sB),
+			application.NewService(serialB),
+			application.NewService(localB),
+			application.NewService(vncB),
+			application.NewService(aiB),
+			application.NewService(opsctlB),
+			application.NewService(customtypeB),
+			application.NewService(extB),
+			application.NewService(extEditB),
+			application.NewService(ossB),
 		},
-		OnStartup: func(wctx context.Context) {
-			wailsRuntime.WindowCenter(wctx)
-			for _, b := range binders {
-				b.Startup(wctx)
-			}
-
-			// AI provider 之后才能注入 extension service：extension 异步 init 完成后会调用回调
-			initExtensionSystem(wctx, appCtx, dataDir, pool, extB, aiB, opsctlB)
-		},
-		// OnBeforeClose 在窗口真正关闭前触发：拦下会丢进度的运行中任务，
-		// 并在放行前 emit ai:flush-all 让前端落盘所有活跃会话。
-		OnBeforeClose: func(wctx context.Context) bool {
-			saveWindowSize(wctx)
-			sshSessions := sshMgr.ActiveSessionDetails()
-			localSessions := localMgr.ActiveSessions()
-			serialSessions := serialMgr.ActiveSessions()
-			rdpSessions := rdp.ActiveSessions(rdpB)
-			vncSessions := vncMgr.ActiveSessions()
-			sessions := make([]quitapp.Session, 0, len(sshSessions)+len(localSessions)+len(serialSessions)+len(rdpSessions)+len(vncSessions))
-			for _, item := range sshSessions {
-				sessions = append(sessions, quitapp.Session{Kind: "terminal", SessionID: item.SessionID, AssetID: item.AssetID, StartedAt: item.StartedAt})
-			}
-			for _, item := range localSessions {
-				sessions = append(sessions, quitapp.Session{Kind: "terminal", SessionID: item.SessionID, AssetID: item.AssetID, StartedAt: item.StartedAt})
-			}
-			for _, item := range serialSessions {
-				sessions = append(sessions, quitapp.Session{Kind: "terminal", SessionID: item.SessionID, AssetID: item.AssetID, StartedAt: item.StartedAt})
-			}
-			for _, item := range rdpSessions {
-				sessions = append(sessions, quitapp.Session{Kind: "rdp", SessionID: item.SessionID, AssetID: item.AssetID, StartedAt: item.StartedAt})
-			}
-			for _, item := range vncSessions {
-				sessions = append(sessions, quitapp.Session{Kind: "vnc", SessionID: item.SessionID, AssetID: item.AssetID, StartedAt: item.StartedAt})
-			}
-			activities := quitapp.BuildSessionActivities(wctx, sessions, asset_repo.Asset().Find)
-			for _, convID := range ai.ActiveTasks(aiB) {
-				activities = append(activities, quitapp.Activity{Kind: "ai", Category: "running", RefID: convID})
-			}
-			for range opsctl.ActiveApprovals(opsctlB) {
-				activities = append(activities, quitapp.Activity{Kind: "opsctl", Category: "running"})
-			}
-			return quitapp.OnBeforeClose(forceQuit.Load(), activities, quitapp.Prompt{
-				Show: func(activities []quitapp.Activity) bool {
-					sys.DrainQuitConfirmShown()
-					wailsRuntime.EventsEmit(wctx, "app:quit-confirm", map[string]any{"activities": activities})
-					select {
-					case <-sys.WaitQuitConfirmShown():
-						return true
-					case <-time.After(quitConfirmAckTimeout):
-						zap.L().Warn("frontend did not acknowledge quit confirm dialog, quitting anyway")
-						return false
-					}
-				},
-				FlushAI: func() {
-					aiB.DrainAIFlushAck()
-					wailsRuntime.EventsEmit(wctx, "ai:flush-all")
-					select {
-					case <-aiB.WaitAIFlushAck():
-					case <-time.After(aiFlushAckTimeout):
-					}
-				},
-			})
-		},
-		OnShutdown: func(_ context.Context) {
+		OnShutdown: func() {
 			cancelApp() // 解除所有 wait loop
 			// socket Stop 只做监听器/连接断开且不等待，先同步执行以保证在返回
 			// Wails 前已向所有 opsctl 客户端广播关闭。
@@ -363,43 +313,94 @@ func main() {
 			}
 			go pool.Close()
 		},
-		Bind: []interface{}{
-			sys, sshB, queryB, redisB, rdpB, etcdB, kafkaB, k8sB, serialB, localB, vncB, aiB, opsctlB, customtypeB, extB, extEditB, ossB,
-		},
-		DragAndDrop: &options.DragAndDrop{
-			EnableFileDrop:     true,
-			DisableWebViewDrop: true,
-		},
-		Mac: &mac.Options{
-			TitleBar:             mac.TitleBarHiddenInset(),
-			WebviewIsTransparent: true,
-		},
 	}
-	// 便携模式下把 WebView2 的用户数据目录也收进便携目录：其中的 localStorage
-	// 存着真实用户内容（SQL 编辑器文本、etcd 命令历史、打开的标签页），Wails 默认
-	// 会写到 %APPDATA%\opskat.exe，既污染宿主机器（便携版承诺"不留痕迹"），
-	// UI 状态也无法随文件夹迁移。只在便携模式下设置：无条件设置会让已安装用户的
-	// WebView2 数据换一次位置，标签页/布局/主题被一次性清空。
-	if portableRoot := portable.Dir(); portableRoot != "" {
-		appOptions.Windows = &windows.Options{
-			WebviewUserDataPath: filepath.Join(portableRoot, "webview2"),
-			// Wails 只在 Windows 选项非 nil 时才下发缩放设置，且直接取字段值；
-			// 保持 nil 时 WebView2 用自己的默认值（缩放开启）。这里显式置 true，
-			// 否则零值 false 会把 Ctrl+滚轮缩放只在便携版上关掉。
-			IsZoomControlEnabled: true,
-		}
+	if disableSingleInstance {
+		appOptions.Windows.WebviewUserDataPath = filepath.Join(dataDir, "webview2")
+	} else if portableRoot := portable.Dir(); portableRoot != "" {
+		appOptions.Windows.WebviewUserDataPath = filepath.Join(portableRoot, "webview2")
 	}
-
 	if !disableSingleInstance {
-		appOptions.SingleInstanceLock = &options.SingleInstanceLock{
-			UniqueId: singleInstanceID(portable.Dir()),
-			OnSecondInstanceLaunch: func(secondInstanceData options.SecondInstanceData) {
-				sys.OnSecondInstanceLaunch()
-			},
+		appOptions.SingleInstance = &application.SingleInstanceOptions{
+			UniqueID:               singleInstanceID(portable.Dir()),
+			OnSecondInstanceLaunch: func(_ application.SecondInstanceData) { sys.OnSecondInstanceLaunch() },
 		}
 	}
+	var nativeApp *application.App
+	appOptions.ShouldQuit = desktop.QuitGate(func() bool {
+		wctx := appCtx
+		saveWindowSize(wctx)
+		sshSessions := sshMgr.ActiveSessionDetails()
+		localSessions := localMgr.ActiveSessions()
+		serialSessions := serialMgr.ActiveSessions()
+		rdpSessions := rdp.ActiveSessions(rdpB)
+		vncSessions := vncMgr.ActiveSessions()
+		sessions := make([]quitapp.Session, 0, len(sshSessions)+len(localSessions)+len(serialSessions)+len(rdpSessions)+len(vncSessions))
+		for _, item := range sshSessions {
+			sessions = append(sessions, quitapp.Session{Kind: "terminal", SessionID: item.SessionID, AssetID: item.AssetID, StartedAt: item.StartedAt})
+		}
+		for _, item := range localSessions {
+			sessions = append(sessions, quitapp.Session{Kind: "terminal", SessionID: item.SessionID, AssetID: item.AssetID, StartedAt: item.StartedAt})
+		}
+		for _, item := range serialSessions {
+			sessions = append(sessions, quitapp.Session{Kind: "terminal", SessionID: item.SessionID, AssetID: item.AssetID, StartedAt: item.StartedAt})
+		}
+		for _, item := range rdpSessions {
+			sessions = append(sessions, quitapp.Session{Kind: "rdp", SessionID: item.SessionID, AssetID: item.AssetID, StartedAt: item.StartedAt})
+		}
+		for _, item := range vncSessions {
+			sessions = append(sessions, quitapp.Session{Kind: "vnc", SessionID: item.SessionID, AssetID: item.AssetID, StartedAt: item.StartedAt})
+		}
+		activities := quitapp.BuildSessionActivities(wctx, sessions, asset_repo.Asset().Find)
+		for _, convID := range ai.ActiveTasks(aiB) {
+			activities = append(activities, quitapp.Activity{Kind: "ai", Category: "running", RefID: convID})
+		}
+		for range opsctl.ActiveApprovals(opsctlB) {
+			activities = append(activities, quitapp.Activity{Kind: "opsctl", Category: "running"})
+		}
+		return !quitapp.OnBeforeClose(forceQuit.Load(), activities, quitapp.Prompt{
+			Show: func(activities []quitapp.Activity) bool {
+				sys.DrainQuitConfirmShown()
+				window, _ := application.Get().Window.GetByName("main")
+				window.EmitEvent("app:quit-confirm", map[string]any{"activities": activities})
+				select {
+				case <-sys.WaitQuitConfirmShown():
+					return true
+				case <-time.After(quitConfirmAckTimeout):
+					zap.L().Warn("frontend did not acknowledge quit confirm dialog, quitting anyway")
+					return false
+				}
+			},
+			FlushAI: func() {
+				if err := desktop.FlushWindows(appCtx, application.Get(), aiFlushAckTimeout); err != nil {
+					logger.Ctx(appCtx).Warn("save workspace before quit", zap.Error(err))
+				}
+			},
+		})
+	}, func() { nativeApp.Quit() })
+	nativeApp = application.New(appOptions)
+	mainWindow := nativeApp.Window.NewWithOptions(application.WebviewWindowOptions{
+		Name: "main", Title: "OpsKat", URL: desktop.WindowURL(nil), Width: windowWidth, Height: windowHeight,
+		MinWidth: minWindowWidth, MinHeight: minWindowHeight,
+		Frameless: runtime.GOOS == "windows", EnableFileDrop: true, ZoomControlEnabled: true,
+		Mac: application.MacWindow{TitleBar: application.MacTitleBarHiddenInset, Backdrop: application.MacBackdropTransparent},
+	})
+	system.RegisterMainWindowDrops(mainWindow)
+	mainWindow.RegisterHook(events.Common.WindowClosing, func(event *application.WindowEvent) {
+		event.Cancel()
+		go nativeApp.Quit()
+	})
+	nativeApp.Event.OnApplicationEvent(events.Common.ApplicationStarted, func(_ *application.ApplicationEvent) {
+		wctx := appCtx
+		mainWindow.Center()
+		for _, b := range binders {
+			b.Startup(wctx)
+		}
 
-	err = wails.Run(appOptions)
+		// AI provider 之后才能注入 extension service：extension 异步 init 完成后会调用回调
+		initExtensionSystem(wctx, appCtx, dataDir, pool, extB, aiB, opsctlB)
+	})
+
+	err = nativeApp.Run()
 	if err != nil {
 		log.Fatalf("Wails启动失败: %v", err)
 	}
@@ -444,7 +445,7 @@ func initExtensionSystem(
 		extension_settings_repo.ExtensionSettings(),
 		asset_repo.Asset(),
 		logger.Default(),
-		func() { wailsRuntime.EventsEmit(wctx, "ext:reload", nil) },
+		func() { application.Get().Event.Emit("ext:reload", nil) },
 		extension.SnippetExtensionHook{},
 	)
 
@@ -479,7 +480,7 @@ func initExtensionSystem(
 		if svc := snippet_svc.Snippet(); svc != nil {
 			svc.RefreshCategories()
 		}
-		wailsRuntime.EventsEmit(wctx, "ext:ready", nil)
+		application.Get().Event.Emit("ext:ready", nil)
 	}()
 }
 
@@ -548,11 +549,12 @@ func initialWindowSize(cfg *bootstrap.AppConfig) (int, int) {
 }
 
 func saveWindowSize(ctx context.Context) {
-	if !wailsRuntime.WindowIsNormal(ctx) {
+	window, _ := application.Get().Window.GetByName("main")
+	if window.IsMinimised() || window.IsMaximised() || window.IsFullscreen() {
 		return
 	}
 
-	width, height := wailsRuntime.WindowGetSize(ctx)
+	width, height := window.Size()
 	if width < minWindowWidth || height < minWindowHeight {
 		return
 	}

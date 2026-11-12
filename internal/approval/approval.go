@@ -11,8 +11,8 @@ import (
 	"sync/atomic"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/localipc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/localipc"
 	"go.uber.org/zap"
 )
 

@@ -18,10 +18,10 @@ import (
 
 	"github.com/pkg/sftp"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/sftpio/sftpiotest"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/sftpio/sftpiotest"
 )
 
 func writeTempFile(t *testing.T, p, content string) {

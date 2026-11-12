@@ -5,14 +5,8 @@ import { toast } from "sonner";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import {
-  CountTableRows,
-  ExecuteSQL,
-  GetGridEditStatements,
-  OpenTable,
-  QueryTableRows,
-} from "../../wailsjs/go/query/Query";
-import { dbdriver } from "../../wailsjs/go/models";
+import { CountTableRows, ExecuteSQL, GetGridEditStatements, OpenTable, QueryTableRows } from "@clients/query";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { BUILTIN_DRIVERS, fakeDriverWith, mockGridEditStatements, provideDrivers } from "./dbDriverFixtures";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), warning: vi.fn(), info: vi.fn(), success: vi.fn() } }));

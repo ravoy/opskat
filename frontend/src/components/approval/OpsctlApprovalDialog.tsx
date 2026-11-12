@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
   Button,
+  Input,
   Textarea,
 } from "@opskat/ui";
 import { useWailsEvent } from "@/hooks/useWailsEvent";
@@ -17,9 +18,9 @@ import { ExtensionRequestDetail } from "./ExtensionRequestDetail";
 import { TruncatedText } from "./TruncatedText";
 import { RememberPatternEditor } from "./RememberPatternEditor";
 import { hasRememberPatternErrors, rememberPrefill } from "./rememberPattern";
-import { RespondOpsctlApproval } from "../../../wailsjs/go/opsctl/Opsctl";
-import { permission } from "../../../wailsjs/go/models";
-import { ShieldAlert, Server, FolderOpen, Globe } from "lucide-react";
+import { RespondOpsctlApproval } from "@clients/opsctl";
+import * as permission from "@bindings/github.com/octays/opskat/internal/ai/permission/models";
+import { ShieldAlert, Server, FolderOpen, Globe, Timer } from "lucide-react";
 import { hasApprovalCommandEdits } from "@/lib/approval";
 import { errorMessage } from "@/lib/errorMessage";
 import { approvalBadge, hasPinnedDetail } from "./approvalTypePresentation";
@@ -146,6 +147,20 @@ export function OpsctlApprovalDialog({ suspended = false }: { suspended?: boolea
   // 记住模式属于某一条：换入下一条自然回到普通状态。
   const [rememberId, setRememberId] = useState<string | null>(null);
   const [respondingId, setRespondingId] = useState<string | null>(null);
+  // 限时放行也属于当前这条：快捷时长（分钟）或自定义输入 + 作用范围。换入下一条
+  // 时回到默认（30 分钟、本资产）。
+  const [timedMode, setTimedMode] = useState(false);
+  const [timedMinutes, setTimedMinutes] = useState(30);
+  const [timedCustom, setTimedCustom] = useState("");
+  const [timedAllAssets, setTimedAllAssets] = useState(false);
+  // 自定义输入优先（合法时），否则用快捷项；非法/为空 → undefined，确认按钮禁用。
+  // 上限 1440 = 会话 24 小时寿命，与后端 ParseApprovalResponse 的校验一致。
+  const timedCustomMinutes = Number(timedCustom);
+  const timedDuration = timedCustom
+    ? Number.isInteger(timedCustomMinutes) && timedCustomMinutes >= 1 && timedCustomMinutes <= 1440
+      ? timedCustomMinutes
+      : undefined
+    : timedMinutes;
   const denyRef = useRef<HTMLButtonElement>(null);
 
   const enqueue = useCallback((item: QueueItem) => {
@@ -286,6 +301,16 @@ export function OpsctlApprovalDialog({ suspended = false }: { suspended?: boolea
   useEffect(() => {
     if (currentId && !suspended) denyRef.current?.focus();
   }, [currentId, suspended]);
+  // 限时放行的选择跟随上一条作废：换入下一条回到默认。渲染期对比上次值，替代
+  // effect 里的同步 setState（同 RedisOpsPanel 的 prevRefreshKey 模式）。
+  const [prevTimedId, setPrevTimedId] = useState<string | null | undefined>(undefined);
+  if (prevTimedId !== currentId) {
+    setPrevTimedId(currentId);
+    setTimedMode(false);
+    setTimedMinutes(30);
+    setTimedCustom("");
+    setTimedAllAssets(false);
+  }
   const rememberValues = current
     ? current.items.map((item, i) => editState[current.id]?.[i] ?? rememberPrefill(item))
     : [];
@@ -366,12 +391,16 @@ export function OpsctlApprovalDialog({ suspended = false }: { suspended?: boolea
   );
 
   const respond = useCallback(
-    async (decision: string) => {
+    async (decision: string, timed?: { minutes: number; allAssets: boolean }) => {
       if (!current || respondingId) return;
       const id = current.id;
 
       const resp = new permission.ApprovalResponse();
       resp.decision = decision;
+      if (decision === "allow_timed" && timed) {
+        resp.timed_allow_minutes = timed.minutes;
+        resp.timed_allow_all_assets = timed.allAssets;
+      }
 
       const shouldSendEdits =
         (current.kind === "grant" && decision !== "deny") || (current.kind === "single" && decision === "allowAll");
@@ -532,6 +561,101 @@ export function OpsctlApprovalDialog({ suspended = false }: { suspended?: boolea
                 />
               )}
             </div>
+
+            {/* 限时放行：授权期内同范围的命令不再逐条弹窗。single/once/batch 且带会话才可
+                用（后端按会话落 grant，无会话的请求落不了）。 */}
+            {["single", "once", "batch"].includes(current.kind) && current.sessionID && (
+              <div data-testid="opsctl-approval-timed" className="rounded-md border bg-muted/30 p-2.5 space-y-2">
+                <div className="flex items-center gap-2 text-xs">
+                  <Timer className="h-3.5 w-3.5 text-muted-foreground" />
+                  <span className="font-medium">{t("opsctlApproval.timedAllow")}</span>
+                  {timedMode ? (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="ml-auto h-6 px-2 text-xs"
+                      onClick={() => setTimedMode(false)}
+                    >
+                      {t("action.cancel")}
+                    </Button>
+                  ) : (
+                    <Button
+                      data-testid="opsctl-approval-timed-open"
+                      variant="secondary"
+                      size="sm"
+                      className="ml-auto h-6 px-2 text-xs"
+                      onClick={onAnswer(() => setTimedMode(true))}
+                    >
+                      {t("opsctlApproval.timedAllowOpen")}
+                    </Button>
+                  )}
+                </div>
+                {timedMode && (
+                  <div className="space-y-2">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {[
+                        { minutes: 30, label: t("opsctlApproval.timed30m") },
+                        { minutes: 60, label: t("opsctlApproval.timed1h") },
+                        { minutes: 120, label: t("opsctlApproval.timed2h") },
+                      ].map((opt) => (
+                        <Button
+                          key={opt.minutes}
+                          data-testid={`opsctl-approval-timed-${opt.minutes}`}
+                          variant={timedMinutes === opt.minutes && !timedCustom ? "default" : "outline"}
+                          size="sm"
+                          className="h-6 px-2 text-xs"
+                          onClick={() => {
+                            setTimedMinutes(opt.minutes);
+                            setTimedCustom("");
+                          }}
+                        >
+                          {opt.label}
+                        </Button>
+                      ))}
+                      <Input
+                        data-testid="opsctl-approval-timed-custom"
+                        type="number"
+                        min={1}
+                        max={1440}
+                        value={timedCustom}
+                        placeholder={t("opsctlApproval.timedCustomMinutes")}
+                        onChange={(e) => setTimedCustom(e.target.value)}
+                        className="h-6 w-24 text-xs"
+                      />
+                    </div>
+                    <div className="flex flex-wrap items-center gap-1.5 text-xs">
+                      <span className="text-muted-foreground">{t("opsctlApproval.timedScope")}</span>
+                      {[
+                        { all: false, label: t("opsctlApproval.timedScopeAsset") },
+                        { all: true, label: t("opsctlApproval.timedScopeAll") },
+                      ].map((opt) => (
+                        <Button
+                          key={String(opt.all)}
+                          data-testid={`opsctl-approval-timed-scope-${opt.all ? "all" : "asset"}`}
+                          variant={timedAllAssets === opt.all ? "default" : "outline"}
+                          size="sm"
+                          className="h-6 px-2 text-xs"
+                          onClick={() => setTimedAllAssets(opt.all)}
+                        >
+                          {opt.label}
+                        </Button>
+                      ))}
+                      <Button
+                        data-testid="opsctl-approval-timed-confirm"
+                        size="sm"
+                        className="ml-auto h-6 px-2 text-xs"
+                        disabled={responding || !timedDuration}
+                        onClick={onAnswer(
+                          () => void respond("allow_timed", { minutes: timedDuration!, allAssets: timedAllAssets })
+                        )}
+                      >
+                        {t("opsctlApproval.timedConfirm")}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             <DialogFooter className="gap-2">
               <Button

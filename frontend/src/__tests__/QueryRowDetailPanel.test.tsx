@@ -5,7 +5,7 @@ import { QueryRowDetailPanel } from "@/components/query/QueryRowDetailPanel";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { ExecuteSQL, OpenTable } from "../../wailsjs/go/query/Query";
+import { ExecuteSQL, OpenTable } from "@clients/query";
 import { BUILTIN_DRIVERS, provideDrivers } from "./dbDriverFixtures";
 
 vi.mock("@/components/CodeEditor", () => ({

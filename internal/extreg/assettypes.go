@@ -9,12 +9,12 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/netdial"
-	"github.com/opskat/opskat/internal/service/conntest"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/service/conntest"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // nameRe 是资产类型名与策略面名的形状：二者都是命名空间段（权限组 ID

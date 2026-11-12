@@ -10,8 +10,8 @@ import {
   OSSPickUploadFiles,
   OSSRemoveObject,
   OSSUploadObjectPath,
-} from "../../../../wailsjs/go/oss/OSS";
-import { StatLocalPaths } from "../../../../wailsjs/go/system/System";
+} from "@clients/oss";
+import { StatLocalPaths } from "@clients/system";
 import { OSSBrowserPanel } from "../OSSBrowserPanel";
 import { useTabStore } from "@/stores/tabStore";
 import { useOssBrowserStore } from "@/stores/ossBrowserStore";

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/service/credential_svc"
 )
 
 // TLSFields 描述构建 *tls.Config 所需的最小字段集，

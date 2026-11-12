@@ -6,7 +6,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/opskat/opskat/internal/approval"
+	"github.com/octays/opskat/internal/approval"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

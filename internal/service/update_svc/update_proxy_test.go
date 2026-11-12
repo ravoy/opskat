@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/pkg/netproxy"
-	"github.com/opskat/opskat/internal/pkg/netproxy/netproxytest"
+	"github.com/octays/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/pkg/netproxy/netproxytest"
 )
 
 // useNetworkProxy 把进程级外网代理设置换成 s，测试结束恢复。调用它的测试不能 t.Parallel。

@@ -11,11 +11,11 @@ import (
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v3"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	"github.com/opskat/opskat/internal/repository/group_repo"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/repository/group_repo"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/credential_svc"
 )
 
 // ImportResult 导入结果

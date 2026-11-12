@@ -4,8 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { CountTableRows, OpenTable, QueryTableRows } from "../../wailsjs/go/query/Query";
-import type { query_svc } from "../../wailsjs/go/models";
+import { CountTableRows, OpenTable, QueryTableRows } from "@clients/query";
+import type * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import { BUILTIN_DRIVERS, provideDrivers } from "./dbDriverFixtures";
 
 // 插值参数也要能断言(第几页、耗时),t 把参数拼进返回的 key 里;引用保持稳定。

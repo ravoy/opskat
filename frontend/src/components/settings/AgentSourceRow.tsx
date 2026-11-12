@@ -1,7 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { Button, Tooltip, TooltipContent, TooltipTrigger, cn } from "@opskat/ui";
 import { Cable, ChevronDown, ChevronUp, Copy, KeyRound, Loader2, Pencil, RefreshCw, Trash2 } from "lucide-react";
-import type { system, ssh_agent_svc } from "../../../wailsjs/go/models";
+import type * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
+import type * as ssh_agent_svc from "@bindings/github.com/octays/opskat/internal/service/ssh_agent_svc/models";
 import { agentStatusInfo, endpointKindLabel, type AgentSourceRuntimeStatus } from "./agentSource";
 
 export interface AgentSourceRowProps {

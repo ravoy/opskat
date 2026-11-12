@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/opskat/opskat/internal/extreg"
-	"github.com/opskat/opskat/internal/service/conntest"
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/internal/extreg"
+	"github.com/octays/opskat/internal/service/conntest"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // ConnTestRegistrar returns the extreg.ConnTestRegistrar a process that runs

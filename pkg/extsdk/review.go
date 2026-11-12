@@ -1,6 +1,6 @@
 package opskat
 
-import "github.com/opskat/opskat/pkg/extwire"
+import "github.com/octays/opskat/pkg/extwire"
 
 // ReviewQuestion is one question a command can fail: ID (a lowercase letter, then
 // lowercase letters, digits and underscores, at most 64) is what a reject names,

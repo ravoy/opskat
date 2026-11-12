@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/model/entity/audit_entity"
-	"github.com/opskat/opskat/migrations"
+	"github.com/octays/opskat/internal/model/entity/audit_entity"
+	"github.com/octays/opskat/migrations"
 )
 
 func TestAuditRepoCreatePreservesExplicitSuccess(t *testing.T) {

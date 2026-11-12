@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/opskat/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extmanifest"
 )
 
 // Descriptor is what the guest answers to describe(): everything an extension can

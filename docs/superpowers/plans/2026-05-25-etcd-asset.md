@@ -579,7 +579,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 	"github.com/stretchr/testify/require"
 )
 
@@ -640,7 +640,7 @@ import (
 	"crypto/tls"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
@@ -744,7 +744,7 @@ import (
     "sync"
     "sync/atomic"
 
-    "github.com/opskat/opskat/internal/sshpool"
+    "github.com/octays/opskat/internal/sshpool"
     "github.com/cago-frame/cago/pkg/logger"
     "go.uber.org/zap"
 )
@@ -937,7 +937,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 	"github.com/stretchr/testify/require"
 	"go.etcd.io/etcd/server/v3/embed"
 )
@@ -1244,7 +1244,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/opskat/opskat/internal/service/etcd_svc/mock_kv"
+	"github.com/octays/opskat/internal/service/etcd_svc/mock_kv"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 	clientv3 "go.etcd.io/etcd/client/v3"
@@ -1561,12 +1561,12 @@ import (
 	"time"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/ai/audit"
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/connpool"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/ai/audit"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/sshpool"
 	"go.uber.org/zap"
 )
 
@@ -1800,7 +1800,7 @@ package assettype
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 	"github.com/stretchr/testify/require"
 )
 
@@ -1857,10 +1857,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/service/credential_resolver"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/service/credential_svc"
 )
 
 type etcdHandler struct{}
@@ -2151,7 +2151,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/service/etcd_svc"
+	"github.com/octays/opskat/internal/service/etcd_svc"
 )
 
 func (a *Runner) handleExecEtcd(ctx context.Context, raw json.RawMessage) (any, error) {
@@ -2212,7 +2212,7 @@ package app
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/service/etcd_svc"
+	"github.com/octays/opskat/internal/service/etcd_svc"
 )
 
 // EtcdExecRequest IPC 入参 — 与 etcd_svc.ExecRequest 字段一致

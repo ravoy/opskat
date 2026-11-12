@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { PolicyGroupSelector } from "@/components/asset/PolicyGroupSelector";
-import { ListPolicyGroups } from "../../../../wailsjs/go/system/System";
+import { ListPolicyGroups } from "@clients/system";
 
 function renderSelector() {
   return render(<PolicyGroupSelector policyType="ssh" selectedIds={[]} onChange={() => {}} />);

@@ -9,9 +9,9 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	aitool "github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
+	aitool "github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
 )
 
 // multiAssetRepo resolves several fixed assets by id and by name, standing in for

@@ -9,8 +9,8 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
-	"github.com/opskat/opskat/internal/service/vnc_svc"
+	"github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
+	"github.com/octays/opskat/internal/service/vnc_svc"
 )
 
 func TestEncodeVNCClipboardTextUsesWindowsChineseCodePage(t *testing.T) {

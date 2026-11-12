@@ -7,9 +7,11 @@ import { GenericConfigSection } from "@/components/asset/GenericConfigSection";
 import type { AssetFormContext, AssetFormHandle } from "@/lib/assetTypes/formContract";
 import { useAssetStore } from "@/stores/assetStore";
 import { useCustomTypeStore } from "@/stores/customTypeStore";
-import { asset_entity, custom_type_entity, customtype } from "../../../../wailsjs/go/models";
-import { GetCustomType, ListCustomTypes } from "../../../../wailsjs/go/customtype/CustomType";
-import { ListCredentialsByType } from "../../../../wailsjs/go/system/System";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as custom_type_entity from "@bindings/github.com/octays/opskat/internal/model/entity/custom_type_entity/models";
+import * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
+import { GetCustomType, ListCustomTypes } from "@clients/customtype";
+import { ListCredentialsByType } from "@clients/system";
 
 // 类型编辑器本身有自己的测试;这里只需要它"保存成功"这一个出口。
 vi.mock("@/components/settings/CustomTypeEditorDialog", () => ({

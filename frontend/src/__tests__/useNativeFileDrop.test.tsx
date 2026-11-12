@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRef } from "react";
-import { OnFileDrop, OnFileDropOff } from "../../wailsjs/runtime/runtime";
+import { OnFileDrop, OnFileDropOff } from "@/lib/desktop";
 import { useNativeFileDrop } from "../components/terminal/file-manager/useNativeFileDrop";
 import { resetTerminalFileDropCoordinatorForTest } from "../components/terminal/terminalFileDropCoordinator";
 

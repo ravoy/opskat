@@ -1,5 +1,6 @@
 import type { TFunction } from "i18next";
-import type { dbdriver, query_svc } from "../../../../wailsjs/go/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import type * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import { driverCanAlter, driverHasCapability, type DriverDescriptor } from "@/lib/dbDrivers";
 
 /**
@@ -261,4 +262,13 @@ export function indexTypeLabel(descriptor: DriverDescriptor | undefined, type: s
   if (declared) return declaredLabel(t, declared.label);
   if (BUILTIN_INDEX_TYPES.includes(type)) return t(`query.designer.indexType.${type}`);
   return type;
+}
+
+export function toDriverDefaultKind(kind: "none" | "null" | "value" | "expression"): dbdriver.DefaultKind {
+  return {
+    none: dbdriver.DefaultKind.DefaultKindNone,
+    null: dbdriver.DefaultKind.DefaultKindNull,
+    value: dbdriver.DefaultKind.DefaultKindValue,
+    expression: dbdriver.DefaultKind.DefaultKindExpression,
+  }[kind];
 }

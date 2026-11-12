@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ExtensionMirrorSettings } from "../../../components/settings/ExtensionMirrorSettings";
-import { GetExtensionMirror, SetExtensionMirror } from "../../../../wailsjs/go/system/System";
+import { GetExtensionMirror, SetExtensionMirror } from "@clients/system";
 
 async function renderWithStored(stored: string) {
   vi.mocked(GetExtensionMirror).mockResolvedValue(stored);

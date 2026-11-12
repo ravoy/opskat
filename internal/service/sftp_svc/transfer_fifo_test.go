@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/pkg/sftpio/sftpiotest"
+	"github.com/octays/opskat/internal/pkg/sftpio/sftpiotest"
 )
 
 // 命名管道（FIFO）只在 Unix 上有，syscall.Mkfifo 在 Windows 上不存在。

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Environment } from "../../wailsjs/runtime/runtime";
+import { Environment } from "@/lib/desktop";
 
 export type Platform = "darwin" | "windows" | "other";
 

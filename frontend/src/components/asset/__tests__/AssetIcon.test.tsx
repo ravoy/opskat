@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { Server } from "lucide-react";
 import { AssetIcon, EntityIcon } from "../AssetIcon";
 import { getAssetType } from "@/lib/assetTypes";
-import { asset_entity } from "../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 // 注意:注册的资产类型键是 ssh/database/redis/... —— 数据库统一为 "database"(没有 "mysql")。
 const assets = [

@@ -7,10 +7,10 @@ import (
 	"net/url"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/pkg/netproxy"
-	"github.com/opskat/opskat/internal/service/testreg"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/service/testreg"
 	"go.uber.org/zap"
 )
 

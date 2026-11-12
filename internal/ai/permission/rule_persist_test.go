@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/model/entity/policy_group_entity"
-	"github.com/opskat/opskat/internal/repository/group_repo"
-	"github.com/opskat/opskat/internal/repository/policy_group_repo"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/model/entity/policy_group_entity"
+	"github.com/octays/opskat/internal/repository/group_repo"
+	"github.com/octays/opskat/internal/repository/policy_group_repo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

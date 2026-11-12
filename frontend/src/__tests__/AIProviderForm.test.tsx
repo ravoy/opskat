@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AIProviderForm, type AIProviderFormProps } from "@/components/ai/AIProviderForm";
-import { FetchAIModels } from "../../wailsjs/go/ai/AI";
-import { ai } from "../../wailsjs/go/models";
+import { FetchAIModels } from "@clients/ai";
+import * as ai from "@bindings/github.com/octays/opskat/internal/app/ai/models";
 
 vi.mock("sonner", () => ({
   toast: { success: vi.fn(), error: vi.fn(), info: vi.fn(), warning: vi.fn() },

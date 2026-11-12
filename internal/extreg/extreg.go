@@ -25,16 +25,16 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
-	aipolicy "github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/extreg/extdriver"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/conntest"
-	"github.com/opskat/opskat/internal/service/snippet_svc"
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
+	aipolicy "github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/extreg/extdriver"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/conntest"
+	"github.com/octays/opskat/internal/service/snippet_svc"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // helpLang 是渲染扩展用法文档时解析 i18n key 用的语言。文档在加载期渲染一次并注册进

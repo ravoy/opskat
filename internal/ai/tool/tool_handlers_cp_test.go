@@ -10,9 +10,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/helper"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

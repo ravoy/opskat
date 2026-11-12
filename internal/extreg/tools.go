@@ -7,10 +7,10 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/skills"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/skills"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // maxToolTimeout is the longest timeout a tool may declare. A tool call holds one

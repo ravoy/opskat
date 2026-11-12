@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/cmdline"
 )
 
 // MongoCommand 是 mongo 富命令串的结构形式。

@@ -18,9 +18,9 @@ import { SecretInput } from "@/components/SecretInput";
 import { ExtraHeadersSection } from "./ExtraHeadersSection";
 import { hasExtraHeaderError } from "./extraHeaders";
 import { Check, ChevronsUpDown, Loader2, RefreshCw } from "lucide-react";
-import { FetchAIModels } from "../../../wailsjs/go/ai/AI";
-import { GetModelDefaults } from "../../../wailsjs/go/ai/AI";
-import { ai } from "../../../wailsjs/go/models";
+import { FetchAIModels } from "@clients/ai";
+import { GetModelDefaults } from "@clients/ai";
+import * as ai from "@bindings/github.com/octays/opskat/internal/app/ai/models";
 import { toast } from "sonner";
 import { errorMessage } from "@/lib/errorMessage";
 

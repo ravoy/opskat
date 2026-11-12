@@ -6,9 +6,9 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/netdial"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 // HTTPConnConfig 描述一个 HTTP 客户端的网络路径与 TLS 设置（通用资产的 HTTP 执行方式与

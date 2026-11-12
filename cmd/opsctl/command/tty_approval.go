@@ -10,11 +10,11 @@ import (
 	"os/signal"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/service/policy_rule_svc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/service/policy_rule_svc"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

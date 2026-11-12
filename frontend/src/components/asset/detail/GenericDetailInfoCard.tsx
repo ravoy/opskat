@@ -8,8 +8,8 @@ import { parseGenericConfig, EXEC_MODE_HTTP } from "@/components/asset/GenericCo
 import { notifyCopied } from "@/lib/notify";
 import { useCustomTypeList, useCustomTypeStore } from "@/stores/customTypeStore";
 import type { DetailInfoCardProps, DetailSubtitleProps } from "@/lib/assetTypes/types";
-import type { customtype } from "../../../../wailsjs/go/models";
-import { GetGenericAssetView, RevealGenericSecret } from "../../../../wailsjs/go/customtype/CustomType";
+import type * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
+import { GetGenericAssetView, RevealGenericSecret } from "@clients/customtype";
 import { DetailGrid, DetailSection, InfoItem, ProxyChainDetailSection } from "./InfoItem";
 import { MASKED_SECRET } from "./utils";
 import { errorMessage } from "@/lib/errorMessage";

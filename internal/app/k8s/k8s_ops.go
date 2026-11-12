@@ -10,18 +10,18 @@ import (
 	"sync"
 	"time"
 
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	k8spkg "github.com/opskat/opskat/internal/pkg/k8s"
-	"github.com/opskat/opskat/internal/pkg/proxychain"
-	"github.com/opskat/opskat/internal/pkg/socksdial"
-	"github.com/opskat/opskat/internal/pkg/streambatch"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/credential_resolver"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	k8spkg "github.com/octays/opskat/internal/pkg/k8s"
+	"github.com/octays/opskat/internal/pkg/proxychain"
+	"github.com/octays/opskat/internal/pkg/socksdial"
+	"github.com/octays/opskat/internal/pkg/streambatch"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/sshpool"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 )
 
@@ -164,7 +164,7 @@ func (k *K8s) StartK8sPodLogs(assetID int64, namespace, podName, container strin
 		defer k.logStreams.Delete(streamID)
 
 		pumpPodLogs(reader, streamID, func(event string, payload any) {
-			wailsRuntime.EventsEmit(k.ctx, event, payload)
+			application.Get().Event.Emit(event, payload)
 		})
 	}()
 

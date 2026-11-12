@@ -319,6 +319,9 @@
     "cancelled": "工具执行已取消"
   },
   "tab": {
+    "windowAssetUnavailable": "资产 {{id}} 不可用",
+    "openInNewWindow": "在新窗口打开",
+    "newWindow": "新建窗口",
     "close": "关闭",
     "closeOthers": "关闭其它",
     "closeLeft": "关闭左侧",
@@ -1523,6 +1526,7 @@
     },
     "newConversation": "新对话",
     "sidebar": {
+      "newWindow": "新建 AI 窗口",
       "title": "AI 助手",
       "newChat": "新对话",
       "history": "历史",
@@ -2170,7 +2174,17 @@
     "genericSecret": "取值",
     "queuePosition": "第 {{current}} 条 / 共 {{total}} 条",
     "rememberCancel": "不记住",
-    "respondFailed": "审批应答未被接受"
+    "respondFailed": "审批应答未被接受",
+    "timedAllow": "限时放行",
+    "timedAllowOpen": "限时放行…",
+    "timed30m": "30分钟",
+    "timed1h": "1小时",
+    "timed2h": "2小时",
+    "timedCustomMinutes": "自定义分钟",
+    "timedScope": "范围：",
+    "timedScopeAsset": "本资产",
+    "timedScopeAll": "全部资产",
+    "timedConfirm": "授权并放行"
   },
   "audit": {
     "title": "审计日志",

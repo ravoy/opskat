@@ -5,14 +5,14 @@ import { useAssetStore } from "@/stores/assetStore";
 import { useTabStore } from "@/stores/tabStore";
 import { toast } from "sonner";
 import { notifySuccess } from "@/lib/notify";
-import { GetCommandReviewState } from "../../../../wailsjs/go/extension/Extension";
-import { group_entity } from "../../../../wailsjs/go/models";
+import { GetCommandReviewState } from "@clients/extension";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), warning: vi.fn(), info: vi.fn(), success: vi.fn() } }));
 vi.mock("@/lib/notify", () => ({ notifySuccess: vi.fn(), notifyCopied: vi.fn() }));
 
 const group = (ID: number, Name: string, ParentID: number, permissionMode = "") =>
-  new group_entity.Group({ ID, Name, ParentID, Icon: "", SortOrder: ID, Status: 1, permissionMode });
+  new group_entity.Group({ ID, Name, ParentID, Icon: "", SortOrder: ID, permissionMode });
 
 // mockReviewer 设定有没有可用的命令审核扩展。
 function mockReviewer(available: boolean) {

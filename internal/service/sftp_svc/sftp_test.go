@@ -19,9 +19,11 @@ func TestListDirTreatsSymlinkToDirectoryAsDirectory(t *testing.T) {
 	clientConn, serverConn := net.Pipe()
 	server, err := sftp.NewServer(serverConn, sftp.WithServerWorkingDirectory(root))
 	require.NoError(t, err)
-	serverDone := make(chan error, 1)
+	// cleanup 只等 Serve 返回（Close 后必然返回），不消费它的错误值。
+	serverDone := make(chan struct{})
 	go func() {
-		serverDone <- server.Serve()
+		_ = server.Serve()
+		close(serverDone)
 	}()
 
 	client, err := sftp.NewClientPipe(clientConn, clientConn)

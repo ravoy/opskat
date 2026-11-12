@@ -46,8 +46,8 @@ import {
   ExportToWebDAV,
   PreviewWebDAVBackup,
   ImportFromWebDAV,
-} from "../../../wailsjs/go/system/System";
-import { backup_svc } from "../../../wailsjs/go/models";
+} from "@clients/system";
+import * as backup_svc from "@bindings/github.com/octays/opskat/internal/service/backup_svc/models";
 import { ExportDialog, type WebDAVExportDefaults } from "@/components/settings/ExportDialog";
 import { BackupImportDialog, type BackupImportSource } from "@/components/settings/BackupImportDialog";
 import {
@@ -66,7 +66,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { notifyCopied, notifySuccess } from "@/lib/notify";
-import { BrowserOpenURL } from "../../../wailsjs/runtime/runtime";
+import { BrowserOpenURL } from "@/lib/desktop";
 import { SecretInput } from "@/components/SecretInput";
 import { errorMessage } from "@/lib/errorMessage";
 

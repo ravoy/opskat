@@ -12,8 +12,8 @@ import (
 
 	"github.com/redis/go-redis/v9"
 
-	"github.com/opskat/opskat/internal/connpool"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // parseInfoFields 把 INFO 文本解析为 field → value（忽略 # 段标题与空行）。

@@ -5,7 +5,7 @@ import { notifySuccess } from "@/lib/notify";
 import { Server, Folder, ChevronDown, ChevronRight, KeyRound } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, Button, ScrollArea } from "@opskat/ui";
 import { SecretInput } from "@/components/SecretInput";
-import { import_svc } from "../../../wailsjs/go/models";
+import * as import_svc from "@bindings/github.com/octays/opskat/internal/service/import_svc/models";
 import { useAssetStore } from "@/stores/assetStore";
 import { errorMessage } from "@/lib/errorMessage";
 
@@ -19,7 +19,7 @@ interface ImportDialogProps {
   onOpenChange: (open: boolean) => void;
   preview: import_svc.PreviewResult | null;
   title: string;
-  onImport: (selectedIndexes: number[], options: ImportCallOptions) => Promise<import_svc.ImportResult>;
+  onImport: (selectedIndexes: number[], options: ImportCallOptions) => Promise<import_svc.ImportResult | null>;
 }
 
 // 解析失败（reason 非空）的预览项不可导入：默认不选、全选/分组选取跳过、复选框禁用
@@ -120,6 +120,7 @@ export function ImportDialog({ open, onOpenChange, preview, title, onImport }: I
     setImporting(true);
     try {
       const result = await onImport(Array.from(selected), { passphrase, overwrite });
+      if (!result) return;
       await refresh();
       // 有跳过或失败时弹结果明细窗口，全部成功则 toast 后关闭
       if (result.skipped > 0 || result.failed > 0) {

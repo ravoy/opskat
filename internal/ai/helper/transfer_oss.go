@@ -7,8 +7,8 @@ import (
 	"path"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/oss_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/oss_svc"
 )
 
 // ossTransferService 是传输面用到的那一小片 oss_svc.Service。

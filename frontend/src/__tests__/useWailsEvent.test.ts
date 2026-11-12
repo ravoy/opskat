@@ -1,7 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { useWailsEvent } from "../hooks/useWailsEvent";
-import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
+import { EventsOn } from "@/lib/desktop";
+
+// 订阅与退订都走监听者自己的 cancel：EventsOff(name) 会把这个事件名下的所有监听
+// 一起摘掉（同事件名的另一个组件会突然失联）。
 
 describe("useWailsEvent", () => {
   beforeEach(() => {
@@ -15,26 +18,28 @@ describe("useWailsEvent", () => {
     expect(EventsOn).toHaveBeenCalledWith("test:event", handler);
   });
 
-  it("unsubscribes on unmount", () => {
+  it("unsubscribes with this listener's own cancel", () => {
+    const cancel = vi.fn();
+    vi.mocked(EventsOn).mockReturnValueOnce(cancel);
     const handler = vi.fn();
     const { unmount } = renderHook(() => useWailsEvent("test:event", handler));
 
     unmount();
 
-    expect(EventsOff).toHaveBeenCalledWith("test:event");
+    expect(cancel).toHaveBeenCalledTimes(1);
   });
 
-  it("resubscribes when event name changes", () => {
+  it("cancels the previous subscription when the event name changes", () => {
+    const cancelA = vi.fn();
+    vi.mocked(EventsOn).mockReturnValueOnce(cancelA);
     const handler = vi.fn();
     const { rerender } = renderHook(({ eventName }) => useWailsEvent(eventName, handler), {
       initialProps: { eventName: "event:a" },
     });
 
-    expect(EventsOn).toHaveBeenCalledWith("event:a", handler);
-
     rerender({ eventName: "event:b" });
 
-    expect(EventsOff).toHaveBeenCalledWith("event:a");
-    expect(EventsOn).toHaveBeenCalledWith("event:b", handler);
+    expect(cancelA).toHaveBeenCalledTimes(1);
+    expect(EventsOn).toHaveBeenLastCalledWith("event:b", handler);
   });
 });

@@ -5,7 +5,7 @@ package snippet_repo
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/model/entity/snippet_entity"
+	"github.com/octays/opskat/internal/model/entity/snippet_entity"
 )
 
 // SnippetQuery 查询参数

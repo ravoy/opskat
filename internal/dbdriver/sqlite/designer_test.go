@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 表设计器的测试都在真实的库文件上：语句生成之后经 ExecuteBatch 执行，再读回文件确认结构。

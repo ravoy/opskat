@@ -2,11 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
 import { ExtensionSection } from "../../../components/settings/ExtensionSection";
 import { useSettingsUiStore } from "@/stores/settingsUiStore";
-import {
-  ListInstalledExtensions,
-  GetExtensionDetail,
-  GetCommandReviewState,
-} from "../../../../wailsjs/go/extension/Extension";
+import { ListInstalledExtensions, GetExtensionDetail, GetCommandReviewState } from "@clients/extension";
 
 function installed(name: string, credentials: string) {
   return {

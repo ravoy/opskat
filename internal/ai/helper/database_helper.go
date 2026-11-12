@@ -9,11 +9,11 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/connpool"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/credential_resolver"
-	"github.com/opskat/opskat/internal/sshpool"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/sshpool"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // --- Database 连接缓存 ---

@@ -9,10 +9,10 @@ import (
 	"github.com/DATA-DOG/go-sqlmock"
 	. "github.com/smartystreets/goconvey/convey"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
-	opskat "github.com/opskat/opskat/pkg/extsdk"
-	"github.com/opskat/opskat/pkg/extsdk/internal/registration"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
+	opskat "github.com/octays/opskat/pkg/extsdk"
+	"github.com/octays/opskat/pkg/extsdk/internal/registration"
 )
 
 var demoDriver = dbdriver.Descriptor{

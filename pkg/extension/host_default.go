@@ -14,8 +14,8 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/pkg/netdial"
-	"github.com/opskat/opskat/internal/pkg/proxychain"
+	"github.com/octays/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/pkg/proxychain"
 )
 
 // DialContextFunc opens a network connection, like net.Dialer.DialContext.

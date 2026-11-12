@@ -8,11 +8,11 @@ import (
 	"context"
 	"sync"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/service/extension_svc"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // LangProvider 由 system binder 实现。
@@ -71,6 +71,8 @@ type pendingOpsctlApproval struct {
 func (o *Opsctl) SetAuthToken(token string) { o.authToken = token }
 
 // SetExtDevInstaller main.go 注入扩展开发安装器。
+//
+//wails:ignore
 func (o *Opsctl) SetExtDevInstaller(i ExtDevInstaller) { o.extDevInstaller = i }
 
 // New 构造 opsctl binder。
@@ -86,7 +88,7 @@ func New(
 	}
 	o.extDevApprove = o.requestSingleApproval
 	o.emit = func(name string, payload map[string]any) {
-		wailsRuntime.EventsEmit(o.ctx, name, payload)
+		application.Get().Event.Emit(name, payload)
 	}
 	return o
 }

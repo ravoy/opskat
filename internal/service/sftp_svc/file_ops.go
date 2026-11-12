@@ -14,7 +14,7 @@ import (
 
 	"github.com/cago-frame/cago/pkg/logger"
 
-	"github.com/opskat/opskat/internal/pkg/sftpio"
+	"github.com/octays/opskat/internal/pkg/sftpio"
 )
 
 // PasteItem is one clipboard entry to paste. TargetName is the exact name it lands

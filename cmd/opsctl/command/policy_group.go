@@ -12,12 +12,12 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/model/entity/policy_group_entity"
-	"github.com/opskat/opskat/internal/service/policy_group_svc"
-	"github.com/opskat/opskat/internal/service/policy_rule_svc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/model/entity/policy_group_entity"
+	"github.com/octays/opskat/internal/service/policy_group_svc"
+	"github.com/octays/opskat/internal/service/policy_rule_svc"
 )
 
 // opsctl policy group 子族与 policy attach / detach（spec 决策 21）。三种组 ID 形态的

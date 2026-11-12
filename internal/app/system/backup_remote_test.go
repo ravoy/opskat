@@ -6,8 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/service/backup_svc"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/service/backup_svc"
 )
 
 func TestPreviewWebDAVBackupDecryptsSummaryWithoutImporting(t *testing.T) {

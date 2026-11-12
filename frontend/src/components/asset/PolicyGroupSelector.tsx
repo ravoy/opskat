@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Plus, X, Shield, Lock, Puzzle } from "lucide-react";
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@opskat/ui";
-import { ListPolicyGroups } from "../../../wailsjs/go/system/System";
+import { ListPolicyGroups } from "@clients/system";
 import { AsyncState, type AsyncStatus } from "@/components/common/AsyncState";
 import { errorMessage } from "@/lib/errorMessage";
 import { loadExtensionLocales } from "@/extension/i18n";
-import type { policy_group_entity } from "../../../wailsjs/go/models";
+import type * as policy_group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/policy_group_entity/models";
 
 interface PolicyGroupSelectorProps {
   policyType: string;

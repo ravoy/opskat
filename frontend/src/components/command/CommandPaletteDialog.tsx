@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Dialog, DialogContent, DialogTitle } from "@opskat/ui";
 import { CommandPalette } from "./CommandPalette";
 import { usePaletteFocusReturn } from "./usePaletteFocusReturn";
-import type { asset_entity } from "../../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 interface CommandPaletteDialogProps {
   open: boolean;

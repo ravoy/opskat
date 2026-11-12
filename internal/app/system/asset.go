@@ -8,25 +8,26 @@ import (
 	"time"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/audit"
-	"github.com/opskat/opskat/internal/ai/helper"
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/model/entity/policy_group_entity"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/conntest"
-	"github.com/opskat/opskat/internal/service/group_svc"
-	"github.com/opskat/opskat/internal/service/policy_group_svc"
-	"github.com/opskat/opskat/internal/service/ssh_agent_svc"
-	"github.com/opskat/opskat/internal/service/testreg"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/audit"
+	"github.com/octays/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/model/entity/policy_group_entity"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/conntest"
+	"github.com/octays/opskat/internal/service/group_svc"
+	"github.com/octays/opskat/internal/service/policy_group_svc"
+	"github.com/octays/opskat/internal/service/ssh_agent_svc"
+	"github.com/octays/opskat/internal/service/testreg"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 // --- 策略测试 ---
@@ -335,9 +336,9 @@ func (s *System) DeleteGroup(id int64, deleteAssets bool) error {
 // SelectTLSCertFile 打开原生文件对话框，返回选中的证书 / 私钥文件绝对路径。
 // 取消选择返回空字符串（不算错误）。前端用于 TLS 证书"文件路径"来源的"选择"按钮。
 func (s *System) SelectTLSCertFile() (string, error) {
-	path, err := wailsRuntime.OpenFileDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+	path, err := desktop.OpenFile(application.OpenFileDialogOptions{
 		Title: "选择证书文件",
-		Filters: []wailsRuntime.FileFilter{
+		Filters: []application.FileFilter{
 			{DisplayName: "Certificate / Key (*.pem, *.crt, *.cer, *.key)", Pattern: "*.pem;*.crt;*.cer;*.key"},
 			{DisplayName: "All Files", Pattern: "*"},
 		},
@@ -351,9 +352,9 @@ func (s *System) SelectTLSCertFile() (string, error) {
 // SelectSQLiteFile 打开原生文件对话框，返回选中的 SQLite 文件绝对路径。
 // 取消选择返回空字符串（不算错误）。前端用于资产创建/编辑时的"浏览…"按钮。
 func (s *System) SelectSQLiteFile() (string, error) {
-	path, err := wailsRuntime.OpenFileDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+	path, err := desktop.OpenFile(application.OpenFileDialogOptions{
 		Title: "选择 SQLite 数据库文件",
-		Filters: []wailsRuntime.FileFilter{
+		Filters: []application.FileFilter{
 			{DisplayName: "SQLite (*.db, *.sqlite, *.sqlite3)", Pattern: "*.db;*.sqlite;*.sqlite3"},
 			{DisplayName: "All Files", Pattern: "*"},
 		},

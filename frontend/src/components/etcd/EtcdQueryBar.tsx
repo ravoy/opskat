@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Input, Button } from "@opskat/ui";
 import { Loader2, Play } from "lucide-react";
 import { useEtcdStore } from "@/stores/etcdStore";
-import type { etcd_svc } from "../../../wailsjs/go/models";
+import type * as etcd_svc from "@bindings/github.com/octays/opskat/internal/service/etcd_svc/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 export interface EtcdQueryBarProps {

@@ -8,11 +8,11 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/localterm_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/localterm_svc"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // LocalConnectRequest 前端本地终端连接请求。
@@ -20,6 +20,9 @@ type LocalConnectRequest struct {
 	AssetID int64 `json:"assetId"`
 	Cols    int   `json:"cols"`
 	Rows    int   `json:"rows"`
+	// ConnectionID 由前端预生成（订阅进度事件必须先于连接调用），
+	// 见 SSHConnectRequest.ConnectionID；留空则由服务端生成。
+	ConnectionID string `json:"connectionId"`
 }
 
 // LocalConnectEvent 本地终端异步连接事件。
@@ -50,7 +53,10 @@ func (l *Local) ConnectLocalAsync(req LocalConnectRequest) (string, error) {
 	}
 
 	// 生成 connectionId
-	connectionID := l.nextConnectionID()
+	connectionID, err := l.resolveConnectionID(req.ConnectionID)
+	if err != nil {
+		return "", err
+	}
 	eventName := "local:connect:" + connectionID
 
 	// 从 l.ctx 派生取消上下文：应用退出（Wails ctx 取消）时连接中途终止，
@@ -58,7 +64,7 @@ func (l *Local) ConnectLocalAsync(req LocalConnectRequest) (string, error) {
 	connCtx, cancel := context.WithCancel(l.ctx)
 
 	emitEvent := func(event LocalConnectEvent) {
-		wailsRuntime.EventsEmit(l.ctx, eventName, event)
+		application.Get().Event.Emit(eventName, event)
 	}
 
 	go func() {
@@ -92,10 +98,10 @@ func (l *Local) ConnectLocalAsync(req LocalConnectRequest) (string, error) {
 		l.manager.SetCallbacks(
 			sessionID,
 			func(data []byte) {
-				wailsRuntime.EventsEmit(l.ctx, "local:data:"+sessionID, base64.StdEncoding.EncodeToString(data))
+				application.Get().Event.Emit("local:data:"+sessionID, base64.StdEncoding.EncodeToString(data))
 			},
 			func(sid string) {
-				wailsRuntime.EventsEmit(l.ctx, "local:closed:"+sid, nil)
+				application.Get().Event.Emit("local:closed:"+sid, nil)
 			},
 		)
 
@@ -119,10 +125,10 @@ func (l *Local) SplitLocal(existingSessionID string, cols, rows int) (string, er
 	l.manager.SetCallbacks(
 		sessionID,
 		func(data []byte) {
-			wailsRuntime.EventsEmit(l.ctx, "local:data:"+sessionID, base64.StdEncoding.EncodeToString(data))
+			application.Get().Event.Emit("local:data:"+sessionID, base64.StdEncoding.EncodeToString(data))
 		},
 		func(sid string) {
-			wailsRuntime.EventsEmit(l.ctx, "local:closed:"+sid, nil)
+			application.Get().Event.Emit("local:closed:"+sid, nil)
 		},
 	)
 

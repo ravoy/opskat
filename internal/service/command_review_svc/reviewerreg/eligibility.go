@@ -8,8 +8,8 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/internal/service/extension_svc"
 )
 
 // Why a reviewer cannot be used here (command_review_svc.ReviewerInfo.Reason); the

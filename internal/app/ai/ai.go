@@ -8,14 +8,14 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/runner"
-	"github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/service/extension_svc"
-	"github.com/opskat/opskat/internal/service/kafka_svc"
-	"github.com/opskat/opskat/internal/service/serial_svc"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/runner"
+	"github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/internal/service/kafka_svc"
+	"github.com/octays/opskat/internal/service/serial_svc"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 // LangProvider 由 system binder 实现。
@@ -57,7 +57,6 @@ type AI struct {
 	permissionChan     chan runner.PermissionResponse
 	pendingAIApprovals sync.Map // map[string]pendingAIApproval
 
-	flushAckCh chan struct{}
 }
 
 type pendingAIApproval struct {
@@ -83,7 +82,6 @@ func New(appCtx context.Context, lang LangProvider, pool *sshpool.Pool) *AI {
 		pool:           pool,
 		docGate:        tool.NewDocGate(),
 		permissionChan: make(chan runner.PermissionResponse, 1),
-		flushAckCh:     make(chan struct{}, 1),
 	}
 }
 
@@ -91,7 +89,6 @@ func New(appCtx context.Context, lang LangProvider, pool *sshpool.Pool) *AI {
 func (a *AI) Startup(ctx context.Context) {
 	a.ctx = ctx
 	a.InitAIProvider()
-	a.subscribeAIFlushAck()
 	aictx.SetDataChangeNotifier(&dataChangeNotifier{ai: a})
 }
 
@@ -115,15 +112,4 @@ func activeTasks(a *AI) []int64 {
 	})
 	sort.Slice(ids, func(i, j int) bool { return ids[i] < ids[j] })
 	return ids
-}
-
-// WaitAIFlushAck 暴露给 main.go 的 OnBeforeClose，等待前端 flush 完成。
-func (a *AI) WaitAIFlushAck() <-chan struct{} { return a.flushAckCh }
-
-// DrainAIFlushAck 在 emit ai:flush-all 之前清空 channel 上一次残留，避免拿到旧 ack。
-func (a *AI) DrainAIFlushAck() {
-	select {
-	case <-a.flushAckCh:
-	default:
-	}
 }

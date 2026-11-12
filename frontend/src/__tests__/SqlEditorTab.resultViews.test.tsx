@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { SqlEditorTab } from "@/components/query/SqlEditorTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { ExecuteSQLPaged } from "../../wailsjs/go/query/Query";
+import { ExecuteSQLPaged } from "@clients/query";
 import { isMac } from "@/stores/shortcutStore";
 import { BUILTIN_DRIVERS, provideDrivers } from "./dbDriverFixtures";
 import { mounted } from "../components/query/__tests__/fakeSqlEditor";

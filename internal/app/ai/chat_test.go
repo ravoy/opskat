@@ -8,8 +8,8 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/repository/custom_type_repo"
-	"github.com/opskat/opskat/internal/repository/custom_type_repo/mock_custom_type_repo"
+	"github.com/octays/opskat/internal/repository/custom_type_repo"
+	"github.com/octays/opskat/internal/repository/custom_type_repo/mock_custom_type_repo"
 )
 
 func TestFinishRunnerRemovesOnlyCompletedEntry(t *testing.T) {

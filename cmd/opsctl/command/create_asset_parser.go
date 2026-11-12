@@ -11,9 +11,9 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 type assetCreateRequest struct {

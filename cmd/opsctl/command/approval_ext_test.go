@@ -14,11 +14,11 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/model/entity/grant_entity"
-	"github.com/opskat/opskat/internal/repository/grant_repo"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/model/entity/grant_entity"
+	"github.com/octays/opskat/internal/repository/grant_repo"
 )
 
 // opsctl's approval chain on an extension asset: the same chain built-in types take

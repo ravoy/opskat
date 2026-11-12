@@ -7,10 +7,10 @@ import (
 	"sync"
 
 	"github.com/cago-frame/agents/agent"
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/helper"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/policy"
 )
 
 // LocalToolApprovalRequest 是 LocalToolGate 发往前端的本地工具审批载荷。

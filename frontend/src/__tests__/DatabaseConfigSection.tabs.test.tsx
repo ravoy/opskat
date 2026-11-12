@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { DatabaseConfigSection } from "@/components/asset/DatabaseConfigSection";
 import { refreshDatabaseDrivers } from "@/lib/dbDrivers";
-import { ListDatabaseDrivers } from "../../wailsjs/go/query/Query";
+import { ListDatabaseDrivers } from "@clients/query";
 import { BUILTIN_DRIVERS } from "./dbDriverFixtures";
 
 beforeEach(() => {

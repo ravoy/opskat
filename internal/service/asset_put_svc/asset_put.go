@@ -10,12 +10,12 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/pkg/dbutil"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/credential_mgr_svc"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/pkg/dbutil"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/credential_mgr_svc"
 )
 
 // Request contains one create or update operation. Asset.ID == 0 creates;

@@ -18,8 +18,8 @@ import (
 	"github.com/twmb/franz-go/pkg/sasl/scram"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 const (

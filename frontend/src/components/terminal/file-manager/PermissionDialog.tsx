@@ -13,8 +13,8 @@ import {
   Label,
   cn,
 } from "@opskat/ui";
-import { SFTPApplyPermissions, SFTPProperties } from "../../../../wailsjs/go/ssh/SSH";
-import { sftp_svc } from "../../../../wailsjs/go/models";
+import { SFTPApplyPermissions, SFTPProperties } from "@clients/ssh";
+import * as sftp_svc from "@bindings/github.com/octays/opskat/internal/service/sftp_svc/models";
 import { formatBytes } from "./utils";
 import { type PermissionTarget } from "./types";
 import { errorMessage } from "@/lib/errorMessage";

@@ -11,12 +11,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/pkg/authtmpl"
-	"github.com/opskat/opskat/internal/pkg/executil"
-	"github.com/opskat/opskat/internal/pkg/shellutil"
+	"github.com/octays/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/pkg/authtmpl"
+	"github.com/octays/opskat/internal/pkg/executil"
+	"github.com/octays/opskat/internal/pkg/shellutil"
 )
 
 // 通用资产的本地命令执行方式（docs/specs/2026-09-28-generic-asset.md「本地命令」，Design

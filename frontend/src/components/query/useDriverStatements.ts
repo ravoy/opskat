@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { ClassifySQLStatements } from "../../../wailsjs/go/query/Query";
+import { ClassifySQLStatements } from "@clients/query";
 import { fromDriverStatements, type ClassifiedSqlStatement } from "@/lib/sqlStatements";
 import { errorMessage } from "@/lib/errorMessage";
 

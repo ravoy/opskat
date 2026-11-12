@@ -8,9 +8,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/model/entity/grant_entity"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/model/entity/grant_entity"
 )
 
 // abandoningCaller stands in for an opsctl process that leaves while its approval

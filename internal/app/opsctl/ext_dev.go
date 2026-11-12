@@ -10,12 +10,12 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/internal/service/extension_svc"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extmanifest"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

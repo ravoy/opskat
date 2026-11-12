@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/assettype"
 )
 
 var configFieldRow = regexp.MustCompile(`(?m)^\| \x60([^\x60]+)\x60 \|`)

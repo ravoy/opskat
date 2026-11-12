@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/credential_svc"
 	"github.com/smartystreets/goconvey/convey"
 )
 

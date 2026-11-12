@@ -7,7 +7,7 @@ import {
   sqliteSSHError,
   type DatabaseFormState,
 } from "@/components/asset/DatabaseConfigSection.config";
-import { SelectSQLiteFile } from "../../../wailsjs/go/system/System";
+import { SelectSQLiteFile } from "@clients/system";
 import { registerDriverFormField } from "./formFields";
 
 type Patch = (p: Partial<DatabaseFormState>) => void;

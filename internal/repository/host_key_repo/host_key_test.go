@@ -6,7 +6,7 @@ import (
 
 	"github.com/cago-frame/cago/database/db"
 	"github.com/glebarez/sqlite"
-	"github.com/opskat/opskat/internal/model/entity/host_key_entity"
+	"github.com/octays/opskat/internal/model/entity/host_key_entity"
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 )

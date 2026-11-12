@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/proxychain"
+	"github.com/octays/opskat/internal/pkg/proxychain"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/ssh"

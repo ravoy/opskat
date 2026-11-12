@@ -2,7 +2,7 @@ import { createElement, type ComponentType, type CSSProperties } from "react";
 import { Server } from "lucide-react";
 import { findIconComponent, getIconColor } from "@/components/asset/IconPicker";
 import { getAssetType } from "@/lib/assetTypes";
-import type { asset_entity } from "../../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 export type AssetIconComponent = ComponentType<{
   className?: string;

@@ -19,8 +19,8 @@ import (
 	"net"
 	"slices"
 
-	"github.com/opskat/opskat/internal/pkg/sshtuning"
-	"github.com/opskat/opskat/internal/sshagent"
+	"github.com/octays/opskat/internal/pkg/sshtuning"
+	"github.com/octays/opskat/internal/sshagent"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
@@ -111,7 +111,9 @@ func serveAgentChannel(ctx context.Context, channel ssh.Channel, source sshagent
 		return
 	}
 	defer closeAgentLog(ctx, ag)
-	if err := agent.ServeAgent(ag.Forwarder(), channel); err != nil && !errors.Is(err, io.EOF) {
+	// ServeAgent 的循环只在通道 I/O 出错时返回，不会返回 nil：io.EOF 是对端正常
+	// 关闭，其余才值得告警（SA4023：err != nil 在这里恒真）。
+	if err := agent.ServeAgent(ag.Forwarder(), channel); !errors.Is(err, io.EOF) {
 		logger.Ctx(ctx).Warn("serve forwarded ssh agent channel", zap.Error(err))
 	}
 }

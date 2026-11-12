@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { CountTableRows, ExecuteSQL, OpenTable, QueryTableRows } from "../../../../wailsjs/go/query/Query";
+import { CountTableRows, ExecuteSQL, OpenTable, QueryTableRows } from "@clients/query";
 import { BUILTIN_DRIVERS, mockGridEditStatements, provideDrivers } from "@/__tests__/dbDriverFixtures";
 
 const ROWS = [

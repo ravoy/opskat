@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // registerBulkExtension registers acme with one extra tool whose `body` parameter

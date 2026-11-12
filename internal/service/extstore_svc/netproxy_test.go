@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/pkg/netproxy"
-	"github.com/opskat/opskat/internal/pkg/netproxy/netproxytest"
+	"github.com/octays/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/pkg/netproxy/netproxytest"
 )
 
 // 调用 netproxy.Set 的测试改了进程级状态，不能 t.Parallel。

@@ -17,7 +17,7 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/pkg/netdial"
 )
 
 // resolveFunc resolves a hostname for a dial network (tcp / tcp4 / tcp6).

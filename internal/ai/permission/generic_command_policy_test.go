@@ -8,11 +8,11 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/model/entity/grant_entity"
-	"github.com/opskat/opskat/internal/repository/grant_repo"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/model/entity/grant_entity"
+	"github.com/octays/opskat/internal/repository/grant_repo"
 )
 
 // setupGenericCommandPermission 注册一个命令方式的自定义类型与一台引用它的资产（id 1）。

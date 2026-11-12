@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // indexRow 是 indexesSQL 的一行（索引的一列）。column 为空是表达式键（text 是表达式）。

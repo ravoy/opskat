@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	opskat "github.com/opskat/opskat/pkg/extsdk"
+	opskat "github.com/octays/opskat/pkg/extsdk"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

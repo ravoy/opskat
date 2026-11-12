@@ -11,10 +11,10 @@ import {
   RespondHostKeyVerify,
   UpdateAssetPassword,
   ConnectSSHAsync,
-} from "../../../../wailsjs/go/ssh/SSH";
-import { asset_entity } from "../../../../wailsjs/go/models";
+} from "@clients/ssh";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
-vi.mock("../../../../wailsjs/go/ssh/SSH", () => ({
+vi.mock("@clients/ssh", () => ({
   ConnectSSHAsync: vi.fn().mockResolvedValue("new-conn"),
   RespondAuthChallenge: vi.fn(),
   RespondHostKeyVerify: vi.fn(),
@@ -27,7 +27,7 @@ vi.mock("../../../../wailsjs/go/ssh/SSH", () => ({
   WriteSSH: vi.fn(),
 }));
 
-vi.mock("../../../../wailsjs/runtime/runtime", () => ({
+vi.mock("@/lib/desktop", () => ({
   EventsOn: vi.fn(),
   EventsOff: vi.fn(),
 }));
@@ -237,6 +237,39 @@ describe("ConnectionProgress MFA 挑战", () => {
     useAssetStore.setState({
       assets: [new asset_entity.Asset({ ID: 1, Name: "Server 1", Type: "ssh", Config: "{}" })],
     });
+    // 重试走 startPaneConnection:它先确认窗格还在(有 tab + connecting 叶子)再发起
+    // 连接,因此这里按真实结构播种 tab。
+    useTabStore.setState({
+      tabs: [
+        {
+          id: "conn-1",
+          type: "terminal",
+          label: "Server 1",
+          meta: {
+            type: "terminal",
+            assetId: 1,
+            assetName: "Server 1",
+            assetIcon: "",
+            host: "",
+            port: 22,
+            username: "",
+          },
+        },
+      ],
+      activeTabId: "conn-1",
+    });
+    useTerminalStore.setState((s) => ({
+      tabData: {
+        ...s.tabData,
+        "conn-1": {
+          splitTree: { type: "connecting", connectionId: "conn-1" },
+          activePaneId: "conn-1",
+          panes: {},
+          directoryFollowMode: "off",
+        },
+      },
+      connections: s.connections,
+    }));
     const u = userEvent.setup();
     render(<ConnectionProgress connectionId="conn-1" isTabActive isPaneActive />);
 

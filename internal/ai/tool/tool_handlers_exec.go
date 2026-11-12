@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
 )
 
 func handleRequestGrant(ctx context.Context, args map[string]any) (string, error) {

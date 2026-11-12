@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/pkg/kerberos/kerberostest"
+	"github.com/octays/opskat/internal/pkg/kerberos/kerberostest"
 )
 
 const (

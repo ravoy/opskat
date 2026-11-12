@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/host_key_entity"
+	"github.com/octays/opskat/internal/model/entity/host_key_entity"
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 )

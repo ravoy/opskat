@@ -7,9 +7,9 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	mongov1opts "go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/netdial"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 func TestConfigureMongoTransportV1(t *testing.T) {

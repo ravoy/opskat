@@ -201,7 +201,7 @@ func parseSource(t *testing.T, path, src string) parsedFile {
 func TestCheckImportBan(t *testing.T) {
 	rule := importBanRule{
 		dir:       "internal/app/",
-		banned:    []string{"github.com/opskat/opskat/internal/repository"},
+		banned:    []string{"github.com/octays/opskat/internal/repository"},
 		skipTests: true,
 		exempt:    map[string]bool{"internal/app/legacy/old.go": true},
 		message:   "走域服务",
@@ -210,7 +210,7 @@ func TestCheckImportBan(t *testing.T) {
 	t.Run("命中禁用包及其子包", func(t *testing.T) {
 		pf := parseSource(t, "internal/app/x/x.go",
 			`package x
-import "github.com/opskat/opskat/internal/repository/asset_repo"
+import "github.com/octays/opskat/internal/repository/asset_repo"
 var _ = asset_repo.Asset`)
 		if vs := checkImportBan(pf, rule); len(vs) != 1 {
 			t.Fatalf("want 1 violation, got %v", vs)
@@ -220,7 +220,7 @@ var _ = asset_repo.Asset`)
 	t.Run("import 别名不能绕过（按路径匹配）", func(t *testing.T) {
 		pf := parseSource(t, "internal/app/x/x.go",
 			`package x
-import ar "github.com/opskat/opskat/internal/repository/asset_repo"
+import ar "github.com/octays/opskat/internal/repository/asset_repo"
 var _ = ar.Asset`)
 		if vs := checkImportBan(pf, rule); len(vs) != 1 {
 			t.Fatalf("want 1 violation, got %v", vs)
@@ -230,7 +230,7 @@ var _ = ar.Asset`)
 	t.Run("前缀相似的无关包不误报", func(t *testing.T) {
 		pf := parseSource(t, "internal/app/x/x.go",
 			`package x
-import "github.com/opskat/opskat/internal/repositoryx"
+import "github.com/octays/opskat/internal/repositoryx"
 var _ = repositoryx.X`)
 		if vs := checkImportBan(pf, rule); len(vs) != 0 {
 			t.Fatalf("want 0 violations, got %v", vs)
@@ -240,7 +240,7 @@ var _ = repositoryx.X`)
 	t.Run("目录范围之外不检查", func(t *testing.T) {
 		pf := parseSource(t, "internal/service/asset_svc/svc.go",
 			`package asset_svc
-import "github.com/opskat/opskat/internal/repository/asset_repo"
+import "github.com/octays/opskat/internal/repository/asset_repo"
 var _ = asset_repo.Asset`)
 		if vs := checkImportBan(pf, rule); len(vs) != 0 {
 			t.Fatalf("want 0 violations, got %v", vs)
@@ -250,7 +250,7 @@ var _ = asset_repo.Asset`)
 	t.Run("豁免路径不报", func(t *testing.T) {
 		pf := parseSource(t, "internal/app/legacy/old.go",
 			`package legacy
-import "github.com/opskat/opskat/internal/repository/asset_repo"
+import "github.com/octays/opskat/internal/repository/asset_repo"
 var _ = asset_repo.Asset`)
 		if vs := checkImportBan(pf, rule); len(vs) != 0 {
 			t.Fatalf("want 0 violations, got %v", vs)
@@ -278,7 +278,7 @@ var _ = log.Printf`)
 	t.Run("skipTests 时测试文件放行", func(t *testing.T) {
 		pf := parseSource(t, "internal/app/x/x_test.go",
 			`package x
-import "github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
+import "github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
 var _ = mock_asset_repo.New`)
 		if vs := checkImportBan(pf, rule); len(vs) != 0 {
 			t.Fatalf("want 0 violations, got %v", vs)
@@ -292,16 +292,16 @@ var _ = mock_asset_repo.New`)
 				"cmd/opsctl/command/policy_group.go": true,
 				"cmd/opsctl/command/tty_approval.go": true,
 			},
-			banned:  []string{"github.com/opskat/opskat/internal/repository", "github.com/opskat/opskat/internal/pkg/dbutil"},
+			banned:  []string{"github.com/octays/opskat/internal/repository", "github.com/octays/opskat/internal/pkg/dbutil"},
 			message: "经 policy service 访问",
 		}
 		for _, tc := range []struct {
 			path       string
 			importPath string
 		}{
-			{path: "cmd/opsctl/command/policy.go", importPath: "github.com/opskat/opskat/internal/repository/asset_repo"},
-			{path: "cmd/opsctl/command/policy_group.go", importPath: "github.com/opskat/opskat/internal/pkg/dbutil"},
-			{path: "cmd/opsctl/command/tty_approval.go", importPath: "github.com/opskat/opskat/internal/repository/asset_repo"},
+			{path: "cmd/opsctl/command/policy.go", importPath: "github.com/octays/opskat/internal/repository/asset_repo"},
+			{path: "cmd/opsctl/command/policy_group.go", importPath: "github.com/octays/opskat/internal/pkg/dbutil"},
+			{path: "cmd/opsctl/command/tty_approval.go", importPath: "github.com/octays/opskat/internal/repository/asset_repo"},
 		} {
 			pf := parseSource(t, tc.path, "package command\nimport _ \""+tc.importPath+"\"")
 			if vs := checkImportBan(pf, fileRule); len(vs) != 1 {
@@ -311,7 +311,7 @@ var _ = mock_asset_repo.New`)
 
 		pf := parseSource(t, "cmd/opsctl/command/asset.go",
 			`package command
-import "github.com/opskat/opskat/internal/repository/asset_repo"
+import "github.com/octays/opskat/internal/repository/asset_repo"
 var _ = asset_repo.Asset`)
 		if vs := checkImportBan(pf, fileRule); len(vs) != 0 {
 			t.Fatalf("unlisted sibling: want 0 violations, got %v", vs)

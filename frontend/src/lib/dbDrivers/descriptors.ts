@@ -2,8 +2,8 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 // 应用的 i18n（src/i18n）初始化的就是 i18next 的默认实例；这里只读当前语言，不引入它的初始化副作用。
 import i18n from "i18next";
 import { toast } from "sonner";
-import { DatabaseDriverOwner, ListDatabaseDrivers } from "../../../wailsjs/go/query/Query";
-import type { dbdriver } from "../../../wailsjs/go/models";
+import { DatabaseDriverOwner, ListDatabaseDrivers } from "@clients/query";
+import type * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 /** 后端驱动注册表里一个驱动的自我描述(原样来自 Query.ListDatabaseDrivers,专属字段的文案已按当前语言翻译)。 */
@@ -80,7 +80,7 @@ export const OBJECT_BROWSER_CAPABILITIES = ["views", "procedures", "functions", 
 
 /** 驱动是否声明了某项功能(Go 侧 dbdriver.Capability 的取值,如 "view_ddl");未声明即不支持。 */
 export function driverHasCapability(driver: DriverDescriptor | undefined, capability: string): boolean {
-  return !!driver && driver.capabilities.includes(capability);
+  return !!driver && driver.capabilities.some((value) => value === capability);
 }
 
 /**
@@ -88,7 +88,7 @@ export function driverHasCapability(driver: DriverDescriptor | undefined, capabi
  * 新增与删除列不在其列,声明了改表就能做。描述里没有这份声明(null)即一项也不能改。
  */
 export function driverCanAlter(driver: DriverDescriptor | undefined, attribute: string): boolean {
-  return !!driver?.alterTableAttributes?.includes(attribute);
+  return !!driver?.alterTableAttributes?.some((value) => value === attribute);
 }
 
 /**
@@ -117,5 +117,5 @@ export function useDatabaseDriverOwner(id: string | undefined): string | null {
 
 /** 驱动是否在资产表单的任一 Tab 里使用该字段(Go 侧 dbdriver.FormField 的取值,如 "host")。 */
 export function driverUsesField(driver: DriverDescriptor, field: string): boolean {
-  return driver.form.some((tab) => tab.fields.includes(field));
+  return driver.form.some((tab) => tab.fields.some((value) => value === field));
 }

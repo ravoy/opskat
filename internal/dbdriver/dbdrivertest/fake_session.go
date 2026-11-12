@@ -9,7 +9,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 var (

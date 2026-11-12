@@ -9,7 +9,7 @@ import (
 	"github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/aictx"
 )
 
 func TestTruncateString(t *testing.T) {

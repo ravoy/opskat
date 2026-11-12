@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { ShieldCheck } from "lucide-react";
 import { useWailsEvent } from "@/hooks/useWailsEvent";
 import { AuthChallengeForm } from "@/components/terminal/AuthChallengeForm";
-import { RespondOpsctlMFA, CancelOpsctlMFA } from "../../../wailsjs/go/opsctl/Opsctl";
+import { RespondOpsctlMFA, CancelOpsctlMFA } from "@clients/opsctl";
 import { errorMessage } from "@/lib/errorMessage";
 
 interface MFAChallengeEvent {

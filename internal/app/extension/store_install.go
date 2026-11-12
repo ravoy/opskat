@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/service/extstore_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/service/extstore_svc"
 )
 
 // storeProgressEvent reports a store install's progress to the frontend; the

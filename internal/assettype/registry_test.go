@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
 	"github.com/smartystreets/goconvey/convey"
 )
 

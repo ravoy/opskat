@@ -15,7 +15,7 @@ import {
 } from "@/stores/tabStore";
 import { useSFTPStore } from "@/stores/sftpStore";
 import { useShortcutStore, formatBinding, type ShortcutAction } from "@/stores/shortcutStore";
-import { asset_entity } from "../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { ExtensionPage } from "@/extension";
 import { TopTabBar } from "./TopTabBar";
 import { useLayoutStore } from "@/stores/layoutStore";
@@ -70,6 +70,7 @@ interface MainPanelProps {
   onDeleteAsset: (id: number) => void;
   onConnectAsset: (asset: asset_entity.Asset) => void;
   topBarHidden?: boolean;
+  tabBarMode?: "auto" | "hidden" | "top";
 }
 
 function PanelFallback() {
@@ -84,7 +85,13 @@ function LazySurface({ children }: { children: ReactNode }) {
   return <Suspense fallback={<PanelFallback />}>{children}</Suspense>;
 }
 
-export function MainPanel({ onEditAsset, onDeleteAsset, onConnectAsset, topBarHidden = false }: MainPanelProps) {
+export function MainPanel({
+  onEditAsset,
+  onDeleteAsset,
+  onConnectAsset,
+  topBarHidden = false,
+  tabBarMode = "auto",
+}: MainPanelProps) {
   const { t } = useTranslation();
 
   const tabs = useTabStore((s) => s.tabs);
@@ -224,7 +231,9 @@ export function MainPanel({ onEditAsset, onDeleteAsset, onConnectAsset, topBarHi
   return (
     <div className="flex flex-1 flex-col min-w-0">
       {/* Tab bar with integrated drag region (top layout only) */}
-      {hasTabs && tabBarLayout === "top" && <TopTabBar topmost={topBarHidden} />}
+      {hasTabs && tabBarMode !== "hidden" && (tabBarMode === "top" || tabBarLayout === "top") && (
+        <TopTabBar topmost={topBarHidden} />
+      )}
 
       {/* Content area */}
       <div className="flex-1 relative min-h-0 overflow-hidden">

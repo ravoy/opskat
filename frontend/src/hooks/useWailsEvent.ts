@@ -1,14 +1,14 @@
 import { useEffect } from "react";
-import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
+import { EventsOn } from "@/lib/desktop";
 
 /**
- * Subscribe to a Wails event with automatic cleanup.
+ * Subscribe to a Wails event with automatic cleanup. Unsubscribe with the
+ * listener's own cancel: `EventsOff(name)` drops every listener for the name,
+ * so it would silently detach another component's subscription to the same event.
  */
 export function useWailsEvent<T = unknown>(eventName: string, handler: (data: T) => void) {
   useEffect(() => {
-    EventsOn(eventName, handler);
-    return () => {
-      EventsOff(eventName);
-    };
+    const off = EventsOn(eventName, handler);
+    return off;
   }, [eventName, handler]);
 }

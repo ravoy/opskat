@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { SideAssistantTabBar } from "../SideAssistantTabBar";
 import { useAssetStore } from "@/stores/assetStore";
 import type { SidebarAITab, SidebarTabStatus } from "@/stores/aiStore";
-import { asset_entity } from "../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 const baseTab: SidebarAITab = {
   id: "s1",

@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	_ "github.com/opskat/opskat/internal/dbdriver/builtin"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	_ "github.com/octays/opskat/internal/dbdriver/builtin"
 )
 
 const driverBranchMessage = "共享代码不得按驱动名分支：驱动差异放进 internal/dbdriver 里该驱动的实现，经注册表调用" +

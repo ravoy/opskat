@@ -14,7 +14,7 @@ import {
   Switch,
   Separator,
 } from "@opskat/ui";
-import { backup_svc } from "../../../wailsjs/go/models";
+import * as backup_svc from "@bindings/github.com/octays/opskat/internal/service/backup_svc/models";
 import { SecretInput } from "@/components/SecretInput";
 import { useAssetStore } from "@/stores/assetStore";
 import { useShortcutStore } from "@/stores/shortcutStore";

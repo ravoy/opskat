@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, act, fireEvent } from "@testing-library/react";
 import { OpsctlApprovalDialog } from "../components/approval/OpsctlApprovalDialog";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
-import { RespondOpsctlApproval } from "../../wailsjs/go/opsctl/Opsctl";
+import { EventsOn } from "@/lib/desktop";
+import { RespondOpsctlApproval } from "@clients/opsctl";
 
 // 插值参数必须可观察，所以本文件的 t 把参数一并渲染出来（同 ActiveTasksQuitDialog.test.tsx
 // 的写法），全局 setup 的 t 会把它们丢掉。

@@ -11,7 +11,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/extwire"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

@@ -262,6 +262,15 @@ export const useShortcutStore = create<ShortcutState>((set) => ({
   },
 }));
 
+// Settings live in a separate WebView; reload through the same storage readers.
+window.addEventListener("storage", (event) => {
+  if (event.key === STORAGE_KEY) {
+    useShortcutStore.setState({ shortcuts: { ...DEFAULT_SHORTCUTS, ...loadCustom() } });
+  } else if (event.key === DISABLE_IN_TERMINAL_KEY) {
+    useShortcutStore.setState({ disableShortcutsInTerminal: loadDisableInTerminal() });
+  }
+});
+
 // Match a KeyboardEvent against shortcuts
 export function matchShortcut(
   e: KeyboardEvent,

@@ -41,7 +41,7 @@ package policy
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -128,8 +128,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
 )
 
 // PolicyKind 是策略逻辑的规范化种类,是 policy 测试链路统一的 dispatch key。
@@ -290,9 +290,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/policy"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

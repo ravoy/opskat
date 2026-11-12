@@ -319,6 +319,9 @@
     "cancelled": "Tool cancelled"
   },
   "tab": {
+    "windowAssetUnavailable": "Asset {{id}} is unavailable",
+    "openInNewWindow": "Open in New Window",
+    "newWindow": "New Window",
     "close": "Close",
     "closeOthers": "Close Others",
     "closeLeft": "Close to the Left",
@@ -1523,6 +1526,7 @@
     },
     "newConversation": "New conversation",
     "sidebar": {
+      "newWindow": "New AI window",
       "title": "AI Assistant",
       "newChat": "New chat",
       "history": "History",
@@ -2170,7 +2174,17 @@
     "genericSecret": "Secret read",
     "queuePosition": "{{current}} of {{total}}",
     "rememberCancel": "Don't remember",
-    "respondFailed": "Your answer didn't go through"
+    "respondFailed": "Your answer didn't go through",
+    "timedAllow": "Timed allow",
+    "timedAllowOpen": "Timed allow…",
+    "timed30m": "30 min",
+    "timed1h": "1 hour",
+    "timed2h": "2 hours",
+    "timedCustomMinutes": "Custom minutes",
+    "timedScope": "Scope:",
+    "timedScopeAsset": "This asset",
+    "timedScopeAll": "All assets",
+    "timedConfirm": "Grant & allow"
   },
   "audit": {
     "title": "Audit Log",

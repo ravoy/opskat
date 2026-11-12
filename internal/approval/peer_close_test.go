@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/localipc"
+	"github.com/octays/opskat/internal/localipc"
 	"github.com/stretchr/testify/require"
 )
 

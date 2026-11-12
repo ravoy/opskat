@@ -1,5 +1,6 @@
 import { expect, type Page } from "@playwright/test";
 import { DatabaseSync } from "node:sqlite";
+import { callBinding } from "./bindings";
 import { dbPath, findAIProviderByName } from "./db";
 
 // Shared plumbing for the AI exec specs: the scripted model (fixtures/openai-mock.mjs),
@@ -66,32 +67,23 @@ export async function ensureAIProvider(page: Page): Promise<void> {
   const existing = findAIProviderByName(AI_PROVIDER_NAME);
   const id =
     existing?.id ??
-    (await page.evaluate(
-      async ([name, apiBase, apiKey]) => {
-        const ai = (window as unknown as { go: { ai: { AI: Record<string, (...a: unknown[]) => Promise<unknown>> } } })
-          .go.ai.AI;
-        const created = (await ai.CreateAIProvider({
-          name,
-          type: "openai",
-          apiBase,
-          apiKey,
-          model: "mock-model",
-          maxOutputTokens: 4096,
-          contextWindow: 32000,
-          reasoningEnabled: false,
-          reasoningEffort: "",
-          extraHeaders: [],
-        })) as { id: number };
-        return created.id;
-      },
-      [AI_PROVIDER_NAME, `${MOCK_BASE}/v1`, AI_PROVIDER_KEY]
-    ));
+    (
+      await callBinding<{ id: number } | null>(page, "/clients/ai.ts", "CreateAIProvider", {
+        name: AI_PROVIDER_NAME,
+        type: "openai",
+        apiBase: `${MOCK_BASE}/v1`,
+        apiKey: AI_PROVIDER_KEY,
+        model: "mock-model",
+        maxOutputTokens: 4096,
+        contextWindow: 32000,
+        reasoningEnabled: false,
+        reasoningEffort: "",
+        extraHeaders: [],
+      })
+    )?.id;
+  if (!id) throw new Error("CreateAIProvider returned no id");
 
-  await page.evaluate(async (providerID) => {
-    const ai = (window as unknown as { go: { ai: { AI: Record<string, (...a: unknown[]) => Promise<unknown>> } } }).go.ai
-      .AI;
-    await ai.SetActiveAIProvider(providerID);
-  }, id);
+  await callBinding(page, "/clients/ai.ts", "SetActiveAIProvider", id);
 
   await page.reload();
 }
@@ -185,7 +177,7 @@ export function seedEtcdAsset(name: string, commandPolicy?: Record<string, unkno
  * Navigates to the app and waits until it has actually mounted.
  *
  * Playwright's webServer readiness only proves *something* answers on the dev
- * port; `wails dev` binds it around the time it (re)launches the app binary, so
+ * port; `wails3 dev` binds it around the time it (re)launches the app binary, so
  * on a loaded machine the first navigations can land on a not-yet-mounted app or
  * even hit ECONNREFUSED during the app's initial restart. These specs sort first
  * in the suite, so they are the ones that meet that window. Retrying the whole

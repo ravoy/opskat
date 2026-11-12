@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { create } from "zustand";
 import { toast } from "sonner";
-import { EventsOn } from "../../../wailsjs/runtime/runtime";
-import type { extstore_svc } from "../../../wailsjs/go/models";
+import { EventsOn } from "@/lib/desktop";
+import type * as extstore_svc from "@bindings/github.com/octays/opskat/internal/service/extstore_svc/models";
 import type { CardInstall, StoreCard, StoreProgress } from "./ExtensionStore";
 import { errorMessage } from "@/lib/errorMessage";
 

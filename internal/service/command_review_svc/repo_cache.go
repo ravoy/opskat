@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/command_review_entity"
-	"github.com/opskat/opskat/internal/repository/command_review_repo"
+	"github.com/octays/opskat/internal/model/entity/command_review_entity"
+	"github.com/octays/opskat/internal/repository/command_review_repo"
 )
 
 // repoCache 把审核结果存进数据库。opsctl 每次运行都是新进程，内存缓存留不住；

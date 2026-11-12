@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/repository/audit_repo"
-	"github.com/opskat/opskat/internal/service/sftp_svc"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/internal/service/sftp_svc"
 )
 
 const (

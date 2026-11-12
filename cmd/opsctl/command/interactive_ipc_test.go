@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/opskat/opskat/internal/approval"
+	"github.com/octays/opskat/internal/approval"
 	"github.com/stretchr/testify/require"
 )
 

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
-vi.mock("../../wailsjs/go/etcd/Etcd", () => ({
+vi.mock("@clients/etcd", () => ({
   EtcdExec: vi.fn().mockResolvedValue({ op: "get", count: 0, kvs: [], revision: 0 }),
   EtcdListPrefix: vi.fn().mockImplementation(async ({ Prefix }: { Prefix: string }) => {
     if (Prefix === "/") {
@@ -36,7 +36,7 @@ describe("EtcdTreePane", () => {
       lastResult: null,
     });
     // mock 是 module scope，调用计数会跨用例累积 —— 显式清零
-    const { EtcdListPrefix } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdListPrefix } = await import("@clients/etcd");
     (EtcdListPrefix as ReturnType<typeof vi.fn>).mockClear();
   });
 
@@ -51,7 +51,7 @@ describe("EtcdTreePane", () => {
   });
 
   it("expands a directory on click and lazy-loads children", async () => {
-    const { EtcdListPrefix } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdListPrefix } = await import("@clients/etcd");
     render(<EtcdTreePane assetId={1} />);
     await waitFor(() => expect(screen.getByText("config")).toBeInTheDocument());
     expect(EtcdListPrefix).toHaveBeenCalledTimes(1);

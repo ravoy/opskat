@@ -5,9 +5,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/ai_provider_entity"
-	"github.com/opskat/opskat/internal/repository/ai_provider_repo"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/model/entity/ai_provider_entity"
+	"github.com/octays/opskat/internal/repository/ai_provider_repo"
+	"github.com/octays/opskat/internal/service/credential_svc"
 	"gorm.io/gorm"
 )
 

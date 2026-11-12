@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/pkg/transfer"
 	"github.com/stretchr/testify/assert"
 )
 

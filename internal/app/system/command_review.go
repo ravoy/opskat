@@ -5,12 +5,12 @@ import (
 	"time"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/service/command_review_svc"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/service/command_review_svc"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // commandReviewConfigErrorEvent 在审核遇到设置问题（没有审核扩展、扩展没配置好等）时发给前端，
@@ -86,10 +86,10 @@ func (s *System) SaveCommandReviewTimeout(timeoutMs int) error {
 // watchCommandReviewConfigErrors 把审核的设置问题和状态变化转成前端事件。
 func (s *System) watchCommandReviewConfigErrors() {
 	command_review_svc.Default().SetStatusListener(func(st command_review_svc.Status) {
-		wailsRuntime.EventsEmit(s.ctx, commandReviewStatusEvent, newCommandReviewStatus(st))
+		application.Get().Event.Emit(commandReviewStatusEvent, newCommandReviewStatus(st))
 	})
 	command_review_svc.Default().SetConfigErrorListener(func(reason string) {
 		logger.Ctx(s.ctx).Warn("command review config error", zap.String("reason", reason))
-		wailsRuntime.EventsEmit(s.ctx, commandReviewConfigErrorEvent, reason)
+		application.Get().Event.Emit(commandReviewConfigErrorEvent, reason)
 	})
 }

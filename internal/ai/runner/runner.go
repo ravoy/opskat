@@ -18,9 +18,9 @@ import (
 	"github.com/cago-frame/agents/tool/subagent"
 	"github.com/sashabaranov/go-openai"
 
-	aitool "github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/model/entity/ai_provider_entity"
-	"github.com/opskat/opskat/internal/pkg/netproxy"
+	aitool "github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/model/entity/ai_provider_entity"
+	"github.com/octays/opskat/internal/pkg/netproxy"
 )
 
 // ProviderOptions 构造 cago provider 需要的传输层参数。

@@ -8,10 +8,10 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
 )
 
 type permissionCheckFunc func(context.Context, int64, string) aictx.CheckResult

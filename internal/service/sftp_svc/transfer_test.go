@@ -14,13 +14,13 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/sftpio"
-	"github.com/opskat/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/pkg/sftpio"
+	"github.com/octays/opskat/internal/pkg/transfer"
 	"github.com/pkg/sftp"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/pkg/sftpio/sftpiotest"
+	"github.com/octays/opskat/internal/pkg/sftpio/sftpiotest"
 )
 
 // newTestService 起一个进程内的真实 SFTP 服务端（根目录为临时目录），返回服务、
@@ -33,8 +33,12 @@ func newTestService(t *testing.T) (*Service, string, string) {
 	clientConn, serverConn := net.Pipe()
 	server, err := sftp.NewServer(serverConn, sftp.WithServerWorkingDirectory(root))
 	require.NoError(t, err)
-	serverDone := make(chan error, 1)
-	go func() { serverDone <- server.Serve() }()
+	// cleanup 只等 Serve 返回（Close 后必然返回），不消费它的错误值。
+	serverDone := make(chan struct{})
+	go func() {
+		_ = server.Serve()
+		close(serverDone)
+	}()
 
 	client, err := sftp.NewClientPipe(clientConn, clientConn, sftpClientOptions()...)
 	require.NoError(t, err)

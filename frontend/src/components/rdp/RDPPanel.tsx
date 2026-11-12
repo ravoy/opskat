@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { notifySuccess } from "@/lib/notify";
 import { useRDPStore } from "@/stores/rdpStore";
-import { ClipboardSetText, EventsOn } from "../../../wailsjs/runtime/runtime";
-import { ReadClipboardText } from "../../../wailsjs/go/system/System";
+import { ClipboardSetText, EventsOn } from "@/lib/desktop";
+import { ReadClipboardText } from "@clients/system";
 import {
   CloseRDP,
   ConnectRDP,
@@ -14,8 +14,8 @@ import {
   SetRDPClipboard,
   SetRDPClipboardEnabled,
   SetRDPClipboardFilesFromLocal,
-} from "../../../wailsjs/go/rdp/RDP";
-import type { asset_entity } from "../../../wailsjs/go/models";
+} from "@clients/rdp";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { SCANCODE, chordSequence, clampRemoteSize, planKeyDown, remotePoint, scancodeFor } from "./rdpInput";
 import { decodeFrameBytes } from "./rdpFrame";
 import { pointerCursorStyle } from "./rdpCursor";
@@ -249,8 +249,7 @@ export function RDPPanel({ asset, onEdit }: { asset: asset_entity.Asset; onEdit?
         }
         if (event.type === "clipboard" && event.text !== undefined) {
           void ClipboardSetText(event.text)
-            .then((written) => {
-              if (!written) throw new Error(t("asset.rdpClipboardWriteFailed"));
+            .then(() => {
               notifySuccess(t("asset.rdpClipboardReceived"));
             })
             .catch((e) => toast.error(`${t("asset.rdpClipboardWriteFailed")}: ${errorMessage(e)}`));

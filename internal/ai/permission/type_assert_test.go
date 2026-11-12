@@ -5,13 +5,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
+	"github.com/octays/opskat/internal/ai/aictx"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
 
 	// The permission package only knows the registry; its tests need the built-in drivers.
-	_ "github.com/opskat/opskat/internal/dbdriver/builtin"
-	"github.com/opskat/opskat/internal/dbdriver/dbdrivertest"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	_ "github.com/octays/opskat/internal/dbdriver/builtin"
+	"github.com/octays/opskat/internal/dbdriver/dbdrivertest"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // 自定义类型标识不能与内置类型重名（spec「自定义类型」）：凡是 resolveDeclaredType 不经

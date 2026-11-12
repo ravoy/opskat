@@ -1,10 +1,11 @@
+import { OpenPageWindow } from "@clients/system";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { PermissionModeCard } from "@/components/asset/PermissionModeCard";
 import { useAssetStore } from "@/stores/assetStore";
 import { useSettingsUiStore } from "@/stores/settingsUiStore";
 import { useTabStore } from "@/stores/tabStore";
-import { GetCommandReviewState } from "../../wailsjs/go/extension/Extension";
+import { GetCommandReviewState } from "@clients/extension";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), warning: vi.fn(), info: vi.fn(), success: vi.fn() } }));
 vi.mock("@/lib/notify", () => ({ notifySuccess: vi.fn(), notifyCopied: vi.fn() }));
@@ -42,7 +43,10 @@ describe("PermissionModeCard：审核器未配置", () => {
     fireEvent.click(within(notice).getByRole("button", { name: "commandReview.settings.openReviewerSettings" }));
     expect(useSettingsUiStore.getState().activeTab).toBe("extensions");
     expect(useSettingsUiStore.getState().extensionDetail).toBe("jev-command-review");
-    expect(useTabStore.getState().activeTabId).toBe("settings");
+    expect(OpenPageWindow).toHaveBeenCalledWith(
+      expect.objectContaining({ page: "settings", section: "extensions", extensionName: "jev-command-review" })
+    );
+    expect(useTabStore.getState().activeTabId).toBeNull();
   });
 
   it("默认模式下不提示", async () => {

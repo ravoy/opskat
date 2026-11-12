@@ -11,9 +11,9 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/cago-frame/agents/provider"
-	"github.com/opskat/opskat/internal/model/entity/ai_provider_entity"
-	"github.com/opskat/opskat/internal/pkg/netproxy"
-	"github.com/opskat/opskat/internal/pkg/netproxy/netproxytest"
+	"github.com/octays/opskat/internal/model/entity/ai_provider_entity"
+	"github.com/octays/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/pkg/netproxy/netproxytest"
 )
 
 const (

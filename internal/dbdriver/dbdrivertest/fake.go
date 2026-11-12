@@ -7,8 +7,8 @@ import (
 	"sync"
 	"testing"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // ErrFakeHostRequired 是假驱动自己的规则报出的错误：见到它就说明走的确实是假驱动的规则，

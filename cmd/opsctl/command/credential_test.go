@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/ai/tool"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -2,7 +2,7 @@ import { DriverFieldsForm } from "./DriverFieldsForm";
 import type { FieldDesc } from "@/components/asset/configFields";
 import type { DatabaseFormState } from "@/components/asset/DatabaseConfigSection.config";
 import type { ExtensionConfigProperty, ExtensionConfigSchema } from "@/extension/configSchema";
-import type { dbdriver } from "../../../wailsjs/go/models";
+import type * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import type { DriverDescriptor } from "./descriptors";
 
 /**

@@ -10,16 +10,16 @@ import {
   SetRDPClipboard,
   SetRDPClipboardEnabled,
   SetRDPClipboardFilesFromLocal,
-} from "../../../../wailsjs/go/rdp/RDP";
-import { ClipboardSetText, EventsOn } from "../../../../wailsjs/runtime/runtime";
-import { ReadClipboardText } from "../../../../wailsjs/go/system/System";
-import type { asset_entity } from "../../../../wailsjs/go/models";
+} from "@clients/rdp";
+import { ClipboardSetText, EventsOn } from "@/lib/desktop";
+import { ReadClipboardText } from "@clients/system";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { useActiveAssetIds } from "@/hooks/useActiveAssetIds";
 import { useTabStore } from "@/stores/tabStore";
 import { useTerminalStore } from "@/stores/terminalStore";
 import { useRDPStore } from "@/stores/rdpStore";
 
-vi.mock("../../../../wailsjs/go/rdp/RDP", () => ({
+vi.mock("@clients/rdp", () => ({
   ConnectRDP: vi.fn(),
   SendRDPInput: vi.fn().mockResolvedValue(undefined),
   ResizeRDP: vi.fn().mockResolvedValue(undefined),
@@ -84,7 +84,7 @@ beforeEach(() => {
   vi.mocked(SetRDPClipboardEnabled).mockReset().mockResolvedValue(undefined);
   vi.mocked(SetRDPClipboardFilesFromLocal).mockReset().mockResolvedValue(0);
   vi.mocked(ReadClipboardText).mockReset().mockResolvedValue("");
-  vi.mocked(ClipboardSetText).mockReset().mockResolvedValue(true);
+  vi.mocked(ClipboardSetText).mockReset().mockResolvedValue(undefined);
   vi.mocked(EventsOn)
     .mockReset()
     .mockImplementation((_event: string, cb: (e: RDPEvent) => void) => {

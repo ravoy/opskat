@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/extension_data_entity"
+	"github.com/octays/opskat/internal/model/entity/extension_data_entity"
 
 	"github.com/cago-frame/cago/database/db"
 	"gorm.io/gorm"

@@ -9,14 +9,14 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/credential_repo"
-	"github.com/opskat/opskat/internal/repository/custom_type_repo"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/credential_repo"
+	"github.com/octays/opskat/internal/repository/custom_type_repo"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
 )
 
 // fakeLang 是最小的 LangProvider 实现，测试里固定用中文。

@@ -4,8 +4,8 @@ import { render, screen, act, fireEvent } from "@testing-library/react";
 import { makeExtensionConfigSection } from "@/components/asset/ExtensionConfigSection";
 import type { AssetFormHandle } from "@/lib/assetTypes/formContract";
 import { toast } from "sonner";
-import { GetDecryptedExtensionConfig, ValidateExtensionConfig } from "../../../../wailsjs/go/extension/Extension";
-import { asset_entity } from "../../../../wailsjs/go/models";
+import { GetDecryptedExtensionConfig, ValidateExtensionConfig } from "@clients/extension";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { HOST_CONNECTION_CONFIG_KEY } from "@/extension/connectionConfig";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn(), warning: vi.fn(), info: vi.fn() } }));

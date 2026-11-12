@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { ApprovalBlock } from "../components/approval/ApprovalBlock";
 import type { ContentBlock } from "../stores/aiStore";
-import { RespondAIApproval } from "../../wailsjs/go/ai/AI";
+import { RespondAIApproval } from "@clients/ai";
 
 function cpBlock(): ContentBlock {
   return {

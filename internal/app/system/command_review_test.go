@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/opskat/opskat/internal/service/command_review_svc"
+	"github.com/octays/opskat/internal/service/command_review_svc"
 )
 
 func TestValidateCommandReviewTimeout(t *testing.T) {

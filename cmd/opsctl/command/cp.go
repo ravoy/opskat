@@ -9,12 +9,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/helper"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // cmdCp 是 opsctl 的传输面：`opsctl cp [-r] <source>... <destination>`，两端各自可以是

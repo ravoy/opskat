@@ -13,13 +13,13 @@ import (
 	"github.com/cago-frame/agents/agent"
 	cagotool "github.com/cago-frame/agents/tool"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/helper"
-	"github.com/opskat/opskat/internal/ai/outputcap"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/dbdriver/dbdrivertest"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/outputcap"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/dbdriver/dbdrivertest"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 func execWithFake(t *testing.T, fakeType string, run permission.ExecFunc) (string, error) {

@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { SideAssistantContextBar } from "../SideAssistantContextBar";
 import { useAIStore } from "@/stores/aiStore";
 import type { SidebarAITab } from "@/stores/aiStore";
-import { conversation_entity } from "../../../../wailsjs/go/models";
+import * as conversation_entity from "@bindings/github.com/octays/opskat/internal/model/entity/conversation_entity/models";
 
 const sidebarTab: SidebarAITab = {
   id: "s1",

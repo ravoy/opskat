@@ -9,7 +9,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/opskat/opskat/pkg/skillmd"
+	"github.com/octays/opskat/pkg/skillmd"
 )
 
 //go:embed */SKILL.md

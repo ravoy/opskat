@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 type relaunchTarget struct {
@@ -32,7 +32,7 @@ func (s *System) RestartApp() error {
 
 	go func() {
 		time.Sleep(100 * time.Millisecond)
-		wailsRuntime.Quit(s.ctx)
+		application.Get().Quit()
 	}()
 	return nil
 }

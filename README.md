@@ -15,7 +15,7 @@ SSH and RDP, databases, object storage, Redis, Kafka, Kubernetes… everything o
 <p align="center">
 <a href="https://opskat.dev/">Website</a> ·
 <a href="https://opskat.dev/docs/getting-started/installation">Docs</a> ·
-<a href="https://github.com/opskat/opskat/releases">Download</a>
+<a href="https://github.com/octays/opskat/releases">Download</a>
 </p>
 
 <p align="center">
@@ -50,7 +50,7 @@ On top of it sits a layer of AI: just say what you need in natural language, and
 
 ### Download
 
-Grab the latest build for your platform — **macOS, Windows, or Linux** — from the [Releases page](https://github.com/opskat/opskat/releases). No Go/Node toolchain required: download and run. Step-by-step notes are in the [installation docs](https://opskat.dev/docs/getting-started/installation).
+Grab the latest build for your platform — **macOS, Windows, or Linux** — from the [Releases page](https://github.com/octays/opskat/releases). No Go/Node toolchain required: download and run. Step-by-step notes are in the [installation docs](https://opskat.dev/docs/getting-started/installation).
 
 ### First run
 
@@ -156,7 +156,7 @@ opsctl ssh web-01
 
 | | |
 |---------|------------|
-| Desktop | [Wails v2](https://wails.io/) (Go + Web) |
+| Desktop | [Wails v3](https://wails.io/) (Go + Web) |
 | Frontend | React 19 + TypeScript + Tailwind CSS |
 | Backend | Go 1.26, SQLite |
 
@@ -164,7 +164,7 @@ opsctl ssh web-01
 
 > For contributors. If you just want to use OpsKat, see **Install** above.
 
-**Prerequisites:** [Go 1.26+](https://go.dev/), [Node.js 22+](https://nodejs.org/) with [pnpm](https://pnpm.io/), [Wails v2 CLI](https://wails.io/docs/gettingstarted/installation)
+**Prerequisites:** [Go 1.26+](https://go.dev/), [Bun](https://bun.sh/) (version in `.bun-version`), [Wails v3 CLI](https://wails.io/getting-started/installation/)
 
 ```bash
 make install        # Install frontend dependencies

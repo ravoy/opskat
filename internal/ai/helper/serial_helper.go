@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/serial_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/serial_svc"
 )
 
 type serialManagerKeyType struct{}

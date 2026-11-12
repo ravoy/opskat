@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { EtcdExec, EtcdListPrefix, EtcdTestConnection } from "../../wailsjs/go/etcd/Etcd";
-import type { etcd_svc } from "../../wailsjs/go/models";
+import { EtcdExec, EtcdListPrefix, EtcdTestConnection } from "@clients/etcd";
+import type * as etcd_svc from "@bindings/github.com/octays/opskat/internal/service/etcd_svc/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 export type EtcdTreeNode = {
@@ -14,7 +14,7 @@ export type EtcdExecMeta =
   | { ok: false; elapsedMs: number; error: string; op: string };
 
 // treeCache / truncatedAt 的 key 形如 "${assetId}:${prefix}",避免多个 etcd 资产
-// 同时打开时 prefix "/" 互相污染(see https://github.com/opskat/opskat PR #129 review)。
+// 同时打开时 prefix "/" 互相污染(see https://github.com/octays/opskat PR #129 review)。
 export function etcdCacheKey(assetId: number, prefix: string): string {
   return `${assetId}:${prefix}`;
 }

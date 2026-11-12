@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@opskat/ui";
-import { GetExtensionMirror, SetExtensionMirror } from "../../../wailsjs/go/system/System";
+import { GetExtensionMirror, SetExtensionMirror } from "@clients/system";
 import { EXTENSION_MIRROR_SETTING_ID } from "./downloadMirror";
 import { errorMessage } from "@/lib/errorMessage";
 

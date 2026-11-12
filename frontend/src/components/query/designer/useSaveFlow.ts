@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ExecuteSchemaStatements } from "../../../../wailsjs/go/query/Query";
-import type { query_svc } from "../../../../wailsjs/go/models";
+import { ExecuteSchemaStatements } from "@clients/query";
+import type * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 /** 一次保存要执行的内容:确认框标题、驱动生成的语句(就是要执行的),与草稿里删除的已有列和索引。 */

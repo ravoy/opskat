@@ -8,10 +8,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
 )
 
 // reviewedGenericAsset 是一台开了模型审核（mode）的 HTTP 通用资产，策略只放行 GET。

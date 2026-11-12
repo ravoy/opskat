@@ -7,7 +7,7 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/ai/policy"
 )
 
 // MatchExtensionGrant is the grant lookup of a classify-registered extension type's

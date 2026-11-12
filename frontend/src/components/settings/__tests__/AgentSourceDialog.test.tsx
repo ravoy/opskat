@@ -1,10 +1,11 @@
+import * as nativeProbeStatus from "@bindings/github.com/octays/opskat/internal/service/ssh_agent_svc/models";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import type { ComponentProps } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TooltipProvider } from "@opskat/ui";
 import { AgentSourceDialog } from "@/components/settings/AgentSourceDialog";
-import { ProbeAgentSource } from "../../../../wailsjs/go/system/System";
+import { ProbeAgentSource } from "@clients/system";
 
 function renderDialog(props: Partial<ComponentProps<typeof AgentSourceDialog>> = {}) {
   const base: ComponentProps<typeof AgentSourceDialog> = {
@@ -24,7 +25,7 @@ function renderDialog(props: Partial<ComponentProps<typeof AgentSourceDialog>> =
 describe("AgentSourceDialog", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(ProbeAgentSource).mockResolvedValue({ status: "ok", identity_count: 3 });
+    vi.mocked(ProbeAgentSource).mockResolvedValue({ status: nativeProbeStatus.ProbeStatus.ProbeOK, identity_count: 3 });
   });
 
   it("keeps save disabled until name and endpoint structure are complete", async () => {
@@ -100,7 +101,7 @@ describe("AgentSourceDialog", () => {
     await user.type(screen.getByLabelText("agentSource.name"), "my-agent");
     await user.type(screen.getByLabelText("agentSource.endpointEnv"), "SSH_AUTH_SOCK");
 
-    vi.mocked(ProbeAgentSource).mockResolvedValue({ status: "unavailable" });
+    vi.mocked(ProbeAgentSource).mockResolvedValue({ status: nativeProbeStatus.ProbeStatus.ProbeUnavailable });
     await user.click(screen.getByRole("button", { name: "agentSource.test" }));
     await waitFor(() => expect(ProbeAgentSource).toHaveBeenCalledWith("environment", "SSH_AUTH_SOCK"));
     expect(screen.getByText("agentSource.testFail")).toBeInTheDocument();
@@ -133,7 +134,7 @@ describe("AgentSourceDialog", () => {
     await user.type(screen.getByLabelText("agentSource.name"), "x");
     await user.type(screen.getByLabelText("agentSource.endpointEnv"), "SSH_AUTH_SOCK");
 
-    vi.mocked(ProbeAgentSource).mockResolvedValue({ status: "empty" });
+    vi.mocked(ProbeAgentSource).mockResolvedValue({ status: nativeProbeStatus.ProbeStatus.ProbeEmpty });
     await user.click(screen.getByRole("button", { name: "agentSource.test" }));
     await waitFor(() => expect(screen.getByText("agentSource.testEmpty")).toBeInTheDocument());
     expect(screen.queryByText("agentSource.testFail")).not.toBeInTheDocument();

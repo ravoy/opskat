@@ -4,8 +4,8 @@ import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/re
 import { useAIStore } from "../stores/aiStore";
 import { useTabStore } from "../stores/tabStore";
 import { SideAssistantPanel } from "../components/ai/SideAssistantPanel";
-import { ListConversations } from "../../wailsjs/go/ai/AI";
-import { LoadConversationMessages, DeleteConversation } from "../../wailsjs/go/ai/AI";
+import { ListConversations } from "@clients/ai";
+import { LoadConversationMessages, DeleteConversation } from "@clients/ai";
 
 const defaultAIActions = {
   renameConversation: useAIStore.getState().renameConversation,

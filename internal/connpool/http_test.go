@@ -17,10 +17,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/connpool/connpooltest"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/socksdial/socksdialtest"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/connpool/connpooltest"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/socksdial/socksdialtest"
+	"github.com/octays/opskat/internal/service/credential_svc"
 )
 
 // httpGet 发一次 GET 并返回状态码（响应体读完即关）。

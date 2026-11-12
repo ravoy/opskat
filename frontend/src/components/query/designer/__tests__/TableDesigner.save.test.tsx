@@ -5,14 +5,15 @@ import { useTabStore } from "@/stores/tabStore";
 import { DEFAULT_SHORTCUTS, isMac, useShortcutStore, type ShortcutBinding } from "@/stores/shortcutStore";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { notifySuccess } from "@/lib/notify";
-import { dbdriver, query_svc } from "../../../../../wailsjs/go/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import {
   ExecuteSchemaStatements,
   GetAlterTableModel,
   GetAlterTableStatements,
   GetTableMetadata,
   ListTables,
-} from "../../../../../wailsjs/go/query/Query";
+} from "@clients/query";
 import { fakeAlterDriver } from "@/__tests__/dbDriverFixtures";
 import {
   INNER_ID,
@@ -222,7 +223,10 @@ describe("保存:结果", () => {
   });
 
   it("整批回滚:留在对话框里给出失败的语句与数据库错误,说明表结构没变;草稿原样保留,不重新读取", async () => {
-    await openWith(fakeAlterDriver({ alterTableAttributes: ["column_type"], transactionalDDL: true }), legacyModel());
+    await openWith(
+      fakeAlterDriver({ alterTableAttributes: [dbdriver.AlterAttribute.AlterColumnType], transactionalDDL: true }),
+      legacyModel()
+    );
     renameColumn("STATUS", "STATE");
     deleteColumn("ID");
     const dialog = await clickSave();

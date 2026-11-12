@@ -1,10 +1,12 @@
+import * as nativeNameFolding from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as nativeAlterAttribute from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import { useQueryStore } from "@/stores/queryStore";
 import { toast } from "sonner";
 import { notifyCopied } from "@/lib/notify";
-import { query_svc } from "../../../../../wailsjs/go/models";
-import { GetAlterTableModel, GetAlterTableStatements, GetTableMetadata } from "../../../../../wailsjs/go/query/Query";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
+import { GetAlterTableModel, GetAlterTableStatements, GetTableMetadata } from "@clients/query";
 import { BUILTIN_DRIVERS, fakeAlterDriver, provideDrivers } from "@/__tests__/dbDriverFixtures";
 import {
   addField,
@@ -44,7 +46,7 @@ describe("设计表:字段编辑", () => {
   });
 
   it("驱动没声明表注释时不显示表注释输入", async () => {
-    await openWith(fakeAlterDriver({ alterTableAttributes: ["column_type"] }));
+    await openWith(fakeAlterDriver({ alterTableAttributes: [nativeAlterAttribute.AlterAttribute.AlterColumnType] }));
     expect(screen.queryByRole("textbox", { name: "query.designer.tableComment" })).not.toBeInTheDocument();
   });
 
@@ -86,7 +88,14 @@ describe("设计表:字段编辑", () => {
   });
 
   it("驱动能力有限:表格上方说明由声明生成,已有列锁定没声明的属性,新列不锁", async () => {
-    await openWith(fakeAlterDriver({ alterTableAttributes: ["column_type", "column_nullable"] }));
+    await openWith(
+      fakeAlterDriver({
+        alterTableAttributes: [
+          nativeAlterAttribute.AlterAttribute.AlterColumnType,
+          nativeAlterAttribute.AlterAttribute.AlterColumnNullable,
+        ],
+      })
+    );
     expect(screen.getByTestId("designer-capability")).toHaveTextContent("query.designer.capability.limited");
     const row = rowOf("STATUS");
     expect(within(row).getByLabelText("query.designer.lockReason")).toBeInTheDocument();
@@ -118,7 +127,7 @@ describe("设计表:字段编辑", () => {
   });
 
   it("没声明常用类型:没有下拉,新列类型留空且是错误", async () => {
-    await openWith(fakeAlterDriver({ alterTableAttributes: ["column_type"] }));
+    await openWith(fakeAlterDriver({ alterTableAttributes: [nativeAlterAttribute.AlterAttribute.AlterColumnType] }));
     expect(screen.queryByRole("button", { name: "query.designer.typeSuggestions" })).not.toBeInTheDocument();
     const added = addField();
     expect(within(added).getByRole("textbox", { name: "query.designer.column.type" })).toHaveValue("");
@@ -158,7 +167,7 @@ describe("设计表:字段编辑", () => {
   });
 
   it("没声明默认值写法:单一文本输入,说明旧的写法规则", async () => {
-    await openWith(fakeAlterDriver({ alterTableAttributes: ["column_default"] }));
+    await openWith(fakeAlterDriver({ alterTableAttributes: [nativeAlterAttribute.AlterAttribute.AlterColumnDefault] }));
     fireEvent.click(rowOf("STATUS"));
     const props = screen.getByTestId("designer-column-props");
     expect(within(props).queryByRole("radiogroup")).not.toBeInTheDocument();
@@ -193,7 +202,7 @@ describe("设计表:字段编辑", () => {
   });
 
   it("没声明自增的驱动:列属性里没有自增", async () => {
-    await openWith(fakeAlterDriver({ alterTableAttributes: ["column_default"] }));
+    await openWith(fakeAlterDriver({ alterTableAttributes: [nativeAlterAttribute.AlterAttribute.AlterColumnDefault] }));
     addField();
     fireEvent.click(within(lastRow()).getByRole("textbox", { name: "query.designer.column.name" }));
     expect(
@@ -204,7 +213,10 @@ describe("设计表:字段编辑", () => {
   });
 
   it("名称折叠:新列名与规则不符时黄色提醒,不阻止保存", async () => {
-    await openWith(fakeAlterDriver({ alterTableAttributes: [], nameFolding: "upper" }), legacyModel());
+    await openWith(
+      fakeAlterDriver({ alterTableAttributes: [], nameFolding: nativeNameFolding.NameFolding.NameFoldUpper }),
+      legacyModel()
+    );
     const added = addField();
     fireEvent.change(within(added).getByRole("textbox", { name: "query.designer.column.type" }), {
       target: { value: "DATE" },
@@ -288,7 +300,9 @@ describe("设计表:字段编辑", () => {
     setup("mysql", { readOnly: true });
     vi.mocked(GetTableMetadata).mockResolvedValue(
       new query_svc.TableMetadata({
-        columns: [{ name: "status", type: "varchar(16)", nullable: true, primaryKey: false, comment: "" }],
+        columns: [
+          { name: "status", type: "varchar(16)", nullable: true, primaryKey: false, default: null, comment: "" },
+        ],
         indexes: [],
         foreignKeys: [],
       })
@@ -358,7 +372,7 @@ describe("设计表:SQL 预览", () => {
   });
 
   it("没声明写法与自增的驱动:请求里不带这两个字段", async () => {
-    await openWith(fakeAlterDriver({ alterTableAttributes: ["column_default"] }));
+    await openWith(fakeAlterDriver({ alterTableAttributes: [nativeAlterAttribute.AlterAttribute.AlterColumnDefault] }));
     fireEvent.click(rowOf("STATUS"));
     fireEvent.change(
       within(screen.getByTestId("designer-column-props")).getByRole("textbox", { name: "query.designer.defaultValue" }),

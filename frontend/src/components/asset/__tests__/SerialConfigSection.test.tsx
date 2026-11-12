@@ -6,9 +6,9 @@ import { vi } from "vitest";
 import { buildSerialConfig, parseSerialConfig, SERIAL_DEFAULTS } from "@/components/asset/SerialConfigSection.config";
 import { SerialConfigSection } from "@/components/asset/SerialConfigSection";
 import type { AssetFormHandle, AssetFormContext } from "@/lib/assetTypes/formContract";
-import { asset_entity } from "../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
-vi.mock("../../../../wailsjs/go/serial/Serial", () => ({ ListSerialPorts: () => Promise.resolve([]) }));
+vi.mock("@clients/serial", () => ({ ListSerialPorts: () => Promise.resolve([]) }));
 
 const fakeCtx: AssetFormContext = { isEdit: false, encryptPassword: async (p) => p };
 

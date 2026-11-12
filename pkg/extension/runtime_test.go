@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extmanifest"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

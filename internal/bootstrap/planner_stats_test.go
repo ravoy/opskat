@@ -14,8 +14,8 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
-	"github.com/opskat/opskat/internal/repository/audit_repo"
-	"github.com/opskat/opskat/migrations"
+	"github.com/octays/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/migrations"
 )
 
 type selectRecorder struct {

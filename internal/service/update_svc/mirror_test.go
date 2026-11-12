@@ -10,18 +10,18 @@ import (
 func TestApplyMirror(t *testing.T) {
 	convey.Convey("镜像 URL 改写", t, func() {
 		convey.Convey("空镜像返回原始 URL", func() {
-			url := ApplyMirror("https://github.com/opskat/opskat/releases/download/v1.0.0/file.tar.gz", "")
-			assert.Equal(t, "https://github.com/opskat/opskat/releases/download/v1.0.0/file.tar.gz", url)
+			url := ApplyMirror("https://github.com/octays/opskat/releases/download/v1.0.0/file.tar.gz", "")
+			assert.Equal(t, "https://github.com/octays/opskat/releases/download/v1.0.0/file.tar.gz", url)
 		})
 
 		convey.Convey("带尾部斜杠的镜像前缀", func() {
-			url := ApplyMirror("https://github.com/opskat/opskat/releases/download/v1.0.0/file.tar.gz", "https://ghfast.top/")
-			assert.Equal(t, "https://ghfast.top/https://github.com/opskat/opskat/releases/download/v1.0.0/file.tar.gz", url)
+			url := ApplyMirror("https://github.com/octays/opskat/releases/download/v1.0.0/file.tar.gz", "https://ghfast.top/")
+			assert.Equal(t, "https://ghfast.top/https://github.com/octays/opskat/releases/download/v1.0.0/file.tar.gz", url)
 		})
 
 		convey.Convey("不带尾部斜杠的镜像前缀自动补齐", func() {
-			url := ApplyMirror("https://github.com/opskat/opskat/releases/download/v1.0.0/file.tar.gz", "https://ghfast.top")
-			assert.Equal(t, "https://ghfast.top/https://github.com/opskat/opskat/releases/download/v1.0.0/file.tar.gz", url)
+			url := ApplyMirror("https://github.com/octays/opskat/releases/download/v1.0.0/file.tar.gz", "https://ghfast.top")
+			assert.Equal(t, "https://ghfast.top/https://github.com/octays/opskat/releases/download/v1.0.0/file.tar.gz", url)
 		})
 
 		convey.Convey("可改写 api.github.com URL", func() {

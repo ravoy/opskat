@@ -7,13 +7,13 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/service/credential_mgr_svc"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/service/credential_mgr_svc"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
 )
 
 // genericHandler 是通用资产的处理器。通用资产必须基于一个自定义类型：调用方以类型

@@ -16,7 +16,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/pkg/netproxy"
 )
 
 // Protocol 是客户端与录制代理之间使用的代理协议。

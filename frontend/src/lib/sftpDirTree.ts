@@ -1,7 +1,7 @@
 // SFTP 目录树的纯模型：每层条目由 SFTPListDir 按目录懒填进 tree，flatten 只负责把
 // tree + expanded 展平成带缩进的渲染行（借 ossPrefixTree.flattenPrefixTree 的
 // 「tree record + expanded set + 每节点 loaded」范式，不像 redisKeyTree 那样一次性全量建树）。
-import { sftp_svc } from "../../wailsjs/go/models";
+import * as sftp_svc from "@bindings/github.com/octays/opskat/internal/service/sftp_svc/models";
 import { getChildPath, sortEntries } from "@/components/terminal/file-manager/utils";
 
 export interface SftpTreeNode {

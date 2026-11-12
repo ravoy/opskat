@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/internal/service/extension_svc"
 )
 
 // GetExtensionSettings returns the settings form of extension name in lang —

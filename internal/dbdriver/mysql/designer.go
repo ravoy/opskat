@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // 表设计器：常用类型、默认值的四种写法、新列自增与索引编辑。声明与实现同源——描述的 ExplicitDefaults /

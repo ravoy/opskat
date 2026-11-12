@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/sshagent"
+	"github.com/octays/opskat/internal/sshagent"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/ssh"
 )

@@ -3,8 +3,8 @@ package group_entity
 import (
 	"errors"
 
-	"github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/pkg/jsonfield"
+	"github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/pkg/jsonfield"
 )
 
 // Group 资产分组实体

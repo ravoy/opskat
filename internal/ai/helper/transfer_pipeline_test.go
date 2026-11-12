@@ -10,8 +10,8 @@ import (
 
 	"github.com/pkg/sftp"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/sftpio/sftpiotest"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/sftpio/sftpiotest"
 )
 
 // pipelineWant 是被断言的"同时在途请求数"。一问一答的客户端永远只能到 1，

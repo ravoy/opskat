@@ -454,3 +454,14 @@
 .tippy-box[data-theme~="ai-suggestion"] > .tippy-content {
   padding: 0;
 }
+
+/*
+ * 成功提示（notifyCopied / notifySuccess，top-center）必须落在标题栏 + 顶部 tab 栏
+ * 之下：sonner 默认 viewport 偏移（32px）正好把提示压在 tab 栏上，挡住点击切 tab。
+ * 标题栏 h-10(40px) + 顶部 tab 栏(~37px) ≈ 77px，取 84px 留一点呼吸空间。sonner 把
+ * --offset-* 写在容器内联样式上，这里用 !important 才能盖过内联值；只提 top 侧，
+ * 右下角的错误 / 警告提示不受影响（底部遮挡刷新中输出的问题见 #135）。
+ */
+[data-sonner-toaster][data-y-position="top"] {
+  --offset-top: 84px !important;
+}

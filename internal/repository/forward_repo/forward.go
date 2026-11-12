@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/forward_entity"
+	"github.com/octays/opskat/internal/model/entity/forward_entity"
 
 	"github.com/cago-frame/cago/database/db"
 )

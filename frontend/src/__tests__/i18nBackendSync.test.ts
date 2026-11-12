@@ -13,7 +13,7 @@ describe("frontend UI language syncs to the opsctl-approval backend", () => {
 
   it("pushes the detected language to the backend once at startup", async () => {
     localStorage.setItem("language", "en");
-    const { SetLanguage } = await import("../../wailsjs/go/system/System");
+    const { SetLanguage } = await import("@clients/system");
 
     await import("@/i18n");
 
@@ -22,7 +22,7 @@ describe("frontend UI language syncs to the opsctl-approval backend", () => {
 
   it("pushes the backend language again whenever the UI language changes later", async () => {
     localStorage.setItem("language", "en");
-    const { SetLanguage } = await import("../../wailsjs/go/system/System");
+    const { SetLanguage } = await import("@clients/system");
     const i18n = (await import("@/i18n")).default;
     vi.mocked(SetLanguage).mockClear();
 

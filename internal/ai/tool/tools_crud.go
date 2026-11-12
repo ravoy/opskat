@@ -7,7 +7,7 @@ import (
 	"github.com/cago-frame/agents/agent"
 	"github.com/cago-frame/agents/tool"
 
-	"github.com/opskat/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/permission"
 )
 
 // crudTools 资产/分组的写工具。put_* 合并了旧的 add_*/update_*：分支由标识的有无决定，

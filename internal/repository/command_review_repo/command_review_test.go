@@ -13,7 +13,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"github.com/opskat/opskat/internal/model/entity/command_review_entity"
+	"github.com/octays/opskat/internal/model/entity/command_review_entity"
 )
 
 // errLog collects what GORM's stock logger reports at error level; like the app's

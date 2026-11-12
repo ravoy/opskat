@@ -20,7 +20,7 @@
 // Conventions and rationale: docs/references/e2e-harness-guide.md
 const { execFileSync, spawn } = require("node:child_process");
 const { createHash, createPrivateKey, createPublicKey } = require("node:crypto");
-const { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync, openSync, closeSync, unlinkSync } = require("node:fs");
+const { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync, openSync, closeSync, unlinkSync } = require("node:fs");
 const { homedir, tmpdir } = require("node:os");
 const { join } = require("node:path");
 
@@ -209,7 +209,7 @@ function webserverLogPath(kind = "e2e") {
   return join(tmpdir(), `opskat-${kind}-${workspaceId}.log`);
 }
 
-// `wails dev` needs `frontend/dist` to exist for the //go:embed (mirrors `make dev`).
+// `wails3 dev` needs `frontend/dist` to exist for the //go:embed (mirrors `make dev`).
 // Done in Node rather than as a `mkdir -p`/`touch` in a webServer command so the
 // command stays shell-agnostic and runs on native Windows (cmd) too.
 function prepareFrontendDist() {
@@ -276,7 +276,7 @@ const HARNESS_EXTENSIONS = [
 //
 // Building here rather than in a CI step or a Makefile recipe keeps `pnpm test` the
 // single entry point on every platform: CI already has the Go toolchain (it runs
-// `wails dev`), and `GOOS=wasip1` needs no extra SDK. The go build cache makes the
+// `wails3 dev`), and `GOOS=wasip1` needs no extra SDK. The go build cache makes the
 // repeat cost negligible.
 //
 // The copy rule mirrors `make build-ext`: ship the whole extension directory except
@@ -341,13 +341,13 @@ async function waitForCdp(cdpPort, timeoutMs = 20_000) {
   return false;
 }
 
-// `wails dev` orphans its vite child on shutdown (a separate process group on Unix),
-// which a parent's group-kill misses. Reap it by command line, scoped to THIS
-// checkout's frontend so neither a sibling repo (e.g. agentre) nor another worktree
-// verifying concurrently is ever touched. Best-effort: no match → non-zero exit →
-// ignored.
+// Reap a frontend server left behind by an interrupted development run. Match
+// the Vite executable path, not a substring: "vite" also matches "vitest".
 function reapOrphanVite() {
   const frontend = join(repoRoot, "frontend");
+  const escapedFrontend = frontend.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const separator = process.platform === "win32" ? "\\\\" : "/";
+  const pattern = `${escapedFrontend}${separator}node_modules${separator}(.+${separator})?(vite${separator}bin${separator}vite[.]js|[.]bin${separator}vite([.]cmd)?)([ \t]|$)`;
   try {
     if (process.platform === "win32") {
       // No pkill on Windows; match via CIM and force-kill. `-ne $PID` excludes THIS
@@ -355,13 +355,61 @@ function reapOrphanVite() {
       // recreate the very self-kill we're avoiding.
       const ps =
         "Get-CimInstance Win32_Process | Where-Object { " +
-        `$_.ProcessId -ne $PID -and $_.CommandLine -like '*${frontend}*vite*' } | ` +
+        `$_.ProcessId -ne $PID -and $_.CommandLine -match '${pattern}' } | ` +
         "ForEach-Object { Stop-Process -Id $_.ProcessId -Force }";
       execFileSync("powershell", ["-NoProfile", "-NonInteractive", "-Command", ps], {
         stdio: "ignore",
       });
     } else {
-      execFileSync("pkill", ["-f", `${frontend}.*vite`], { stdio: "ignore" });
+      execFileSync("pkill", ["-f", pattern], { stdio: "ignore" });
+    }
+  } catch {
+    // best-effort hygiene; nothing to reap.
+  }
+}
+
+// Reap the suite's app tree left behind by Playwright's teardown. The webServer
+// shell is SIGTERMed, the wails3 watcher dies, but `scripts/desktop.mjs run` and
+// the app it launched never see a signal — they keep the app port, the native
+// window and opskat.db open, so a second local run either reuses a stale app or
+// fails to bind. The command line cannot tell them from a developer's `make dev`
+// (same scripts, same binary); the run's OPSKAT_DATA_DIR in their *environment*
+// can — it never matches the real data dir, another checkout's workspace, or the
+// persistent sandbox. `desktop.mjs run` forwards SIGTERM to the app and exits.
+function reapOrphanSuiteApp(dataDir) {
+  const marker = `OPSKAT_DATA_DIR=${dataDir}`;
+  try {
+    let pids = [];
+    if (process.platform === "darwin") {
+      // `ps -E` appends each process's environment after its command line.
+      const out = execFileSync("ps", ["axEww", "-o", "pid=,command="], { encoding: "utf8" });
+      pids = out
+        .split("\n")
+        .filter((line) => line.includes(marker))
+        .map((line) => Number(line.trim().split(/\s+/, 1)[0]))
+        .filter((pid) => Number.isInteger(pid) && pid > 0);
+    } else if (process.platform === "linux") {
+      for (const entry of readdirSync("/proc")) {
+        if (!/^\d+$/.test(entry)) continue;
+        try {
+          if (readFileSync(`/proc/${entry}/environ`, "utf8").includes(marker)) pids.push(Number(entry));
+        } catch {
+          // Not ours (permission denied = another user) or already gone.
+        }
+      }
+    } else {
+      // Windows: CIM cannot read another process's environment. CI runs on fresh
+      // VMs so teardown hygiene is moot there; a local Windows re-run restarts the
+      // app cleanly only after the previous one exits (the boot lock enforces it).
+      return;
+    }
+    for (const pid of pids) {
+      if (pid === process.pid) continue;
+      try {
+        process.kill(pid, "SIGTERM");
+      } catch {
+        // Already gone between listing and signalling.
+      }
     }
   } catch {
     // best-effort hygiene; nothing to reap.
@@ -394,7 +442,7 @@ function mockServers() {
   return [
     {
       name: "redis-mock",
-      command: `node "${join(fixtures, "redis-mock.mjs")}" ${p.redisMock}`,
+      command: `bun "${join(fixtures, "redis-mock.mjs")}" ${p.redisMock}`,
       cwd: repoRoot,
       port: p.redisMock,
       env: "MOCK_REDIS_PORT",
@@ -410,7 +458,7 @@ function mockServers() {
     },
     {
       name: "openai-mock",
-      command: `node "${join(fixtures, "openai-mock.mjs")}" ${p.openaiMock}`,
+      command: `bun "${join(fixtures, "openai-mock.mjs")}" ${p.openaiMock}`,
       cwd: repoRoot,
       port: p.openaiMock,
       env: "OPENAI_MOCK_PORT",
@@ -455,5 +503,6 @@ module.exports = {
   spawnBrowserHost,
   waitForCdp,
   reapOrphanVite,
+  reapOrphanSuiteApp,
   mockServers,
 };

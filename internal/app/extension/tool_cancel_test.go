@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // notRunningInPlugin is a Plugin.CancelTool that finds nothing running: the
@@ -183,7 +183,8 @@ func TestPageCannotCancelARuntimeNamedCall(t *testing.T) {
 
 	stopAI()
 	select {
-	case <-aiDone:
+	case err := <-aiDone:
+		require.ErrorIs(t, err, context.Canceled)
 	case <-time.After(10 * time.Second):
 		t.Fatal("runtime-named call never returned")
 	}

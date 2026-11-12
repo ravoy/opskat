@@ -7,8 +7,8 @@ vi.mock("../i18n", () => ({
 
 import { useAIStore } from "../stores/aiStore";
 import { useTabStore } from "../stores/tabStore";
-import { LoadConversationMessages, SaveConversationMessages, SendAIMessage } from "../../wailsjs/go/ai/AI";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { LoadConversationMessages, SaveConversationMessages, SendAIMessage } from "@clients/ai";
+import { EventsOn } from "@/lib/desktop";
 
 // 假后端：按「从 from 起替换」的契约维护每个会话的落库行。
 function installFakeBackend() {

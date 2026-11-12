@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, act, fireEvent, within } from "@testing-library/react";
 import { ExtensionInstallConfirmDialog } from "@/extension/InstallConfirmDialog";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
-import { RespondExtensionInstallConfirm } from "../../wailsjs/go/extension/Extension";
+import { EventsOn } from "@/lib/desktop";
+import { RespondExtensionInstallConfirm } from "@clients/extension";
 
 // 插值参数必须可观察：本文件的 t 把参数一并渲染出来（同 OpsctlApprovalDialogExtension.test.tsx）。
 vi.mock("react-i18next", () => {

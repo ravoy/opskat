@@ -129,7 +129,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 func TestCanonicalTypeFor(t *testing.T) {
@@ -205,7 +205,7 @@ package permission
 import (
 	"fmt"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // CanonicalTypeFor 把一个类型名或协议别名规范成资产类型。
@@ -710,8 +710,8 @@ package execimpl
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/assettype"
 )
 
 // 每个注册了的资产类型都必须有 help 文档——**没有豁免清单**。
@@ -1071,14 +1071,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/assetref"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	"github.com/opskat/opskat/internal/repository/group_repo"
-	"github.com/opskat/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/assetref"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/repository/group_repo"
+	"github.com/octays/opskat/internal/service/asset_svc"
 )
 
 // putArgs 把工具入参摊平成 assettype 处理器认识的形态。
@@ -1258,7 +1258,7 @@ import (
 	"github.com/cago-frame/agents/agent"
 	"github.com/cago-frame/agents/tool"
 
-	"github.com/opskat/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/permission"
 )
 
 // crudTools 资产/分组的写工具。put_* 合并了旧的 add_*/update_*：分支由标识的有无决定，
@@ -2402,8 +2402,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // parseExtCommand 把 `<extension> <tool> --flag value` 解析成扩展名、工具名与

@@ -8,9 +8,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/model/entity/policy"
 )
 
 // AssetTypeHandler 资产类型处理器接口。

@@ -10,7 +10,7 @@ import (
 
 	"golang.org/x/crypto/ssh"
 
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 // tunnelConn 包装 SSH channel，在连接关闭时自动释放 SSH 池引用。

@@ -95,6 +95,7 @@ async function setExtensionEnabled(page: Page, enabled: boolean): Promise<void> 
 }
 
 async function backToQueryTab(page: Page, name: string): Promise<void> {
+  await page.goto("/");
   await page.locator(`[title="${name}"]`).first().click();
   await expect(page.getByTestId("database-query-panel")).toBeVisible();
 }

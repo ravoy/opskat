@@ -14,8 +14,10 @@ import {
   DeleteAgentSource,
   ProbeAgentSource,
   CreateAgentSource,
-} from "../../../../wailsjs/go/system/System";
-import { credential_entity, system, ssh_agent_svc } from "../../../../wailsjs/go/models";
+} from "@clients/system";
+import * as credential_entity from "@bindings/github.com/octays/opskat/internal/model/entity/credential_entity/models";
+import * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
+import * as ssh_agent_svc from "@bindings/github.com/octays/opskat/internal/service/ssh_agent_svc/models";
 
 vi.mock("@/lib/notify", () => ({
   notifyCopied: vi.fn(),
@@ -52,7 +54,9 @@ beforeEach(() => {
     { id: 12, name: "系统 SSH Agent", endpoint_type: "environment", description: "" } as system.AgentSourceSummary,
   ]);
   vi.mocked(ProbeSavedAgentSource).mockImplementation(async (id) =>
-    id === 11 ? { status: "ok", identity_count: 2 } : { status: "unavailable" }
+    id === 11
+      ? { status: ssh_agent_svc.ProbeStatus.ProbeOK, identity_count: 2 }
+      : { status: ssh_agent_svc.ProbeStatus.ProbeUnavailable }
   );
   vi.mocked(InspectAgentSource).mockResolvedValue(
     new ssh_agent_svc.InspectResult({
@@ -64,7 +68,7 @@ beforeEach(() => {
       ],
     })
   );
-  vi.mocked(ProbeAgentSource).mockResolvedValue({ status: "ok", identity_count: 2 });
+  vi.mocked(ProbeAgentSource).mockResolvedValue({ status: ssh_agent_svc.ProbeStatus.ProbeOK, identity_count: 2 });
   vi.mocked(CopyAgentSourcePublicKey).mockResolvedValue("ssh-ed25519 AAAA work");
   vi.mocked(GetAgentSourceUsage).mockResolvedValue(0);
   vi.mocked(DeleteAgentSource).mockResolvedValue(undefined);
@@ -146,7 +150,7 @@ describe("CredentialManager agent sources", () => {
   });
 
   it("saves a new source through CreateAgentSource without requiring a probe", async () => {
-    vi.mocked(ProbeAgentSource).mockResolvedValue({ status: "unavailable" });
+    vi.mocked(ProbeAgentSource).mockResolvedValue({ status: ssh_agent_svc.ProbeStatus.ProbeUnavailable });
     renderManager();
     await screen.findByText("1Password · 工作");
     await userEvent.click(screen.getByRole("button", { name: "agentSource.add" }));

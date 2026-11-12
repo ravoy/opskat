@@ -3,7 +3,7 @@ package helper
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // TestCanonicalizeEtcdCommand_NormalizesToPolicyForm 锁住 canonicalizer 的契约：

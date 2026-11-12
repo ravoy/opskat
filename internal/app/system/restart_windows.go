@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/internal/pkg/executil"
+	"github.com/octays/opskat/internal/pkg/executil"
 )
 
 func startRelaunchHelper(pid int, target relaunchTarget) error {

@@ -15,9 +15,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/dirsync"
-	"github.com/opskat/opskat/internal/pkg/transfer"
-	"github.com/opskat/opskat/internal/service/ssh_svc"
+	"github.com/octays/opskat/internal/pkg/dirsync"
+	"github.com/octays/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/service/ssh_svc"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"github.com/pkg/sftp"

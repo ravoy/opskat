@@ -43,7 +43,7 @@ import {
   isDefaultRedisKeyFilter,
   makeLocalKeyMatcher,
 } from "@/lib/redisKeyTree";
-import { RedisDeleteKeys } from "../../../wailsjs/go/redis/Redis";
+import { RedisDeleteKeys } from "@clients/redis";
 import { RedisCreateKeyDialog } from "./RedisCreateKeyDialog";
 import { redisKeyDeleted, toastRedisDeleteFailures } from "@/lib/redisDelete";
 import { errorMessage } from "@/lib/errorMessage";

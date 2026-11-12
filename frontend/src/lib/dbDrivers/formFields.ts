@@ -1,3 +1,4 @@
+import * as nativeFormField from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import type { ConfigGroupSchema, FieldDesc } from "@/components/asset/configFields";
 import type { DatabaseFormState } from "@/components/asset/DatabaseConfigSection.config";
 import type { DriverDescriptor } from "./descriptors";
@@ -33,11 +34,13 @@ export function driverFormGroups(
 ): ConfigGroupSchema<DatabaseFormState>[] {
   const formTabs = driver.form.map((tab) => tab.tab);
   const extraTabs = Object.keys(TAB_LABELS).filter(
-    (tab) => !formTabs.includes(tab) && driverFieldsOf(driver).some((f) => f.tab === tab)
+    (tab) => !formTabs.some((value) => value === tab) && driverFieldsOf(driver).some((f) => f.tab === tab)
   );
   const builtin = (tab: string) => {
     const fields = driver.form.find((t) => t.tab === tab)?.fields ?? [];
-    return fields.filter((f) => !(f === "port" && fields.includes("host"))).flatMap((f) => registry.get(f) ?? []);
+    return fields
+      .filter((f) => !(f === "port" && fields.includes(nativeFormField.FormField.FieldHost)))
+      .flatMap((f) => registry.get(f) ?? []);
   };
   return [...formTabs, ...extraTabs].map((tab) => {
     const fields = [...builtin(tab), ...driverFieldsForTab(driver, tab)];

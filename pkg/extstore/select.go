@@ -3,8 +3,8 @@ package extstore
 import (
 	"fmt"
 
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/pkg/extmanifest"
 )
 
 // Action is what the store offers for one extension.

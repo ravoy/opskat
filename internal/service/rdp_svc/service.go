@@ -14,11 +14,11 @@ import (
 	rdp "github.com/bouncyball-git/gopher-rdp"
 	"github.com/cago-frame/cago/pkg/logger"
 	"github.com/google/uuid"
-	"github.com/opskat/opskat/internal/connpool"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/credential_resolver"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/sshpool"
 	"go.uber.org/zap"
 )
 

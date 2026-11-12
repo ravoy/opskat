@@ -15,10 +15,10 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/crypto/ssh"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/executil"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/executil"
+	"github.com/octays/opskat/internal/service/credential_svc"
 )
 
 // K8sCommandPlan 是解析、补全默认 context/namespace 之后的 kubectl 调用计划。

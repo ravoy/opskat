@@ -3,7 +3,7 @@ package extension
 import (
 	"errors"
 
-	"github.com/opskat/opskat/internal/service/extstore_svc"
+	"github.com/octays/opskat/internal/service/extstore_svc"
 )
 
 var errStoreNotInitialized = errors.New("extension store not initialized")

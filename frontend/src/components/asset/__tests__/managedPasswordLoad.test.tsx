@@ -4,8 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
 import { EtcdConfigSection } from "@/components/asset/EtcdConfigSection";
 import type { AssetFormContext } from "@/lib/assetTypes/formContract";
-import { asset_entity } from "../../../../wailsjs/go/models";
-import { ListCredentialsByType } from "../../../../wailsjs/go/system/System";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import { ListCredentialsByType } from "@clients/system";
 
 const ctx: AssetFormContext = { isEdit: false, encryptPassword: async (p) => p };
 

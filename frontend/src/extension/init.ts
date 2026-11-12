@@ -1,8 +1,8 @@
 // frontend/src/extension/init.ts
 import { toast } from "sonner";
 import i18n from "../i18n";
-import { ListInstalledExtensions } from "../../wailsjs/go/extension/Extension";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { ListInstalledExtensions } from "@clients/extension";
+import { EventsOn } from "@/lib/desktop";
 import { useExtensionStore } from "./store";
 import { injectExtensionAPI } from "./inject";
 import { createExtensionAPI } from "./api";

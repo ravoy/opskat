@@ -19,7 +19,8 @@ import {
 } from "@opskat/ui";
 import { useSnippetStore } from "@/stores/snippetStore";
 import { CodeEditor, type CodeEditorLanguage } from "@/components/CodeEditor";
-import { snippet_entity, snippet_svc } from "../../../wailsjs/go/models";
+import * as snippet_entity from "@bindings/github.com/octays/opskat/internal/model/entity/snippet_entity/models";
+import * as snippet_svc from "@bindings/github.com/octays/opskat/internal/service/snippet_svc/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 export interface SnippetFormDialogProps {
@@ -112,7 +113,7 @@ function SnippetFormDialogContent({
           category,
           content,
           description,
-        } as unknown as import("../../../wailsjs/go/models").snippet_svc.CreateReq);
+        } as unknown as import("@bindings/github.com/octays/opskat/internal/service/snippet_svc/models").CreateReq);
         notifySuccess(t("snippet.toast.created"));
       } else if (initial) {
         await updateSnippet({
@@ -120,7 +121,7 @@ function SnippetFormDialogContent({
           name: name.trim(),
           content,
           description,
-        } as unknown as import("../../../wailsjs/go/models").snippet_svc.UpdateReq);
+        } as unknown as import("@bindings/github.com/octays/opskat/internal/service/snippet_svc/models").UpdateReq);
         notifySuccess(t("snippet.toast.updated"));
       }
       onOpenChange(false);

@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
 )
 
 // PolicyKind 是策略逻辑的规范化种类,是 policy 测试链路统一的 dispatch key。

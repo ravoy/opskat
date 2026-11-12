@@ -12,8 +12,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/ssh"
 
-	"github.com/opskat/opskat/internal/model/entity/forward_entity"
-	"github.com/opskat/opskat/internal/repository/forward_repo"
+	"github.com/octays/opskat/internal/model/entity/forward_entity"
+	"github.com/octays/opskat/internal/repository/forward_repo"
 )
 
 // fakeForwardRepo serves configs by id; every config has one rule of an

@@ -6,9 +6,9 @@ import (
 	"testing"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/pkg/netproxy"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/service/credential_svc"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest/observer"
 )

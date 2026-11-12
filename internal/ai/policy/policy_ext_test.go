@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/model/entity/policy_group_entity"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/model/entity/policy_group_entity"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

@@ -13,27 +13,27 @@ VERSION ?= 1.16.0
 APP_INSTALL_DIR ?= $(HOME)/Applications
 COMMIT_ID := $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 VERSION_PKG := github.com/cago-frame/cago/configs
-BUILDINFO_PKG := github.com/opskat/opskat/internal/buildinfo
+BUILDINFO_PKG := github.com/octays/opskat/internal/buildinfo
 LDFLAGS := -s -w -X $(VERSION_PKG).Version=$(VERSION) -X $(BUILDINFO_PKG).CommitID=$(COMMIT_ID)
 
 # 开发模式（前后端热重载）。用你自己的真实数据目录，供人手动开发/试用。
 # 要做功能验证（尤其是会写数据的）请用 dev-sandbox，别在真实库上验。
 dev:
 	@mkdir -p frontend/dist && [ -e frontend/dist/.keep ] || touch frontend/dist/.keep
-	wails dev
+	wails3 dev
 
 # 验证沙箱：在隔离数据目录上把真实应用跑起来并保持后台运行，附带一个无头 Chromium。
 # 启动后用 e2e/drive.mjs 操作、e2e/oracle.mjs 读取副作用——一次性验证不再需要写 spec。
 # 端口/数据目录按 checkout 分配，多个 worktree 可同时验证。流程见 docs/VERIFICATION.md。
 # ARGS=--reset 清空沙箱数据，ARGS=--mocks 顺带起协议 mock，ARGS=--extensions 装上仓内扩展并开启扩展系统，ARGS=--headed 显示浏览器。
 dev-sandbox:
-	node e2e/sandbox.mjs up $(ARGS)
+	bun e2e/sandbox.mjs up $(ARGS)
 
 dev-sandbox-down:
-	node e2e/sandbox.mjs down $(ARGS)
+	bun e2e/sandbox.mjs down $(ARGS)
 
 dev-sandbox-status:
-	node e2e/sandbox.mjs status
+	bun e2e/sandbox.mjs status
 
 # 直接运行（不热重载）
 run: build-embed
@@ -41,11 +41,11 @@ run: build-embed
 
 # 构建生产版本
 build:
-	wails build -ldflags="$(LDFLAGS)"
+	bun scripts/desktop.mjs build --ldflags "$(LDFLAGS)"
 
 # 构建生产版本（内嵌 opsctl CLI）
 build-embed: build-cli-embed
-	wails build -ldflags="$(LDFLAGS)" -tags embed_opsctl
+	bun scripts/desktop.mjs build --ldflags "$(LDFLAGS)" --tags embed_opsctl
 
 # 构建并安装 macOS 桌面应用（默认安装到当前用户的 ~/Applications）
 ifeq ($(UNAME_S),Darwin)
@@ -66,7 +66,7 @@ build-cli-embed:
 
 # 安装前端依赖
 install:
-	cd frontend && pnpm install
+	cd frontend && bun x --bun pnpm@10.11.0 install
 
 # 构建 opsctl CLI
 build-cli:
@@ -104,16 +104,16 @@ lint-fix:
 test:
 	go test ./internal/... ./cmd/opsctl/... ./pkg/...
 
-# E2E：Playwright 驱动真实 wails dev 跑 GUI 端到端。详见 docs/references/e2e-harness-guide.md。
-# 一次性装依赖 + 浏览器：cd e2e && pnpm run setup（CI 在独立步骤里装，故这里不重复）。
+# E2E：Playwright 驱动真实 wails3 dev 跑 GUI 端到端。详见 docs/references/e2e-harness-guide.md。
+# 一次性装依赖 + 浏览器：cd e2e && bun --bun run setup（CI 在独立步骤里装，故这里不重复）。
 # 配方只做 shell 无关的 cd && pnpm，跨平台(cmd/sh 皆可)；编排与收尾清理(回收残留
 # vite、删临时目录)都在 e2e/run-e2e.mjs 里用 Node 跨平台完成。
 test-e2e:
-	cd e2e && pnpm test
+	cd e2e && bun --bun run test
 
 # 临时功能验证：跑 e2e/scratch/ 里的一次性 spec（不提交）。约定/用法见 docs/references/e2e-harness-guide.md。
 test-e2e-scratch:
-	cd e2e && pnpm run test:scratch
+	cd e2e && bun --bun run test:scratch
 
 # 测试覆盖率（生成 HTML 报告并在浏览器打开）
 test-cover:

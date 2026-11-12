@@ -7,9 +7,9 @@ import (
 	"slices"
 	"time"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/extsdk/internal/registration"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/extsdk/internal/registration"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // The registration API is the single place an extension declares what it can do.

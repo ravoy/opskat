@@ -15,7 +15,7 @@ import (
 	"path/filepath"
 	"sync"
 
-	"github.com/opskat/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/pkg/transfer"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

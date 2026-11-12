@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/kerberos"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/kerberos"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // kerberosCache 是本进程（桌面端或 opsctl）的票据缓存：按资产缓存到过期，同一资产的多个实例并发

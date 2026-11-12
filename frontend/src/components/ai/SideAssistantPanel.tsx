@@ -1,3 +1,4 @@
+import { openPageWindow } from "@/lib/openPageWindow";
 import { lazy, Suspense, useRef, useState, useEffect } from "react";
 import { cn, useResizeHandle } from "@opskat/ui";
 import { useShallow } from "zustand/shallow";
@@ -192,6 +193,7 @@ export function SideAssistantPanel({ collapsed, onToggle }: SideAssistantPanelPr
             onToggleCollapse={onToggle}
             onOpenHistory={() => setHistoryOpen((x) => !x)}
             onNewChat={handleNewChat}
+            onNewWindow={() => void openPageWindow({ page: "ai" })}
             onPromoteToTab={handlePromote}
             canPromote={activeConversationId != null}
           />

@@ -9,8 +9,8 @@ import {
   GetCreateDatabaseStatements,
   GetDropTableStatements,
   GetTruncateTableStatements,
-} from "../../wailsjs/go/query/Query";
-import { dbdriver } from "../../wailsjs/go/models";
+} from "@clients/query";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { BUILTIN_DRIVERS, fakeDriverWith, mockSchemaStatements, provideDrivers } from "./dbDriverFixtures";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), warning: vi.fn(), info: vi.fn(), success: vi.fn() } }));

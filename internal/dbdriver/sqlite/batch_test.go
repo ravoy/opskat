@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 导入时忽略外键：连接在检查外键时，PRAGMA foreign_keys 在事务里不起作用，所以在批的那条连接上、

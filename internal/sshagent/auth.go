@@ -7,7 +7,7 @@ import (
 
 	"golang.org/x/crypto/ssh"
 
-	"github.com/opskat/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/pkg/netdial"
 )
 
 // AgentAuth is the result of precise signer selection: a locally-verifying

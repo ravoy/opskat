@@ -2,7 +2,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ImportCustomTypeDialog } from "@/components/settings/ImportCustomTypeDialog";
-import { custom_type_entity, customtype } from "../../../../wailsjs/go/models";
+import * as custom_type_entity from "@bindings/github.com/octays/opskat/internal/model/entity/custom_type_entity/models";
+import * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn(), warning: vi.fn() } }));
 
@@ -20,6 +21,7 @@ function httpPreview(overrides: Partial<custom_type_entity.CustomType> = {}): cu
       ],
       http: { base_url: "https://{{host}}", auth: [{ type: "header", name: "Authorization", values: ["{{token}}"] }] },
       usage: "",
+      defaultPolicy: null,
       createtime: 0,
       updatetime: 0,
       ...overrides,
@@ -30,7 +32,7 @@ function httpPreview(overrides: Partial<custom_type_entity.CustomType> = {}): cu
 
 describe("ImportCustomTypeDialog", () => {
   beforeEach(async () => {
-    const mod = await import("../../../../wailsjs/go/customtype/CustomType");
+    const mod = await import("@clients/customtype");
     vi.mocked(mod.SaveCustomType).mockReset();
     vi.mocked(mod.ListCustomTypes).mockReset().mockResolvedValue([]);
   });
@@ -56,7 +58,7 @@ describe("ImportCustomTypeDialog", () => {
   });
 
   it("requires a new slug on conflict: save() rejects the unchanged slug, succeeds once changed", async () => {
-    const mod = await import("../../../../wailsjs/go/customtype/CustomType");
+    const mod = await import("@clients/customtype");
     vi.mocked(mod.SaveCustomType).mockImplementation(async (ct) => {
       if (ct.slug === "grafana") {
         return new customtype.SaveResult({
@@ -85,7 +87,7 @@ describe("ImportCustomTypeDialog", () => {
   });
 
   it("confirming calls SaveCustomType and closes the dialog on success", async () => {
-    const mod = await import("../../../../wailsjs/go/customtype/CustomType");
+    const mod = await import("@clients/customtype");
     const onOpenChange = vi.fn();
     vi.mocked(mod.SaveCustomType).mockResolvedValue(new customtype.SaveResult({ type: httpPreview().type }));
 
@@ -99,7 +101,7 @@ describe("ImportCustomTypeDialog", () => {
   });
 
   it("surfaces the non-blocking save warnings after importing, same as saving in the editor", async () => {
-    const mod = await import("../../../../wailsjs/go/customtype/CustomType");
+    const mod = await import("@clients/customtype");
     const { toast } = await import("sonner");
     vi.mocked(toast.warning).mockClear();
     vi.mocked(mod.SaveCustomType).mockResolvedValue(

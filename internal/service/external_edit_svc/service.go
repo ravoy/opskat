@@ -12,9 +12,9 @@ import (
 	"time"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/pkg/executil"
-	"github.com/opskat/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/pkg/executil"
+	"github.com/octays/opskat/internal/repository/audit_repo"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

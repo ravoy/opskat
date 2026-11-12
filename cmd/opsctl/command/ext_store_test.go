@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/approval"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/approval"
 )
 
 // storeDesktop replaces both socket round trips, so the tests observe what opsctl

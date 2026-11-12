@@ -1,4 +1,4 @@
-import { sftp_svc } from "../../../../wailsjs/go/models";
+import * as sftp_svc from "@bindings/github.com/octays/opskat/internal/service/sftp_svc/models";
 
 export const HANDLE_PX = 4;
 

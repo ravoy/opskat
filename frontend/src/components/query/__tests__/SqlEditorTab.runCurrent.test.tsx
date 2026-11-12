@@ -5,7 +5,7 @@ import { SqlEditorTab } from "@/components/query/SqlEditorTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
 import { formatModKey } from "@/stores/shortcutStore";
-import { ExecuteSQLPaged } from "../../../../wailsjs/go/query/Query";
+import { ExecuteSQLPaged } from "@clients/query";
 import { mounted } from "./fakeSqlEditor";
 import { BUILTIN_DRIVERS, provideDrivers } from "@/__tests__/dbDriverFixtures";
 

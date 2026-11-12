@@ -1,7 +1,7 @@
 package query_svc
 
 import (
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 表浏览绑定收发的类型。打开表、翻页、计数由驱动在自己的会话上完成（dbdriver.Session 的

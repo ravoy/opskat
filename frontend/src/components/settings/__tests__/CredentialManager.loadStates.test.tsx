@@ -3,8 +3,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TooltipProvider } from "@opskat/ui";
 import { CredentialManager } from "@/components/settings/CredentialManager";
-import { ListCredentials, ListAgentSources } from "../../../../wailsjs/go/system/System";
-import { credential_entity } from "../../../../wailsjs/go/models";
+import { ListCredentials, ListAgentSources } from "@clients/system";
+import * as credential_entity from "@bindings/github.com/octays/opskat/internal/model/entity/credential_entity/models";
 
 function renderManager() {
   return render(

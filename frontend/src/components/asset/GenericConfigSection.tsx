@@ -12,8 +12,9 @@ import { CustomTypeEditorDialog } from "@/components/settings/CustomTypeEditorDi
 import { useAssetStore } from "@/stores/assetStore";
 import { useCustomTypeList, useCustomTypeStore } from "@/stores/customTypeStore";
 import type { AssetFormHandle, ConfigSectionProps } from "@/lib/assetTypes/formContract";
-import type { asset_entity, custom_type_entity } from "../../../wailsjs/go/models";
-import { RevealGenericSecret } from "../../../wailsjs/go/customtype/CustomType";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import type * as custom_type_entity from "@bindings/github.com/octays/opskat/internal/model/entity/custom_type_entity/models";
+import { RevealGenericSecret } from "@clients/customtype";
 import { proxyChainValidationKey, resolveSaveProxyChainSecrets } from "./proxyConfig";
 import { tlsCertFields } from "./tlsCertConfig";
 import {

@@ -3,9 +3,9 @@ import { create } from "zustand";
 import { toast } from "sonner";
 import i18n from "@/i18n";
 import { useWailsEvent } from "@/hooks/useWailsEvent";
-import { ListStore } from "../../../wailsjs/go/extension/Extension";
-import { EventsOn } from "../../../wailsjs/runtime/runtime";
-import type { extstore_svc } from "../../../wailsjs/go/models";
+import { ListStore } from "@clients/extension";
+import { EventsOn } from "@/lib/desktop";
+import type * as extstore_svc from "@bindings/github.com/octays/opskat/internal/service/extstore_svc/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 /** Fired by the backend once its daily background refresh updated the store index. */

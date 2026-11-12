@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TooltipProvider } from "@opskat/ui";
 import { ConnectionSection } from "@/components/settings/ConnectionSection";
-import { GetSSHConnectionSettings, SetSSHConnectionSettings } from "../../wailsjs/go/system/System";
+import { GetSSHConnectionSettings, SetSSHConnectionSettings } from "@clients/system";
 
 // App 全局包了 TooltipProvider(App.tsx);独立渲染 section 时需自备,否则 keepalive 标签旁的 ⓘ Tooltip 抛错。
 const renderSection = () =>

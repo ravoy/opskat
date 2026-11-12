@@ -14,7 +14,8 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"golang.org/x/text/encoding"
 	"golang.org/x/text/encoding/charmap"
 	"golang.org/x/text/encoding/japanese"
@@ -23,10 +24,10 @@ import (
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/query_svc"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/query_svc"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // TableExportWriteOptions controls how exported table data is written to disk.
@@ -43,10 +44,10 @@ func (q *Query) SelectTableExportFile(defaultFilename, filterName, pattern strin
 	if pattern == "" {
 		pattern = "*.*"
 	}
-	filePath, err := wailsRuntime.SaveFileDialog(q.ctx, wailsRuntime.SaveDialogOptions{
-		Title:           "Export Data",
-		DefaultFilename: defaultFilename,
-		Filters: []wailsRuntime.FileFilter{
+	filePath, err := desktop.SaveFile(application.SaveFileDialogOptions{
+		Title:    "Export Data",
+		Filename: defaultFilename,
+		Filters: []application.FileFilter{
 			{DisplayName: filterName, Pattern: pattern},
 		},
 	})

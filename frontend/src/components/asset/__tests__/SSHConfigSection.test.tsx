@@ -5,7 +5,10 @@ import userEvent, { PointerEventsCheckLevel } from "@testing-library/user-event"
 import { createRef } from "react";
 import { SSHConfigSection } from "@/components/asset/SSHConfigSection";
 import type { AssetFormHandle, AssetFormContext } from "@/lib/assetTypes/formContract";
-import { asset_entity, credential_entity, system, ssh_agent_svc } from "../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as credential_entity from "@bindings/github.com/octays/opskat/internal/model/entity/credential_entity/models";
+import * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
+import * as ssh_agent_svc from "@bindings/github.com/octays/opskat/internal/service/ssh_agent_svc/models";
 
 // 托管凭据按类型注入:autofill 用例往这里塞 password / ssh_key 凭据,
 // ref-契约用例保持默认空数组(与原 mock 行为一致)。
@@ -20,7 +23,7 @@ let keyListError: string | null = null;
 let agentListError: string | null = null;
 let localKeysError: string | null = null;
 
-vi.mock("../../../../wailsjs/go/system/System", () => ({
+vi.mock("@clients/system", () => ({
   ListCredentialsByType: (type: string) =>
     type === "ssh_key" && keyListError
       ? Promise.reject(new Error(keyListError))
@@ -34,7 +37,7 @@ vi.mock("../../../../wailsjs/go/system/System", () => ({
       : Promise.resolve({ source_id: id, usages: 0, identities: agentIdentities }),
 }));
 
-vi.mock("../../../../wailsjs/go/ssh/SSH", () => ({
+vi.mock("@clients/ssh", () => ({
   ListLocalSSHKeys: () => (localKeysError ? Promise.reject(new Error(localKeysError)) : Promise.resolve([])),
   SelectSSHKeyFile: () => Promise.resolve(null),
 }));

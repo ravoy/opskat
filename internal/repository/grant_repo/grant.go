@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/grant_entity"
+	"github.com/octays/opskat/internal/model/entity/grant_entity"
 
 	"github.com/cago-frame/cago/database/db"
 )
@@ -17,7 +17,9 @@ type GrantRepo interface {
 	CreateItems(ctx context.Context, items []*grant_entity.GrantItem) error
 	UpdateItems(ctx context.Context, sessionID string, items []*grant_entity.GrantItem) error
 	ListItems(ctx context.Context, sessionID string) ([]*grant_entity.GrantItem, error)
-	// ListApprovedItems 获取某个会话下所有已批准 grant 的 items
+	// ListApprovedItems 获取某个会话下所有已批准且未过期的 grant items。过期过滤
+	// （expiretime = 0 表示未单独设期，跟随会话上限）收敛在这里：所有授权消费方
+	// （AI exec / opsctl / policy show）看到的就是同一份"仍有效"集合。
 	ListApprovedItems(ctx context.Context, sessionID string) ([]*grant_entity.GrantItem, error)
 }
 
@@ -91,11 +93,12 @@ func (r *grantRepo) UpdateItems(ctx context.Context, sessionID string, items []*
 
 func (r *grantRepo) ListApprovedItems(ctx context.Context, sessionID string) ([]*grant_entity.GrantItem, error) {
 	var items []*grant_entity.GrantItem
-	// 查找该 sessionID 关联的所有已批准 grant 的 items
+	// 查找该 sessionID 关联的所有已批准 grant 的 items；expiretime=0 未单独设期，
+	// 否则只取未过期的（限时全量授权）。
 	if err := db.Ctx(ctx).
 		Joins("JOIN grant_sessions ON grant_sessions.id = grant_items.grant_session_id").
-		Where("grant_sessions.status = ? AND grant_items.grant_session_id = ?",
-			grant_entity.GrantStatusApproved, sessionID).
+		Where("grant_sessions.status = ? AND grant_items.grant_session_id = ? AND (grant_items.expiretime = 0 OR grant_items.expiretime > ?)",
+			grant_entity.GrantStatusApproved, sessionID, time.Now().Unix()).
 		Find(&items).Error; err != nil {
 		return nil, err
 	}

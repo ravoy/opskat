@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { act, render, screen, fireEvent, within } from "@testing-library/react";
 import { PolicyGroupManager } from "@/components/asset/PolicyGroupManager";
-import { ListPolicyGroups } from "../../wailsjs/go/system/System";
+import { ListPolicyGroups } from "@clients/system";
 
 // The manager only exposed a fixed set of built-in tabs (SSH/Database/Redis/MongoDB/Kafka/etcd);
 // OSS had no tab, so there was no way to reach the "Create" flow for an OSS policy group at all.

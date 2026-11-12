@@ -2,7 +2,7 @@ import { render, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { TopTabBar } from "@/components/layout/TopTabBar";
 import { useTabStore } from "@/stores/tabStore";
-import { Environment } from "../../wailsjs/runtime/runtime";
+import { Environment } from "@/lib/desktop";
 
 describe("TopTabBar window controls inset", () => {
   beforeEach(() => {

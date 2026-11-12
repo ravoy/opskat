@@ -13,7 +13,7 @@ import {
   TooltipTrigger,
 } from "@opskat/ui";
 import { Info } from "lucide-react";
-import { GetSSHConnectionSettings, SetSSHConnectionSettings } from "../../../wailsjs/go/system/System";
+import { GetSSHConnectionSettings, SetSSHConnectionSettings } from "@clients/system";
 import { toast } from "sonner";
 import { notifySuccess } from "@/lib/notify";
 import { errorMessage } from "@/lib/errorMessage";

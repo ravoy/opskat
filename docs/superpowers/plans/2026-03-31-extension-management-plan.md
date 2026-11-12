@@ -115,7 +115,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/extension_state_entity"
+	"github.com/octays/opskat/internal/model/entity/extension_state_entity"
 
 	"github.com/cago-frame/cago/database/db"
 )
@@ -181,7 +181,7 @@ func (r *extensionStateRepo) Delete(ctx context.Context, name string) error {
 Find the bootstrap or app initialization code where other repos are registered (e.g., `RegisterExtensionData`). Add the same pattern:
 
 ```go
-import "github.com/opskat/opskat/internal/repository/extension_state_repo"
+import "github.com/octays/opskat/internal/repository/extension_state_repo"
 
 // In the registration block:
 extension_state_repo.RegisterExtensionState(extension_state_repo.NewExtensionState())
@@ -782,12 +782,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai"
-	"github.com/opskat/opskat/internal/model/entity/extension_state_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/extension_data_repo"
-	"github.com/opskat/opskat/internal/repository/extension_state_repo"
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/internal/ai"
+	"github.com/octays/opskat/internal/model/entity/extension_state_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/extension_data_repo"
+	"github.com/octays/opskat/internal/repository/extension_state_repo"
+	"github.com/octays/opskat/pkg/extension"
 	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
 	"go.uber.org/zap"
 )

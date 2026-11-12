@@ -31,7 +31,7 @@ vi.mock("@/components/ErrorBoundary", () => ({
   ErrorBoundary: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 vi.mock("@/extension/init", () => ({ bootstrapExtensions: vi.fn(async () => {}) }));
-vi.mock("../../wailsjs/runtime/runtime", () => ({
+vi.mock("@/lib/desktop", () => ({
   EventsOn: vi.fn(() => () => {}),
   EventsEmit: vi.fn(),
   WindowToggleMaximise: vi.fn(),

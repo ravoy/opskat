@@ -44,7 +44,7 @@ import {
   Separator,
 } from "@opskat/ui";
 import i18n from "@/i18n";
-import { ListInstalledExtensions } from "../../../wailsjs/go/extension/Extension";
+import { ListInstalledExtensions } from "@clients/extension";
 import {
   ReloadExtensions,
   InstallExtension,
@@ -55,8 +55,8 @@ import {
   GetExtensionDetail,
   InstallStoreExtension,
   GetCommandReviewState,
-} from "../../../wailsjs/go/extension/Extension";
-import type { extstore_svc } from "../../../wailsjs/go/models";
+} from "@clients/extension";
+import type * as extstore_svc from "@bindings/github.com/octays/opskat/internal/service/extstore_svc/models";
 import { EXTENSION_MIRROR_SETTING_ID, revealSettingRow } from "./downloadMirror";
 import { ExtensionMirrorSettings } from "./ExtensionMirrorSettings";
 import { ExtensionSettingsForm } from "./ExtensionSettingsForm";
@@ -77,7 +77,7 @@ interface ExtInfo {
   description: string;
   enabled: boolean;
   /** Set when the host refused the extension: it is listed but neither loaded nor toggleable. */
-  loadError?: { kind: string; message: string };
+  loadError?: { kind: string; message: string } | null;
   manifest?: {
     permissions?: ExtPermissions;
     /** What the user approved at install: commandReviewer marks the extension providing the command reviewer. */
@@ -93,7 +93,7 @@ interface ExtInfo {
     frontend?: {
       pages?: { id: string; i18n?: { name?: string }; slot?: string }[];
     };
-  };
+  } | null;
 }
 
 type ExtensionView = "installed" | "store";

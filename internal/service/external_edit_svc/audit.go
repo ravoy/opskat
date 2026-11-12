@@ -7,9 +7,9 @@ import (
 	"encoding/json"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/model/entity/audit_entity"
-	"github.com/opskat/opskat/internal/pkg/jsonscalar"
-	"github.com/opskat/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/internal/model/entity/audit_entity"
+	"github.com/octays/opskat/internal/pkg/jsonscalar"
+	"github.com/octays/opskat/internal/repository/audit_repo"
 	"go.uber.org/zap"
 )
 

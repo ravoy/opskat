@@ -17,10 +17,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/ssh"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/proxychain"
-	"github.com/opskat/opskat/internal/pkg/sshtuning"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/proxychain"
+	"github.com/octays/opskat/internal/pkg/sshtuning"
+	"github.com/octays/opskat/internal/repository/asset_repo"
 )
 
 // createHopAsset 插入一个密钥文件认证的 SSH 资产。extraConfig 是追加到 config 里的

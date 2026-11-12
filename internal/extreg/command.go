@@ -12,9 +12,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // pageOnlyRefusal is what exec answers for a tool declared pageOnly: such a tool has no

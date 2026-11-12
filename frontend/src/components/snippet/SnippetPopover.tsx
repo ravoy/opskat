@@ -6,8 +6,9 @@ import { AsyncState, type AsyncStatus } from "@/components/common/AsyncState";
 import { errorMessage } from "@/lib/errorMessage";
 import { useSnippetStore } from "@/stores/snippetStore";
 import { useTabStore } from "@/stores/tabStore";
-import { ListSnippets } from "../../../wailsjs/go/extension/Extension";
-import type { snippet_entity, snippet_svc } from "../../../wailsjs/go/models";
+import { ListSnippets } from "@clients/extension";
+import type * as snippet_entity from "@bindings/github.com/octays/opskat/internal/model/entity/snippet_entity/models";
+import type * as snippet_svc from "@bindings/github.com/octays/opskat/internal/service/snippet_svc/models";
 
 type Snippet = snippet_entity.Snippet;
 

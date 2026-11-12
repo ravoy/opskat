@@ -7,9 +7,9 @@ import (
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"github.com/google/uuid"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/vnc_svc"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/vnc_svc"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 	"golang.org/x/text/encoding/simplifiedchinese"
 )
@@ -90,10 +90,10 @@ func (r *VNC) StartVNCStream(sessionID string) error {
 	return r.manager.SetCallbacks(
 		sessionID,
 		func(data []byte) {
-			wailsRuntime.EventsEmit(r.ctx, "vnc:data:"+sessionID, base64.StdEncoding.EncodeToString(data))
+			application.Get().Event.Emit("vnc:data:"+sessionID, base64.StdEncoding.EncodeToString(data))
 		},
 		func() {
-			wailsRuntime.EventsEmit(r.ctx, "vnc:closed:"+sessionID, nil)
+			application.Get().Event.Emit("vnc:closed:"+sessionID, nil)
 		},
 	)
 }

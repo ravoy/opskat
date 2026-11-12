@@ -7,7 +7,7 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 func TestCommandReviewer(t *testing.T) {

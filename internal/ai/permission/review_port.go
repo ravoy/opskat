@@ -3,7 +3,7 @@ package permission
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/aictx"
 )
 
 // Syntax 是命令的写法，随命令交给审核器；shell 写法在送审前判断是否既解码又执行（见 applyReviews）。

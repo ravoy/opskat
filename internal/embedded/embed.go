@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/opskat/opskat/internal/pkg/portable"
+	"github.com/octays/opskat/internal/pkg/portable"
 )
 
 // opsctlBinary 由 embed_prod.go (embed_opsctl tag) 或 embed_dev.go 设置

@@ -1,4 +1,4 @@
-import { OnFileDrop, OnFileDropOff } from "../../../wailsjs/runtime/runtime";
+import { OnFileDrop, OnFileDropOff } from "@/lib/desktop";
 
 type RectProvider = () => DOMRect | null | undefined;
 

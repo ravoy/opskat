@@ -16,7 +16,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/dirsync"
+	"github.com/octays/opskat/internal/pkg/dirsync"
 	"github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/ssh"

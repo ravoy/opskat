@@ -75,7 +75,7 @@
 - 删除 `sdk/go`、`examples/echo`、`extensions/oss` 及其说明；远端旧分支不动。
 - `README.md`、`README_zh.md` 改写为：仓库定位（官方扩展源码）、目录约定、构建 / 测试 / 本地安装（`opsctl ext dev`）步骤；SDK 用法指向 opskat 仓 `extensions/README.md`，不在此仓复述。
 - `make build EXT=<name>` 产出 `extensions/<name>/dist/`，该目录可直接经"从目录安装"或 `opsctl ext dev` 安装。
-- 扩展依赖 `github.com/opskat/opskat/pkg/extsdk`，固定到包含本 spec 平台变更的 opskat 版本。ES 扩展声明的 hostABI 与最低应用版本取该版本；不支持的旧应用按现有规则拒绝加载并列出其支持的 hostABI。
+- 扩展依赖 `github.com/octays/opskat/pkg/extsdk`，固定到包含本 spec 平台变更的 opskat 版本。ES 扩展声明的 hostABI 与最低应用版本取该版本；不支持的旧应用按现有规则拒绝加载并列出其支持的 hostABI。
 - CI：PR 与主分支推送时对每个扩展运行 Go 测试、WASM 构建、前端类型检查与构建；任一失败即 CI 失败。发布产物与索引留给商店 spec。
 
 ## Elasticsearch 资产类型

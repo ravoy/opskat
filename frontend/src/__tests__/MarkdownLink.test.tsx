@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, createEvent } from "@testing-library/react";
 import Markdown from "react-markdown";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
-import { BrowserOpenURL } from "../../wailsjs/runtime/runtime";
+import { BrowserOpenURL } from "@/lib/desktop";
 import { markdownComponents, markdownUrlTransform } from "../components/MarkdownLink";
 import { openAssetInfoTab } from "@/lib/openAssetInfoTab";
 

@@ -2,7 +2,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronDown, ChevronRight, File, Folder, Loader2 } from "lucide-react";
 import { Button, cn, Input, ScrollArea } from "@opskat/ui";
-import { sftp_svc } from "../../../../wailsjs/go/models";
+import * as sftp_svc from "@bindings/github.com/octays/opskat/internal/service/sftp_svc/models";
 import {
   collapseSingleChildChains,
   isSftpTreeEntryRow,

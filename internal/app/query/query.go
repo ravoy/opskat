@@ -4,13 +4,13 @@ package query
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/connpool"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/conntest"
-	"github.com/opskat/opskat/internal/service/redis_svc"
-	"github.com/opskat/opskat/internal/sshpool"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/conntest"
+	"github.com/octays/opskat/internal/service/redis_svc"
+	"github.com/octays/opskat/internal/sshpool"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // LangProvider 由 system binder 实现。

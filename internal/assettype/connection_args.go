@@ -6,9 +6,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/service/credential_svc"
 )
 
 // 连接字段：一个资产"怎么连过去"的那部分自动化参数——SSH 隧道、代理链、TLS。

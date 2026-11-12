@@ -3,7 +3,7 @@ package audit_repo
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/model/entity/audit_entity"
+	"github.com/octays/opskat/internal/model/entity/audit_entity"
 
 	"github.com/cago-frame/cago/database/db"
 )

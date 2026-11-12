@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Button, Input, ConfirmDialog } from "@opskat/ui";
 import { useQueryStore, RedisKeyInfo } from "@/stores/queryStore";
 import { useTabStore, type QueryTabMeta } from "@/stores/tabStore";
-import { RedisHashDelete } from "../../../wailsjs/go/redis/Redis";
+import { RedisHashDelete } from "@clients/redis";
 import {
   RedisHashSet,
   RedisListDelete,
@@ -14,7 +14,7 @@ import {
   RedisSetRemove,
   RedisZSetAdd,
   RedisZSetRemove,
-} from "../../../wailsjs/go/redis/Redis";
+} from "@clients/redis";
 import { RedisLoadMoreFooter, RedisValueCount } from "./RedisValueList";
 import { useRedisValueVirtualizer } from "./useRedisValueVirtualizer";
 import { errorMessage } from "@/lib/errorMessage";

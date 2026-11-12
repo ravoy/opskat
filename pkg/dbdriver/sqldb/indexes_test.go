@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // indexerDialect 在 designerDialect 之上开启索引编辑：索引写成一眼能与真实方言区分的语句，收到的改动留在

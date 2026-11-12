@@ -338,8 +338,8 @@ go test ./internal/ai/ -run TestName       # single test
 make test-cover                            # coverage HTML
 
 # Frontend
-cd frontend && pnpm test                   # vitest (happy-dom + RTL; Wails mocked)
-cd frontend && pnpm test:watch
+cd frontend && bun --bun run test                   # vitest (happy-dom + RTL; Wails mocked)
+cd frontend && bun --bun run test:watch
 
 # GUI end-to-end (Playwright × the real Wails app — see below)
 make test-e2e
@@ -373,18 +373,18 @@ make dev-sandbox                       # once, in another terminal (ARGS=--reset
 
 # 0. (optional) enable debug logging: set config.json debug_mode=true in the sandbox dir, restart
 # 1. Mark a baseline so you only read NEW audit rows
-BASE=$(node e2e/oracle.mjs mark)
+BASE=$(bun e2e/oracle.mjs mark)
 
 # 2. Exercise the path:
 #    - unit/integration:  go test ./... -run TestThing
 #    - headless:          opsctl --data-dir <tmp> exec web-server -- uptime
-#    - GUI:               node e2e/drive.mjs snapshot   → click / fill → shot
+#    - GUI:               bun e2e/drive.mjs snapshot   → click / fill → shot
 
 # 3. Confirm the side-effect in the audit log
-node e2e/oracle.mjs audit --since="$BASE"
+bun e2e/oracle.mjs audit --since="$BASE"
 
 # 4. Confirm in the logs
-node e2e/oracle.mjs logs --grep=<assetName> --tail=50
+bun e2e/oracle.mjs logs --grep=<assetName> --tail=50
 
 # 5. Reset state so the next run is clean: restart with `make dev-sandbox ARGS=--reset`
 ```

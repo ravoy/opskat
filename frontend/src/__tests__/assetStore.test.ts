@@ -2,16 +2,8 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { selectLoadError, useAssetStore } from "../stores/assetStore";
 import { useRecentAssetStore } from "../stores/recentAssetStore";
-import { ListAssets } from "../../wailsjs/go/system/System";
-import {
-  ListGroups,
-  CreateAsset,
-  UpdateAsset,
-  DeleteAsset,
-  GetAsset,
-  CreateGroup,
-  DeleteGroup,
-} from "../../wailsjs/go/system/System";
+import { ListAssets } from "@clients/system";
+import { ListGroups, CreateAsset, UpdateAsset, DeleteAsset, GetAsset, CreateGroup, DeleteGroup } from "@clients/system";
 
 vi.mocked(ListAssets).mockResolvedValue([]);
 vi.mocked(ListGroups).mockResolvedValue([]);

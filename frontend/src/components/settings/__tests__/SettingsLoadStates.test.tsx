@@ -6,7 +6,7 @@ import { NetworkSection } from "../NetworkSection";
 import { CommandReviewSection } from "../CommandReviewSection";
 import { BackupSection } from "../BackupSection";
 import { AISettingsSection } from "../AISettingsSection";
-import { system } from "../../../../wailsjs/go/models";
+import * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
 import {
   DetectOpsctl,
   DetectSkills,
@@ -22,9 +22,9 @@ import {
   GetWebDAVConfig,
   ListBackupGists,
   ListWebDAVBackups,
-} from "../../../../wailsjs/go/system/System";
-import { GetCommandReviewState, ListInstalledExtensions } from "../../../../wailsjs/go/extension/Extension";
-import { ListAIProviders } from "../../../../wailsjs/go/ai/AI";
+} from "@clients/system";
+import { GetCommandReviewState, ListInstalledExtensions } from "@clients/extension";
+import { ListAIProviders } from "@clients/ai";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), warning: vi.fn(), info: vi.fn(), success: vi.fn() } }));
 

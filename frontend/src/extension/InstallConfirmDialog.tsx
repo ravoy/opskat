@@ -6,7 +6,7 @@ import { Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogH
 import { useWailsEvent } from "@/hooks/useWailsEvent";
 import { EntityIcon } from "@/components/asset/AssetIcon";
 import { formatBytes } from "@/lib/formatBytes";
-import { RespondExtensionInstallConfirm } from "../../wailsjs/go/extension/Extension";
+import { RespondExtensionInstallConfirm } from "@clients/extension";
 import { errorMessage } from "@/lib/errorMessage";
 
 const INSTALL_MODE_KEYS = {

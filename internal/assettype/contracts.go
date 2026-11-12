@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"maps"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
 )
 
 func passwordAutomationContract(configFields, approvalFields []string, normalize func(map[string]any) error) AutomationContract {

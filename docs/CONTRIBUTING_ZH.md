@@ -10,16 +10,16 @@
 
 ## 贡献方式
 
-- **报告 Bug** — 使用 Bug 模板提交 [Issue](https://github.com/opskat/opskat/issues/new/choose)，附上复现步骤和相关日志会很有帮助。
-- **功能建议** — 提交 Feature Request；如果还只是初步想法，可以先到 [Discussions](https://github.com/opskat/opskat/discussions) 讨论。
-- **安全漏洞** — 请**不要**提交公开 Issue，通过 [GitHub Security Advisories](https://github.com/opskat/opskat/security/advisories/new) 私下报告。
+- **报告 Bug** — 使用 Bug 模板提交 [Issue](https://github.com/octays/opskat/issues/new/choose)，附上复现步骤和相关日志会很有帮助。
+- **功能建议** — 提交 Feature Request；如果还只是初步想法，可以先到 [Discussions](https://github.com/octays/opskat/discussions) 讨论。
+- **安全漏洞** — 请**不要**提交公开 Issue，通过 [GitHub Security Advisories](https://github.com/octays/opskat/security/advisories/new) 私下报告。
 - **完善文档** — 错别字修正、表述澄清都欢迎。
 - **提交代码** — 修 Bug 或实现功能。改动较大时，请先开 Issue 讨论方案，再动手投入时间。
-- **扩展开发** — 扩展源码在独立仓库：[opskat/extensions](https://github.com/opskat/extensions)。
+- **扩展开发** — 扩展源码在独立仓库：[opskat/extensions](https://github.com/octays/extensions)。
 
 ## 开发环境
 
-前置依赖：[Go 1.26+](https://go.dev/)、[Node.js 22+](https://nodejs.org/) + [pnpm](https://pnpm.io/)、[Wails v2 CLI](https://wails.io/docs/gettingstarted/installation)。
+前置依赖：[Go 1.26+](https://go.dev/)、[Bun](https://bun.sh/)（版本见 `.bun-version`）、[Wails v3 CLI](https://wails.io/getting-started/installation/)。
 
 ```bash
 make install        # 安装前端依赖
@@ -28,7 +28,7 @@ make dev            # 开发模式（热重载）
 
 完整命令列表（构建、opsctl CLI、扩展开发、覆盖率等）见 [docs/DEVELOP.md → Common Commands](./DEVELOP.md#common-commands)。
 
-> ⚠️ 部分文件是**生成物**（如 `frontend/wailsjs/`、`mock_*/`、lockfile），不要手工编辑。清单见 [docs/DEVELOP.md → Generated / auto-managed files](./DEVELOP.md#️-generated--auto-managed-files)。
+> ⚠️ 部分文件是**生成物**（如 `frontend/bindings/`、`mock_*/`、lockfile），不要手工编辑。清单见 [docs/DEVELOP.md → Generated / auto-managed files](./DEVELOP.md#️-generated--auto-managed-files)。
 
 ## 测试与 Lint
 
@@ -37,7 +37,7 @@ make dev            # 开发模式（热重载）
 ```bash
 make test                                 # Go 测试
 make lint                                 # Go lint
-cd frontend && pnpm test && pnpm lint     # 前端测试 + lint
+cd frontend && bun --bun run test && bun --bun run lint     # 前端测试 + lint
 ```
 
 CI 还会额外运行 GUI 端到端套件（`make test-e2e`，Playwright 驱动真实 Wails 应用）。
@@ -64,7 +64,7 @@ Commit 信息中英文都可以 —— emoji 开头的规则与语言无关。
 
 ## Pull Request
 
-1. 在 GitHub 上 **Fork** 本仓库（[opskat/opskat](https://github.com/opskat/opskat) 页面右上角的 "Fork" 按钮），然后 clone 你的 fork：
+1. 在 GitHub 上 **Fork** 本仓库（[opskat/opskat](https://github.com/octays/opskat) 页面右上角的 "Fork" 按钮），然后 clone 你的 fork：
 
    ```bash
    git clone https://github.com/<你的用户名>/opskat.git

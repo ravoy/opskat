@@ -9,7 +9,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { notifySuccess } from "@/lib/notify";
-import { asset_entity } from "../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import {
   CheckVNCServerKey,
   ConnectVNC,
@@ -17,10 +17,10 @@ import {
   EncodeVNCClipboardText,
   StartVNCStream,
   TrustVNCServerKey,
-} from "../../../wailsjs/go/vnc/VNC";
-import { DisconnectSSH, OpenSFTPSession } from "../../../wailsjs/go/ssh/SSH";
-import { ClipboardSetText } from "../../../wailsjs/runtime";
-import { ReadClipboardText } from "../../../wailsjs/go/system/System";
+} from "@clients/vnc";
+import { DisconnectSSH, OpenSFTPSession } from "@clients/ssh";
+import { ClipboardSetText } from "@/lib/desktop";
+import { ReadClipboardText } from "@clients/system";
 import { FileManagerPanel } from "@/components/terminal/FileManagerPanel";
 import { WailsRfbChannel } from "@/lib/wailsRfbChannel";
 import { decodeVNCClipboardText, pasteVNCClipboardText } from "@/lib/vncClipboard";

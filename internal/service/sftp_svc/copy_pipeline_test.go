@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/sftp"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/pkg/sftpio/sftpiotest"
+	"github.com/octays/opskat/internal/pkg/sftpio/sftpiotest"
 )
 
 // 远端到远端的粘贴曾经用 io.Copy：它选中源的 WriteTo，读腿确实并发，但随后每次只把一个

@@ -5,10 +5,10 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/model/entity/policy_group_entity"
-	"github.com/opskat/opskat/internal/repository/policy_group_repo"
-	"github.com/opskat/opskat/internal/repository/policy_group_repo/mock_policy_group_repo"
+	"github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/model/entity/policy_group_entity"
+	"github.com/octays/opskat/internal/repository/policy_group_repo"
+	"github.com/octays/opskat/internal/repository/policy_group_repo/mock_policy_group_repo"
 
 	"github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/assert"

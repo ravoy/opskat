@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/opskat/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/bootstrap"
 )
 
 func (s *Service) detectEditors(customEditors []bootstrap.ExternalEditorConfig, defaultID string) []Editor {

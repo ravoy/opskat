@@ -10,7 +10,7 @@
 
 ## Global Constraints
 
-- 模块路径：`github.com/opskat/opskat`。
+- 模块路径：`github.com/octays/opskat`。
 - **本 Plan 不删除任何旧工具**。`exec_sql` / `exec_redis` / `run_command` 等继续注册并可用；`exec` 与它们并存。删除动作在 Plan B（全部类型 parser 齐备后）执行。
 - **本 Plan 不修既有审批漏洞**（`upload_file`/`download_file` 无检查、`if checker != nil` fail-open）。见 spec §2 非目标。
 - 后端验证用 `golangci-lint run`，不用 `go vet`（见 `docs/DEVELOP.md`）。
@@ -48,9 +48,9 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
 )
 
 func setupRepo(t *testing.T) *mock_asset_repo.MockAssetRepo {
@@ -155,8 +155,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/asset_svc"
 )
 
 // ErrAmbiguous 在同名资产多于一个时返回。名称不是唯一键，静默取第一个会让模型
@@ -259,7 +259,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 func TestRegisterExecutor_RoundTrip(t *testing.T) {
@@ -912,8 +912,8 @@ package execimpl
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 func TestInit_RegistersFiveVerbatimTypes(t *testing.T) {
@@ -1065,9 +1065,9 @@ import (
 
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
 )
 
 func setupUnified(t *testing.T) *mock_asset_repo.MockAssetRepo {
@@ -1381,8 +1381,8 @@ package execimpl
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/assettype"
 )
 
 // exemptFromExec 是尚未接入统一 exec 的资产类型。

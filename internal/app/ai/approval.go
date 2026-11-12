@@ -9,13 +9,13 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/runner"
-	"github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/runner"
+	"github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/app/i18n"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // makeCommandConfirmFunc 创建统一审批回调，向 AI 聊天流发送 approval_request 事件并阻塞等待
@@ -29,7 +29,7 @@ func (a *AI) makeCommandConfirmFunc() permission.CommandConfirmFunc {
 		eventName := fmt.Sprintf("ai:event:%d", convID)
 
 		// 发往 Wails 的 items 即后端 pending 持有的原始 items，展示与执行主体逐字一致。
-		wailsRuntime.EventsEmit(a.ctx, eventName, runner.StreamEvent{
+		application.Get().Event.Emit(eventName, runner.StreamEvent{
 			Type:      "approval_request",
 			Kind:      kind,
 			Items:     items,
@@ -42,14 +42,14 @@ func (a *AI) makeCommandConfirmFunc() permission.CommandConfirmFunc {
 
 		select {
 		case resp := <-ch:
-			wailsRuntime.EventsEmit(a.ctx, eventName, runner.StreamEvent{
+			application.Get().Event.Emit(eventName, runner.StreamEvent{
 				Type:      "approval_result",
 				ConfirmID: confirmID,
 				Content:   resp.Decision,
 			})
 			return resp
 		case <-ctx.Done():
-			wailsRuntime.EventsEmit(a.ctx, eventName, runner.StreamEvent{
+			application.Get().Event.Emit(eventName, runner.StreamEvent{
 				Type:      "approval_result",
 				ConfirmID: confirmID,
 				Content:   "deny",
@@ -74,7 +74,7 @@ func (a *AI) makeGrantRequestFunc() permission.GrantRequestFunc {
 		eventName := fmt.Sprintf("ai:event:%d", convID)
 
 		// 发往 Wails 的 items 与 description 即原始主体，展示与执行逐字一致。
-		wailsRuntime.EventsEmit(a.ctx, eventName, runner.StreamEvent{
+		application.Get().Event.Emit(eventName, runner.StreamEvent{
 			Type:        "approval_request",
 			Kind:        permission.ApprovalKindGrant,
 			Items:       items,
@@ -89,7 +89,7 @@ func (a *AI) makeGrantRequestFunc() permission.GrantRequestFunc {
 
 		select {
 		case resp := <-ch:
-			wailsRuntime.EventsEmit(a.ctx, eventName, runner.StreamEvent{
+			application.Get().Event.Emit(eventName, runner.StreamEvent{
 				Type:      "approval_result",
 				ConfirmID: confirmID,
 				Content:   resp.Decision,
@@ -119,7 +119,7 @@ func (a *AI) makeGrantRequestFunc() permission.GrantRequestFunc {
 			}
 			return true, finalPatterns
 		case <-ctx.Done():
-			wailsRuntime.EventsEmit(a.ctx, eventName, runner.StreamEvent{
+			application.Get().Event.Emit(eventName, runner.StreamEvent{
 				Type:      "approval_result",
 				ConfirmID: confirmID,
 				Content:   "deny",
@@ -139,6 +139,8 @@ type WindowActivator interface {
 }
 
 // SetWindowActivator 由 main.go 注入：local-tool 审批弹出时需要把窗口拉前台。
+//
+//wails:ignore
 func (a *AI) SetWindowActivator(w WindowActivator) { a.window = w }
 
 // makeLocalToolConfirmFunc 创建 coding agent 本地工具审批回调。
@@ -151,7 +153,13 @@ func (a *AI) makeLocalToolConfirmFunc() tool.LocalToolConfirmFunc {
 		confirmID := fmt.Sprintf("local_tool_%d_%d", convID, time.Now().UnixNano())
 		eventName := fmt.Sprintf("ai:event:%d", convID)
 
-		if a.window != nil {
+		if window, ok := ctx.Value(application.WindowKey).(application.Window); ok {
+			if window.IsMinimised() {
+				window.UnMinimise()
+			}
+			window.Show()
+			window.Focus()
+		} else if a.window != nil {
 			a.window.ActivateWindow()
 		}
 		approvalItems := []permission.ApprovalItem{{
@@ -159,7 +167,7 @@ func (a *AI) makeLocalToolConfirmFunc() tool.LocalToolConfirmFunc {
 			Command: req.Command,
 			Detail:  req.Detail,
 		}}
-		wailsRuntime.EventsEmit(a.ctx, eventName, runner.StreamEvent{
+		application.Get().Event.Emit(eventName, runner.StreamEvent{
 			Type:      "approval_request",
 			Kind:      permission.ApprovalKindLocalTool,
 			ConfirmID: confirmID,
@@ -174,14 +182,14 @@ func (a *AI) makeLocalToolConfirmFunc() tool.LocalToolConfirmFunc {
 
 		select {
 		case resp := <-ch:
-			wailsRuntime.EventsEmit(a.ctx, eventName, runner.StreamEvent{
+			application.Get().Event.Emit(eventName, runner.StreamEvent{
 				Type:      "approval_result",
 				ConfirmID: confirmID,
 				Content:   resp.Decision,
 			})
 			return resp
 		case <-ctx.Done():
-			wailsRuntime.EventsEmit(a.ctx, eventName, runner.StreamEvent{
+			application.Get().Event.Emit(eventName, runner.StreamEvent{
 				Type:      "approval_result",
 				ConfirmID: confirmID,
 				Content:   "deny",

@@ -1,14 +1,14 @@
 import { act, render, screen, fireEvent, waitFor, within } from "@testing-library/react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { toast } from "sonner";
-import type { redis_svc } from "../../wailsjs/go/models";
+import type * as redis_svc from "@bindings/github.com/octays/opskat/internal/service/redis_svc/models";
 import { RedisKeyDetail } from "../components/query/RedisKeyDetail";
 import { RedisStreamViewer } from "../components/query/RedisStreamViewer";
 import { RedisCollectionTable } from "../components/query/RedisCollectionTable";
 import { useQueryStore } from "../stores/queryStore";
 import { useTabStore } from "../stores/tabStore";
-import { ExecuteRedisArgs } from "../../wailsjs/go/query/Query";
-import { RedisDeleteKeys, RedisGetKeyDetail, RedisSetKeyTTL, RedisStreamAdd } from "../../wailsjs/go/redis/Redis";
+import { ExecuteRedisArgs } from "@clients/query";
+import { RedisDeleteKeys, RedisGetKeyDetail, RedisSetKeyTTL, RedisStreamAdd } from "@clients/redis";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn() } }));
 

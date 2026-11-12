@@ -5,13 +5,10 @@ import { TableDesigner } from "../TableDesigner";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
 import { useAssetStore } from "@/stores/assetStore";
-import { asset_entity, dbdriver, query_svc } from "../../../../../wailsjs/go/models";
-import {
-  GetAlterTableModel,
-  GetTableDDL,
-  GetTableMetadata,
-  ListDatabaseDrivers,
-} from "../../../../../wailsjs/go/query/Query";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
+import { GetAlterTableModel, GetTableDDL, GetTableMetadata, ListDatabaseDrivers } from "@clients/query";
 import { BUILTIN_DRIVERS, fakeDriverWith, provideDrivers } from "@/__tests__/dbDriverFixtures";
 
 vi.mock("@/components/CodeEditor", () => ({
@@ -171,7 +168,12 @@ describe("TableDesigner 只读查看", () => {
   });
 
   it("驱动声明了列注释时即使都为空也显示注释列", async () => {
-    provideDrivers([new dbdriver.Descriptor({ ...fakeDriverWith([]), alterTableAttributes: ["column_comment"] })]);
+    provideDrivers([
+      new dbdriver.Descriptor({
+        ...fakeDriverWith([]),
+        alterTableAttributes: [dbdriver.AlterAttribute.AlterColumnComment],
+      }),
+    ]);
     setup("fakedb");
     vi.mocked(GetTableMetadata).mockResolvedValue(metadata());
     await renderDesigner();
@@ -231,7 +233,7 @@ describe("TableDesigner 只读查看", () => {
 
     vi.mocked(GetTableMetadata).mockResolvedValueOnce(
       metadata({
-        columns: [{ name: "renamed", type: "int", nullable: false, primaryKey: false, comment: "" }],
+        columns: [{ name: "renamed", type: "int", nullable: false, primaryKey: false, default: null, comment: "" }],
       })
     );
     fireEvent.click(screen.getByRole("button", { name: "query.designer.reload" }));

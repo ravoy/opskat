@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/cmdline"
 )
 
 func TestHoistGlobalFlags(t *testing.T) {

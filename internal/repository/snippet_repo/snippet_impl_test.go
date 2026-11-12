@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/model/entity/snippet_entity"
+	"github.com/octays/opskat/internal/model/entity/snippet_entity"
 )
 
 func setupRepo(t *testing.T) (context.Context, SnippetRepo) {

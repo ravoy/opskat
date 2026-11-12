@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/model/entity/ssh_agent_source_entity"
-	"github.com/opskat/opskat/internal/repository/ssh_agent_source_repo"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/sshagent"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/model/entity/ssh_agent_source_entity"
+	"github.com/octays/opskat/internal/repository/ssh_agent_source_repo"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/sshagent"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )

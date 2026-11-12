@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useTerminalStore } from "@/stores/terminalStore";
-import { useTabStore } from "@/stores/tabStore";
+import { openPageTab, openSettingsTab, useTabStore } from "@/stores/tabStore";
 import { useQueryStore } from "@/stores/queryStore";
 import { useShortcutStore, eventMatchesBinding, matchShortcut, FIND_SCOPE_ATTR } from "@/stores/shortcutStore";
 import { useLayoutStore } from "@/stores/layoutStore";
@@ -161,34 +161,12 @@ export function useKeyboardShortcuts({ onToggleAIPanel, onToggleSidebar, onToggl
           if (homeTab) tabStore.activateTab(homeTab.id);
           break;
         }
-        case "page.settings": {
-          const existing = tabs.find((t) => t.id === "settings");
-          if (existing) {
-            tabStore.activateTab("settings");
-          } else {
-            tabStore.openTab({
-              id: "settings",
-              type: "page",
-              label: "settings",
-              meta: { type: "page", pageId: "settings" },
-            });
-          }
+        case "page.settings":
+          openSettingsTab("settings");
           break;
-        }
-        case "page.sshkeys": {
-          const existing = tabs.find((t) => t.id === "sshkeys");
-          if (existing) {
-            tabStore.activateTab("sshkeys");
-          } else {
-            tabStore.openTab({
-              id: "sshkeys",
-              type: "page",
-              label: "sshkeys",
-              meta: { type: "page", pageId: "sshkeys" },
-            });
-          }
+        case "page.sshkeys":
+          openPageTab("sshkeys");
           break;
-        }
       }
     };
 

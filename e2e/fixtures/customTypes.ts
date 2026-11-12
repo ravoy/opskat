@@ -93,6 +93,10 @@ export interface CreateGenericAssetOptions {
 
 /** Add Asset → the type picker's "Custom" group → fill fields → save. */
 export async function createGenericAssetViaUI(page: Page, opts: CreateGenericAssetOptions): Promise<void> {
+  // Custom types are edited in the settings workspace (?page=settings), which has
+  // no asset tree; adding an asset is a main-workspace gesture, so go back first
+  // (a no-op when the page is already on the main workspace).
+  if (new URL(page.url()).searchParams.has("page")) await page.goto("/");
   await page.getByTestId("add-asset-button").click();
   await expect(page.getByTestId("asset-form-dialog")).toBeVisible();
   await page.getByTestId("asset-type-picker").click();

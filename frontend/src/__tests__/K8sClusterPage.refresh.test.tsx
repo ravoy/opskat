@@ -2,13 +2,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { K8sClusterPage } from "@/components/k8s/K8sClusterPage";
-import {
-  GetK8sClusterInfo,
-  GetK8sNamespacePods,
-  GetK8sNamespaceResources,
-  GetK8sPodDetail,
-} from "../../wailsjs/go/k8s/K8s";
-import type { asset_entity } from "../../wailsjs/go/models";
+import { GetK8sClusterInfo, GetK8sNamespacePods, GetK8sNamespaceResources, GetK8sPodDetail } from "@clients/k8s";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 const clusterInfo = {
   version: "1.34.1",

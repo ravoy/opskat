@@ -1,3 +1,4 @@
+import { OpenPageWindow } from "@clients/system";
 import { renderHook, render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -10,7 +11,7 @@ import { useShortcutStore, DEFAULT_SHORTCUTS, isMac, type ShortcutBinding } from
 import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
 import { TabPanelMenu } from "../components/layout/TabPanelMenu";
 import { CommandPalette } from "../components/command/CommandPalette";
-import { ListSnippets, ListSnippetCategories } from "../../wailsjs/go/extension/Extension";
+import { ListSnippets, ListSnippetCategories } from "@clients/extension";
 
 function press(binding: ShortcutBinding) {
   document.body.dispatchEvent(
@@ -67,6 +68,7 @@ describe("TabPanelMenu", () => {
 
 describe("CommandPalette", () => {
   beforeEach(() => {
+    vi.mocked(OpenPageWindow).mockClear();
     useTabStore.setState({ tabs: [], activeTabId: null });
     useAssetStore.setState({ assets: [], groups: [] });
     useRecentAssetStore.setState({ recentIds: [] });
@@ -81,12 +83,18 @@ describe("CommandPalette", () => {
     ["nav.snippets", "snippets"],
     ["nav.audit", "audit"],
     ["nav.settings", "settings"],
-  ])("finds page %s and opens its tab", (key, pageId) => {
+  ])("routes page %s to its appropriate surface", (key, pageId) => {
     const onClose = vi.fn();
     render(<CommandPalette open onClose={onClose} onConnectAsset={vi.fn()} />);
     fireEvent.change(screen.getByRole("textbox"), { target: { value: key } });
     fireEvent.click(screen.getByRole("option", { name: new RegExp(key) }));
-    expect(useTabStore.getState().activeTabId).toBe(pageId);
+    if (pageId === "settings") {
+      expect(OpenPageWindow).toHaveBeenCalledWith(expect.objectContaining({ page: pageId }));
+      expect(useTabStore.getState().activeTabId).toBeNull();
+    } else {
+      expect(useTabStore.getState().activeTabId).toBe(pageId);
+      expect(OpenPageWindow).not.toHaveBeenCalled();
+    }
     expect(onClose).toHaveBeenCalled();
   });
 

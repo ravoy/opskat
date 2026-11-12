@@ -54,21 +54,18 @@ describe("harness: 成功 toast 必须走 notify helper（AGENTS.md，#135）", 
 });
 
 describe("harness: 读剪贴板走 System.ReadClipboardText（#367）", { timeout: eslintTimeout }, () => {
-  it.each(["../../../wailsjs/runtime", "../../../wailsjs/runtime/runtime"])(
-    "从 %s 导入 ClipboardGetText 被拦截",
-    async (from) => {
-      const ids = await ruleIds(
-        "src/components/harness-fixture.tsx",
-        `import { ClipboardGetText } from "${from}";\nexport const f = () => ClipboardGetText();\n`
-      );
-      expect(ids).toContain("no-restricted-imports");
-    }
-  );
+  it.each(["@/lib/desktop", "@/lib/desktop"])("从 %s 导入 ClipboardGetText 被拦截", async (from) => {
+    const ids = await ruleIds(
+      "src/components/harness-fixture.tsx",
+      `import { ClipboardGetText } from "${from}";\nexport const f = () => ClipboardGetText();\n`
+    );
+    expect(ids).toContain("no-restricted-imports");
+  });
 
   it("ReadClipboardText 与 runtime 的其他导出（ClipboardSetText）不被误报", async () => {
     const ids = await ruleIds(
       "src/components/harness-fixture.tsx",
-      `import { ClipboardSetText } from "../../../wailsjs/runtime/runtime";\nimport { ReadClipboardText } from "../../../wailsjs/go/system/System";\nexport const f = async () => ClipboardSetText(await ReadClipboardText());\n`
+      `import { ClipboardSetText } from "@/lib/desktop";\nimport { ReadClipboardText } from "@clients/system";\nexport const f = async () => ClipboardSetText(await ReadClipboardText());\n`
     );
     expect(ids).not.toContain("no-restricted-imports");
   });

@@ -4,7 +4,7 @@ import { LinkedAssetControl } from "../LinkedAssetControl";
 import { useAIStore } from "@/stores/aiStore";
 import { useAssetStore } from "@/stores/assetStore";
 import { useTabStore, type Tab } from "@/stores/tabStore";
-import { asset_entity } from "../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 /** Radix DropdownMenuTrigger opens on pointerdown (button=0) under happy-dom. */
 function openMenu() {

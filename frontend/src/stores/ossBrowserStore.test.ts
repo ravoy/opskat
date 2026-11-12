@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("../../wailsjs/go/oss/OSS", () => ({
+vi.mock("@clients/oss", () => ({
   OSSListBuckets: vi.fn(),
   OSSListObjects: vi.fn(),
   OSSRemoveObject: vi.fn(),
@@ -21,7 +21,7 @@ import {
   OSSCopyObject,
   OSSMoveObject,
   OSSCreateFolder,
-} from "../../wailsjs/go/oss/OSS";
+} from "@clients/oss";
 import { useOssBrowserStore } from "./ossBrowserStore";
 import { useTabStore } from "./tabStore";
 

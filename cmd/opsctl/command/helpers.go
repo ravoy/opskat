@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // parseExecArgv 解析 opsctl exec <asset> 之后的参数：[--type <t>] [--scope <s>] [--] <command>。

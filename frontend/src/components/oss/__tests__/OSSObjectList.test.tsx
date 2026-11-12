@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor, within } from "@testing-library/rea
 import { OSSObjectList } from "../OSSObjectList";
 import { formatBytes } from "@/lib/formatBytes";
 import { shouldLoadNextPage } from "@/lib/ossListScroll";
-import type { oss_svc } from "../../../../wailsjs/go/models";
+import type * as oss_svc from "@bindings/github.com/octays/opskat/internal/service/oss_svc/models";
 
 const { toastSuccess, toastError } = vi.hoisted(() => ({ toastSuccess: vi.fn(), toastError: vi.fn() }));
 vi.mock("sonner", () => ({ toast: { success: toastSuccess, error: toastError } }));

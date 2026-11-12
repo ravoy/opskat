@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"regexp"
 
-	opskat "github.com/opskat/opskat/pkg/extsdk"
+	opskat "github.com/octays/opskat/pkg/extsdk"
 )
 
 // The whole notebook lives under one KV key. The host KV is a get/set store with

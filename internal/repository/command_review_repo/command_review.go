@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"github.com/opskat/opskat/internal/model/entity/command_review_entity"
+	"github.com/octays/opskat/internal/model/entity/command_review_entity"
 )
 
 //go:generate mockgen -source=command_review.go -destination=mock_command_review_repo/command_review.go -package=mock_command_review_repo

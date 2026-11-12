@@ -3,7 +3,7 @@ package tool
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/helper"
 
 	// execimpl 在 init() 中把各资产类型的纯执行体注册进 permission 的执行器表
 	// （供统一 exec 工具派发）。当前有哪些类型以 permission.RegisteredExecTypes() 为准，
@@ -13,7 +13,7 @@ import (
 	// 桌面端 Tools() 与下面的 AllToolDefs()（opsctl 派发表）都只经由 exec 执行命令，
 	// 两边共用这一份执行器表。
 	// execimpl 不导入本包（tool），避免循环依赖。
-	_ "github.com/opskat/opskat/internal/ai/execimpl"
+	_ "github.com/octays/opskat/internal/ai/execimpl"
 )
 
 // opsctl CLI 直接以 (ctx, args)→(string, error) 的形式调用 handler，

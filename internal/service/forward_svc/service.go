@@ -5,9 +5,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/forward_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/forward_repo"
+	"github.com/octays/opskat/internal/model/entity/forward_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/forward_repo"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

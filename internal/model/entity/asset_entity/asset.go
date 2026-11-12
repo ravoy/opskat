@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/pkg/jsonfield"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/pkg/jsonfield"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 资产类型常量

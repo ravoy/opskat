@@ -2,7 +2,7 @@ import { act, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SideAssistantPanel } from "@/components/ai/SideAssistantPanel";
 import { useAIStore } from "@/stores/aiStore";
-import { ListConversations } from "../../wailsjs/go/ai/AI";
+import { ListConversations } from "@clients/ai";
 import { profiled } from "./renderCount";
 
 // Store-subscribing children are stubbed so a Profiler commit means SideAssistantPanel itself re-rendered.

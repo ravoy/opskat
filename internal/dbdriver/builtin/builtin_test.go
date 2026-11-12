@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	_ "github.com/opskat/opskat/internal/dbdriver/builtin"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	_ "github.com/octays/opskat/internal/dbdriver/builtin"
 )
 
 // 一致性测试在各驱动自己的包里跑（它需要每个驱动给一条不依赖真库的会话）；这里只固定

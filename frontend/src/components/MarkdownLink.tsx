@@ -1,6 +1,6 @@
 import type { Components } from "react-markdown";
 import { defaultUrlTransform } from "react-markdown";
-import { BrowserOpenURL } from "../../wailsjs/runtime/runtime";
+import { BrowserOpenURL } from "@/lib/desktop";
 import { parseOpsctlAssetHref } from "@/lib/assetRef";
 import { openAssetInfoTab } from "@/lib/openAssetInfoTab";
 import { normalizeHttpUrl } from "./terminal/terminalUrlScan";

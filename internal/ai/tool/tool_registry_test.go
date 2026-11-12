@@ -3,14 +3,14 @@ package tool
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // TestExecimplBlankImportWiresExecutors locks the single line in tool_registry.go
 // that makes the unified exec tool work in the real app:
 //
-//	_ "github.com/opskat/opskat/internal/ai/execimpl"
+//	_ "github.com/octays/opskat/internal/ai/execimpl"
 //
 // execimpl.init() is what populates permission's executor table (via
 // permission.RegisterExecutor); nothing else triggers it. execimpl's own

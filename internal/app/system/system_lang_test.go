@@ -6,8 +6,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/app/i18n"
 )
 
 func TestSetLanguage_NormalizesToLowerCase(t *testing.T) {

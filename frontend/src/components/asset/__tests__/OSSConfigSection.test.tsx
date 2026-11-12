@@ -4,9 +4,9 @@ import { renderForSave } from "./rejectedSave";
 import { createRef } from "react";
 import { OSSConfigSection } from "@/components/asset/OSSConfigSection";
 import type { AssetFormHandle, AssetFormContext } from "@/lib/assetTypes/formContract";
-import { asset_entity } from "../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
-vi.mock("../../../../wailsjs/go/system/System", () => ({
+vi.mock("@clients/system", () => ({
   ListCredentialsByType: () => Promise.resolve([]),
   GetAssetPassword: () => Promise.resolve(""),
 }));

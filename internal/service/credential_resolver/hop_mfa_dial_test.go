@@ -18,14 +18,14 @@ import (
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/agent"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/ssh_agent_source_entity"
-	"github.com/opskat/opskat/internal/pkg/proxychain"
-	"github.com/opskat/opskat/internal/pkg/sshtuning"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/ssh_agent_source_repo"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/internal/sshagent"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/ssh_agent_source_entity"
+	"github.com/octays/opskat/internal/pkg/proxychain"
+	"github.com/octays/opskat/internal/pkg/sshtuning"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/ssh_agent_source_repo"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/sshagent"
 )
 
 type mfaFunc func(ctx context.Context, ch sshagent.MFAChallenge) ([]string, error)

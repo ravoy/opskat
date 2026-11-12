@@ -9,10 +9,10 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/model/entity/audit_entity"
-	"github.com/opskat/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/model/entity/audit_entity"
+	"github.com/octays/opskat/internal/repository/audit_repo"
 )
 
 func cmdList(ctx context.Context, handlers map[string]tool.ToolHandlerFunc, args []string) int {

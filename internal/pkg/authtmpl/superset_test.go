@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/authtmpl"
+	"github.com/octays/opskat/internal/pkg/authtmpl"
 )
 
 // 决定 19：这套语言是扩展 auth 绑定既有语法的超集。下面几条是扩展语法里有、

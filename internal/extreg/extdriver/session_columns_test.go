@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 驱动声明自增只能在新表上设时，改表请求里要自增的新列在宿主这一侧就被拒绝、不交给扩展：按旧版本构建的

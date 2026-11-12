@@ -4,7 +4,7 @@ import { TerminalToolbar } from "../components/terminal/TerminalToolbar";
 import { useTerminalStore } from "../stores/terminalStore";
 import { useSFTPStore } from "../stores/sftpStore";
 import { useServerStatusStore } from "../stores/serverStatusStore";
-import { GetSSHServerStatus } from "../../wailsjs/go/ssh/SSH";
+import { GetSSHServerStatus } from "@clients/ssh";
 
 // The SSH module is already fully mocked via setup.ts (mockBinderModule).
 // We only need to configure the return value of GetSSHServerStatus here.

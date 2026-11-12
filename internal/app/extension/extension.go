@@ -4,11 +4,11 @@ package extension
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/service/extension_svc"
-	"github.com/opskat/opskat/internal/service/extstore_svc"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/internal/service/extstore_svc"
+	"github.com/octays/opskat/internal/sshpool"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // LangProvider 由 system binder 实现。
@@ -42,7 +42,7 @@ type Extension struct {
 func New(appCtx context.Context, lang LangProvider, pool *sshpool.Pool) *Extension {
 	e := &Extension{appCtx: appCtx, lang: lang, pool: pool}
 	e.emit = func(name string, payload any) {
-		wailsRuntime.EventsEmit(e.ctx, name, payload)
+		application.Get().Event.Emit(name, payload)
 	}
 	return e
 }

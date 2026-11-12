@@ -5,7 +5,7 @@ package host_key_repo
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/model/entity/host_key_entity"
+	"github.com/octays/opskat/internal/model/entity/host_key_entity"
 
 	"github.com/cago-frame/cago/database/db"
 )

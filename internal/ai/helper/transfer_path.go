@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // ResolveAssetFunc 把 "<asset>:" 前缀解析成资产。由调用方注入：**共享的是语法，不是引用

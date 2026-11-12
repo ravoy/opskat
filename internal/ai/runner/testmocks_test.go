@@ -5,8 +5,8 @@ import (
 	"sync"
 
 	"github.com/cago-frame/agents/agent"
-	"github.com/opskat/opskat/internal/model/entity/audit_entity"
-	"github.com/opskat/opskat/internal/repository/audit_repo"
+	"github.com/octays/opskat/internal/model/entity/audit_entity"
+	"github.com/octays/opskat/internal/repository/audit_repo"
 )
 
 // mockAuditRepo 是审计中间件测试用的 in-memory 仓库。

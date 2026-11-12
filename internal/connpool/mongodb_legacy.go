@@ -7,9 +7,9 @@ import (
 	"io"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/netdial"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/sshpool"
 	mongov1 "go.mongodb.org/mongo-driver/mongo"
 	mongov1opts "go.mongodb.org/mongo-driver/mongo/options"
 	"go.uber.org/zap"

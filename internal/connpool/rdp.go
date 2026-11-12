@@ -4,9 +4,9 @@ import (
 	"context"
 	"net"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/netdial"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 // RDPDialContext 返回 RDP 客户端的自定义拨号函数(隧道 > 代理 > 直连,与其它资产类型一致)。

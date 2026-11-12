@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { EtcdKeyDetail } from "@/components/etcd/EtcdKeyDetail";
 import { useEtcdStore } from "@/stores/etcdStore";
-import type { etcd_svc } from "../../wailsjs/go/models";
+import type * as etcd_svc from "@bindings/github.com/octays/opskat/internal/service/etcd_svc/models";
 
 vi.mock("sonner", () => ({ toast: Object.assign(vi.fn(), { error: vi.fn(), success: vi.fn() }) }));
 

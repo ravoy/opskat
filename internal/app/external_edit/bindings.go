@@ -6,10 +6,11 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/service/external_edit_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/service/external_edit_svc"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 func (e *ExternalEdit) service() (*external_edit_svc.Service, error) {
@@ -40,9 +41,9 @@ func (e *ExternalEdit) SaveExternalEditSettings(input SettingsInput) (*Settings,
 // SelectExternalEditorExecutable 弹出文件选择器返回用户挑的绝对路径；
 // 真正的可执行性校验留给 service 统一处理，避免桌面端和测试端出现双重规则。
 func (e *ExternalEdit) SelectExternalEditorExecutable() (string, error) {
-	filePath, err := wailsRuntime.OpenFileDialog(e.ctx, wailsRuntime.OpenDialogOptions{
+	filePath, err := desktop.OpenFile(application.OpenFileDialogOptions{
 		Title: e.dialogTitle("editor"),
-		Filters: []wailsRuntime.FileFilter{
+		Filters: []application.FileFilter{
 			{DisplayName: "Executable", Pattern: executablePattern()},
 		},
 	})
@@ -54,7 +55,7 @@ func (e *ExternalEdit) SelectExternalEditorExecutable() (string, error) {
 
 // SelectExternalEditWorkspaceRoot 工作区目录由前端选择，但最终是否落盘以后端配置逻辑为准。
 func (e *ExternalEdit) SelectExternalEditWorkspaceRoot() (string, error) {
-	dirPath, err := wailsRuntime.OpenDirectoryDialog(e.ctx, wailsRuntime.OpenDialogOptions{
+	dirPath, err := desktop.OpenDirectory(application.OpenFileDialogOptions{
 		Title: e.dialogTitle("workspace"),
 	})
 	if err != nil {

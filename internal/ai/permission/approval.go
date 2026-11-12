@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/approval"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/approval"
 )
 
 // ApprovalItem 统一审批项，AI 和 opsctl 共用
@@ -60,10 +60,19 @@ func ApprovalItemOfBatchItem(item approval.BatchItem) ApprovalItem {
 	}
 }
 
+// MaxTimedAllowMinutes 是限时全量授权的时长上限（分钟）＝ opsctl 会话的 24 小时
+// 寿命（cmd/opsctl sessionMaxAge）：授权落库进会话，会话到期它必然失效。
+const MaxTimedAllowMinutes = 24 * 60
+
 // ApprovalResponse 统一审批响应
 type ApprovalResponse struct {
-	Decision    string         `json:"decision"`               // "allow", "deny", "allowAll"
+	Decision    string         `json:"decision"`               // "allow", "deny", "allowAll", "allow_timed"
 	EditedItems []ApprovalItem `json:"edited_items,omitempty"` // grant: 用户可能编辑了 items
+	// TimedAllowMinutes 是 decision="allow_timed" 的授权时长（分钟），与
+	// TimedAllowAllAssets 一起构成限时全量授权：落一条 `*` pattern 的 grant item，
+	// 到期后由 ListApprovedItems 统一过滤。0 视为非法（时长必须显式选择）。
+	TimedAllowMinutes   int  `json:"timed_allow_minutes,omitempty"`
+	TimedAllowAllAssets bool `json:"timed_allow_all_assets,omitempty"`
 }
 
 const (
@@ -89,12 +98,23 @@ const (
 	ApprovalDeny ApprovalDecision = iota
 	ApprovalAllow
 	ApprovalAllowAll
+	// ApprovalAllowTimed 是限时全量授权：授权期内该范围内（本资产或全部资产）的
+	// 命令不再逐条弹窗。参数在 ParsedApprovalResponse.TimedAllow 里。
+	ApprovalAllowTimed
 )
+
+// TimedAllow 是解析后的限时全量授权参数。
+type TimedAllow struct {
+	Minutes   int
+	AllAssets bool
+}
 
 // ParsedApprovalResponse 是唯一允许消费者使用的审批响应形态。
 type ParsedApprovalResponse struct {
 	Decision    ApprovalDecision
 	EditedItems []ApprovalItem
+	// TimedAllow 仅在 Decision == ApprovalAllowTimed 时非 nil。
+	TimedAllow *TimedAllow
 }
 
 // ParseApprovalResponse 在 permission seam 一次性校验所有 AI/opsctl 审批响应。
@@ -116,6 +136,22 @@ func ParseApprovalResponse(kind string, resp ApprovalResponse, expectedItems ...
 				fmt.Errorf("approval kind %q does not support allowAll", kind)
 		}
 		parsed.Decision = ApprovalAllowAll
+	case "allow_timed":
+		// 限时全量授权只挂在逐条命令审批上（single/once/batch）；delete 类不可放行，
+		// grant 本身就是显式全量请求，local_tool 是 AI 会话内工具面。
+		switch kind {
+		case ApprovalKindSingle, ApprovalKindOnce, ApprovalKindBatch:
+		default:
+			return ParsedApprovalResponse{Decision: ApprovalDeny},
+				fmt.Errorf("approval kind %q does not support allow_timed", kind)
+		}
+		// 上限对齐 opsctl 会话的 24 小时（sessionMaxAge）：授权不可能活得比会话久。
+		if resp.TimedAllowMinutes < 1 || resp.TimedAllowMinutes > MaxTimedAllowMinutes {
+			return ParsedApprovalResponse{Decision: ApprovalDeny},
+				fmt.Errorf("timed allow minutes %d out of range 1..%d", resp.TimedAllowMinutes, MaxTimedAllowMinutes)
+		}
+		parsed.Decision = ApprovalAllowTimed
+		parsed.TimedAllow = &TimedAllow{Minutes: resp.TimedAllowMinutes, AllAssets: resp.TimedAllowAllAssets}
 	default:
 		return parsed, fmt.Errorf("invalid approval decision %q", resp.Decision)
 	}

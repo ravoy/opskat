@@ -6,7 +6,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/model/entity/policy"
 )
 
 func TestGroup_Validate(t *testing.T) {

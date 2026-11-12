@@ -8,7 +8,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/winclip"
+	"github.com/octays/opskat/internal/pkg/winclip"
 )
 
 func TestLocalClipboardFiles_RoundTrip(t *testing.T) {

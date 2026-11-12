@@ -13,7 +13,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	custom_type_entity "github.com/opskat/opskat/internal/model/entity/custom_type_entity"
+	custom_type_entity "github.com/octays/opskat/internal/model/entity/custom_type_entity"
 	gomock "go.uber.org/mock/gomock"
 )
 

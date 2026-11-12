@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // TableImportBatchRequest describes a prepared table import batch.

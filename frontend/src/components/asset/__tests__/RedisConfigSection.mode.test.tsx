@@ -4,17 +4,18 @@ import userEvent from "@testing-library/user-event";
 import { createRef, StrictMode } from "react";
 import { RedisConfigSection } from "@/components/asset/RedisConfigSection";
 import type { AssetFormHandle, AssetFormContext, SectionValidity } from "@/lib/assetTypes/formContract";
-import { asset_entity, redis_svc } from "../../../../wailsjs/go/models";
-import { CancelTest } from "../../../../wailsjs/go/system/System";
-import { RedisProbe } from "../../../../wailsjs/go/query/Query";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as redis_svc from "@bindings/github.com/octays/opskat/internal/service/redis_svc/models";
+import { CancelTest } from "@clients/system";
+import { RedisProbe } from "@clients/query";
 import { toast } from "sonner";
 
-vi.mock("../../../../wailsjs/go/system/System", () => ({
+vi.mock("@clients/system", () => ({
   ListCredentialsByType: vi.fn().mockResolvedValue([]),
   GetAssetPassword: vi.fn().mockResolvedValue(""),
   CancelTest: vi.fn().mockResolvedValue(undefined),
 }));
-vi.mock("../../../../wailsjs/go/query/Query", () => ({
+vi.mock("@clients/query", () => ({
   RedisProbe: vi.fn(),
 }));
 

@@ -9,11 +9,11 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/opskat/opskat/internal/app/sshadapt"
-	"github.com/opskat/opskat/internal/model/entity/forward_entity"
-	"github.com/opskat/opskat/internal/pkg/netdial"
-	"github.com/opskat/opskat/internal/repository/forward_repo"
-	"github.com/opskat/opskat/internal/service/forward_svc"
+	"github.com/octays/opskat/internal/app/sshadapt"
+	"github.com/octays/opskat/internal/model/entity/forward_entity"
+	"github.com/octays/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/repository/forward_repo"
+	"github.com/octays/opskat/internal/service/forward_svc"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

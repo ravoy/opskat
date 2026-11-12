@@ -8,8 +8,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/policy"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/ai/policy"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
 )
 
 // 扩展提供的资产类型的永久规则落点（opsctl policy allow / deny / rm / show）。

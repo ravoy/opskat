@@ -11,7 +11,7 @@
 ## Problem
 
 1. **opsctl 的资产创建面只覆盖部分内建类型。** `cmd/opsctl/command/create.go` 将 `--type` 和字段集合硬编码为 SSH、数据库、Redis、MongoDB、K8s，并在共享 CLI 中按类型组装配置；当前已注册 handler 还包括 etcd、Kafka、Serial、Local、RDP、VNC、OSS，自动化调用方无法通过同一命令创建这些资产，也会迫使以后新增类型继续修改共享分发代码。
-2. **opsctl 无法在创建资产时安全地创建或引用托管凭据。** Issue [#283](https://github.com/opskat/opskat/issues/283) 的用户需要把常见的 IP、username、password 测试服务器交给 OpenCode + opsctl 自动录入；现有命令既没有 `credential_id` 引用入口，也没有 stdin 密码入口。
+2. **opsctl 无法在创建资产时安全地创建或引用托管凭据。** Issue [#283](https://github.com/octays/opskat/issues/283) 的用户需要把常见的 IP、username、password 测试服务器交给 OpenCode + opsctl 自动录入；现有命令既没有 `credential_id` 引用入口，也没有 stdin 密码入口。
 3. **AI 与 CLI 的凭据存储语义不一致且按类型不完整。** AI 已有统一 `put_asset` 和自由形态 `config`，但多数 handler 对 `config.password` 只保存资产内联密文；`credential_id` 仅在部分类型的创建路径中生效。相同意图在不同资产类型或调用面上会得到不同的数据形态。
 4. **自动化调用方无法发现安全的凭据引用。** 桌面端已有凭据和 SSH Agent 来源管理 IPC，但 opsctl 与 AI 没有只读的凭据列表/详情工具；`--credential-id`、Agent 来源 ID 和身份指纹若没有发现入口，只能依赖用户返回 GUI 手工查询。
 5. **SSH Agent 与数据库凭据在桌面端属于同一个“密钥管理”用户心智，但底层 ID 空间不同。** 将它们拆成互不相关的 CLI/AI 资源会造成体验漂移；仅使用裸数字 ID 又会让 `credentials` 与 `ssh_agent_sources` 中相同的 ID 发生歧义。
@@ -228,7 +228,7 @@ Automation cannot prove shell-history or operating-system process-list retention
 
 ## Relevant links
 
-- [Issue #283](https://github.com/opskat/opskat/issues/283)
+- [Issue #283](https://github.com/octays/opskat/issues/283)
 - [Architecture: opsctl and multi-process flow](../ARCHITECTURE.md#8-opsctl--the-multi-process-flow)
 - [Adding an asset type: shared credential layer](../references/adding-an-asset-type.md#f4-shared-credential-layer)
 - [Verification workflow](../VERIFICATION.md)

@@ -13,7 +13,7 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/pkg/netproxy"
 )
 
 const (

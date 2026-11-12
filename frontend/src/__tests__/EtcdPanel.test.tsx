@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor, act } from "@testing-library/react"
 
 // 顶层 mock 覆盖 setup.ts 里默认 mockResolvedValue(undefined) 的版本，给本测试一份
 // 真实形态的返回。EtcdListPrefix 至少要给 "/" 返回一条叶子，方便后面 KeyDetail 路径用。
-vi.mock("../../wailsjs/go/etcd/Etcd", () => ({
+vi.mock("@clients/etcd", () => ({
   EtcdExec: vi.fn().mockResolvedValue({
     op: "get",
     count: 1,
@@ -63,7 +63,7 @@ function resetStores() {
 describe("EtcdPanel", () => {
   beforeEach(async () => {
     resetStores();
-    const { EtcdExec, EtcdListPrefix } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdExec, EtcdListPrefix } = await import("@clients/etcd");
     (EtcdExec as ReturnType<typeof vi.fn>).mockClear();
     (EtcdListPrefix as ReturnType<typeof vi.fn>).mockClear();
   });
@@ -77,7 +77,7 @@ describe("EtcdPanel", () => {
   });
 
   it("switches to query view and executes a get from the query bar", async () => {
-    const { EtcdExec } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdExec } = await import("@clients/etcd");
     render(<EtcdPanel tabId="t1" />);
 
     // 切到 query tab(顺序：tree, query)
@@ -102,7 +102,7 @@ describe("EtcdPanel", () => {
   });
 
   it("prompts ConfirmDialog before running a destructive put, and aborts on cancel", async () => {
-    const { EtcdExec } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdExec } = await import("@clients/etcd");
     render(<EtcdPanel tabId="t1" />);
 
     fireEvent.click(screen.getAllByRole("tab")[1]);
@@ -147,7 +147,7 @@ describe("EtcdPanel", () => {
   });
 
   it("executes put after confirming the destructive dialog", async () => {
-    const { EtcdExec } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdExec } = await import("@clients/etcd");
     render(<EtcdPanel tabId="t1" />);
 
     fireEvent.click(screen.getAllByRole("tab")[1]);

@@ -16,11 +16,11 @@ import (
 	"crypto/rand"
 	"strings"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/ssh_agent_source_entity"
-	"github.com/opskat/opskat/internal/service/credential_query_svc"
-	"github.com/opskat/opskat/internal/service/ssh_agent_svc"
-	"github.com/opskat/opskat/internal/sshagent"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/ssh_agent_source_entity"
+	"github.com/octays/opskat/internal/service/credential_query_svc"
+	"github.com/octays/opskat/internal/service/ssh_agent_svc"
+	"github.com/octays/opskat/internal/sshagent"
 )
 
 // AgentSourceSummary 是来源列表的摘要：名称、类型与描述，不含完整端点。来源行

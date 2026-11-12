@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/model/entity/extension_data_entity"
-	"github.com/opskat/opskat/internal/repository/extension_data_repo"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/model/entity/extension_data_entity"
+	"github.com/octays/opskat/internal/repository/extension_data_repo"
 )
 
 // openProcesses stands in for the desktop app and opsctl: n independent database

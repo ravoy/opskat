@@ -2,9 +2,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { CommandReviewSection } from "../components/settings/CommandReviewSection";
 import { useSettingsUiStore } from "@/stores/settingsUiStore";
-import { EventsOff, EventsOn } from "../../wailsjs/runtime/runtime";
-import { GetCommandReviewSettings, SaveCommandReviewTimeout } from "../../wailsjs/go/system/System";
-import { GetCommandReviewState, SetCommandReviewer } from "../../wailsjs/go/extension/Extension";
+import { EventsOn } from "@/lib/desktop";
+import { GetCommandReviewSettings, SaveCommandReviewTimeout } from "@clients/system";
+import { GetCommandReviewState, SetCommandReviewer } from "@clients/extension";
 
 const toastError = vi.hoisted(() => vi.fn());
 const notifySuccess = vi.hoisted(() => vi.fn());
@@ -132,9 +132,12 @@ describe("CommandReviewSection", () => {
 
   it("打开着时随审核状态事件实时出现失败、恢复后消失，不重新挂载", async () => {
     const handlers = new Map<string, (data: unknown) => void>();
+    const cancels = new Map<string, ReturnType<typeof vi.fn>>();
     vi.mocked(EventsOn).mockImplementation(((event: string, handler: (data: unknown) => void) => {
       handlers.set(event, handler);
-      return vi.fn();
+      const cancel = vi.fn();
+      cancels.set(event, cancel);
+      return cancel;
     }) as never);
     const { unmount } = await act(async () => render(<CommandReviewSection />));
     expect(screen.queryByTestId("command-review-last-fail")).toBeNull();
@@ -148,14 +151,18 @@ describe("CommandReviewSection", () => {
     expect(GetCommandReviewSettings).toHaveBeenCalledTimes(fetches);
 
     unmount();
-    expect(EventsOff).toHaveBeenCalledWith("command-review:status");
+    // 退订走监听者自己的 cancel（EventsOff(name) 会把同名事件的所有监听一起摘掉）。
+    expect(cancels.get("command-review:status")).toHaveBeenCalledTimes(1);
   });
 
   it("状态事件早于设置读取的回包到达时，不被回包里读取时的旧状态盖掉", async () => {
     const handlers = new Map<string, (data: unknown) => void>();
+    const cancels = new Map<string, ReturnType<typeof vi.fn>>();
     vi.mocked(EventsOn).mockImplementation(((event: string, handler: (data: unknown) => void) => {
       handlers.set(event, handler);
-      return vi.fn();
+      const cancel = vi.fn();
+      cancels.set(event, cancel);
+      return cancel;
     }) as never);
     let answer: (v: unknown) => void = () => {};
     vi.mocked(GetCommandReviewSettings).mockReturnValue(new Promise((r) => (answer = r)) as never);

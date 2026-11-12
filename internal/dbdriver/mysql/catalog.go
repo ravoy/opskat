@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // dialect 是 MySQL 的方言：分页用共用的 LIMIT / OFFSET，浏览用 information_schema 与 SHOW。

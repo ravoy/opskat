@@ -1,8 +1,8 @@
 package ssh
 
 import (
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/forward_entity"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/forward_entity"
 )
 
 func (s *SSH) CreateForwardConfig(name string, assetID int64, rules []forward_entity.ForwardRule) (*forward_entity.ForwardConfig, error) {

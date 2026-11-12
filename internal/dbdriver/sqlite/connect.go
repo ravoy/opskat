@@ -11,9 +11,9 @@ import (
 	_ "github.com/glebarez/go-sqlite" // SQLite driver（与 cago bootstrap 同源，避免 sql.Register 重复 panic）
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/connpool/sqlitevfs"
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/internal/connpool/sqlitevfs"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // Open 打开一条 SQLite 会话：本地文件直接打开，远端文件经传输层给的文件系统打开。

@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // earlyCancelTTL bounds how long a cancel that found no running call is held for

@@ -3,7 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { SqlEditorTab } from "@/components/query/SqlEditorTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { ExecuteSQLPaged } from "../../../../wailsjs/go/query/Query";
+import { ExecuteSQLPaged } from "@clients/query";
 import { act } from "@testing-library/react";
 import { mounted } from "./fakeSqlEditor";
 import { BUILTIN_DRIVERS, provideDrivers } from "@/__tests__/dbDriverFixtures";

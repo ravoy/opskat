@@ -71,7 +71,6 @@ jobs:
     env:
       VERSION: ${{ inputs.version }}
       COMMIT_ID: ${{ inputs.commit-id }}
-      NODE_OPTIONS: --max-old-space-size=4096
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}
@@ -95,25 +94,19 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - uses: pnpm/action-setup@v6
+      - uses: oven-sh/setup-bun@v2
         with:
-          version: 10
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: "22"
-          cache: "pnpm"
-          cache-dependency-path: frontend/pnpm-lock.yaml
+          bun-version-file: .bun-version
 
       - name: Install frontend dependencies
-        run: cd frontend && pnpm install --frozen-lockfile
+        run: cd frontend && bun x --bun pnpm@10.11.0 install --frozen-lockfile
 
       - name: Install Wails CLI
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.16.0
+        run: go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0
 
       - name: Install Linux dependencies
         if: matrix.goos == 'linux'
-        run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev ${{ matrix.webkit_pkg || 'libwebkit2gtk-4.0-dev' }}
+        run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libwebkitgtk-6.0-dev
 
       - name: Install NSIS
         if: matrix.goos == 'windows'
@@ -126,15 +119,15 @@ jobs:
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-        run: go build -ldflags="-s -w -X github.com/cago-frame/cago/configs.Version=${{ env.VERSION }} -X github.com/opskat/opskat/internal/buildinfo.CommitID=${{ env.COMMIT_ID }}" -o ./internal/embedded/opsctl_bin ./cmd/opsctl/
+        run: go build -ldflags="-s -w -X github.com/cago-frame/cago/configs.Version=${{ env.VERSION }} -X github.com/octays/opskat/internal/buildinfo.CommitID=${{ env.COMMIT_ID }}" -o ./internal/embedded/opsctl_bin ./cmd/opsctl/
 
       - name: Build desktop app
         if: matrix.goos != 'windows'
-        run: wails build -platform ${{ matrix.goos }}/${{ matrix.goarch }} -ldflags="-s -w -X github.com/cago-frame/cago/configs.Version=${{ env.VERSION }} -X github.com/opskat/opskat/internal/buildinfo.CommitID=${{ env.COMMIT_ID }}" -tags "embed_opsctl${{ matrix.extra_tags }}"
+        run: bun scripts/desktop.mjs build --platform ${{ matrix.goos }}/${{ matrix.goarch }} --ldflags "-s -w -X github.com/cago-frame/cago/configs.Version=${{ env.VERSION }} -X github.com/octays/opskat/internal/buildinfo.CommitID=${{ env.COMMIT_ID }}" --tags embed_opsctl
 
       - name: Build desktop app (Windows)
         if: matrix.goos == 'windows'
-        run: wails build -nsis -platform ${{ matrix.goos }}/${{ matrix.goarch }} -ldflags="-s -w -X github.com/cago-frame/cago/configs.Version=${{ env.VERSION }} -X github.com/opskat/opskat/internal/buildinfo.CommitID=${{ env.COMMIT_ID }}" -tags embed_opsctl
+        run: bun scripts/desktop.mjs build --nsis --platform ${{ matrix.goos }}/${{ matrix.goarch }} --ldflags "-s -w -X github.com/cago-frame/cago/configs.Version=${{ env.VERSION }} -X github.com/octays/opskat/internal/buildinfo.CommitID=${{ env.COMMIT_ID }}" --tags embed_opsctl
 
       - name: Import Apple certificate
         if: matrix.goos == 'darwin'

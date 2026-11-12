@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/pkg/netdial"
 )
 
 // Default values used when a setting is left unconfigured. The 30s keepalive is

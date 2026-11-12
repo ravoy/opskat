@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/opskat/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/pkg/transfer"
 )
 
 // UploadFileRequest 描述一次单文件上传:把本地 LocalPath 写成对象 Bucket/Key。

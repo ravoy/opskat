@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { dbdriver, query_svc } from "../../../../../wailsjs/go/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import { BUILTIN_DRIVERS, fakeAlterDriver } from "@/__tests__/dbDriverFixtures";
 import { structureFromAlterModel, type TableStructure } from "../model";
 import {
@@ -38,7 +39,7 @@ function mysqlModel(): dbdriver.AlterTableModel {
         type: "bigint unsigned",
         nullable: false,
         defaultValue: "",
-        defaultKind: "none",
+        defaultKind: dbdriver.DefaultKind.DefaultKindNone,
         comment: "订单 ID",
         autoIncrement: true,
       },
@@ -47,7 +48,7 @@ function mysqlModel(): dbdriver.AlterTableModel {
         type: "varchar(16)",
         nullable: false,
         defaultValue: "pending",
-        defaultKind: "value",
+        defaultKind: dbdriver.DefaultKind.DefaultKindValue,
         comment: "",
       },
       {
@@ -55,16 +56,31 @@ function mysqlModel(): dbdriver.AlterTableModel {
         type: "datetime",
         nullable: false,
         defaultValue: "CURRENT_TIMESTAMP",
-        defaultKind: "expression",
+        defaultKind: dbdriver.DefaultKind.DefaultKindExpression,
         comment: "",
       },
-      { name: "note", type: "varchar(255)", nullable: true, defaultValue: "", defaultKind: "null", comment: "备注" },
+      {
+        name: "note",
+        type: "varchar(255)",
+        nullable: true,
+        defaultValue: "",
+        defaultKind: dbdriver.DefaultKind.DefaultKindNull,
+        comment: "备注",
+      },
     ],
     indexes: [
-      { name: "PRIMARY", type: "primary", columns: [{ name: "id" }] },
-      { name: "idx_note", type: "normal", columns: [{ name: "note" }] },
-      { name: "idx_status_note", type: "normal", columns: [{ name: "status" }, { name: "note" }] },
-      { name: "idx_expr", type: "normal", columns: [{ name: "lower(note)", expression: true }] },
+      { name: "PRIMARY", type: dbdriver.IndexType.IndexTypePrimary, columns: [{ name: "id" }] },
+      { name: "idx_note", type: dbdriver.IndexType.IndexTypeNormal, columns: [{ name: "note" }] },
+      {
+        name: "idx_status_note",
+        type: dbdriver.IndexType.IndexTypeNormal,
+        columns: [{ name: "status" }, { name: "note" }],
+      },
+      {
+        name: "idx_expr",
+        type: dbdriver.IndexType.IndexTypeNormal,
+        columns: [{ name: "lower(note)", expression: true }],
+      },
     ],
   });
 }
@@ -229,7 +245,9 @@ describe("改动标记与计数", () => {
 
 describe("锁定与能力说明", () => {
   it("已有列上没声明可改的属性被锁定;新列只在驱动不能写列注释时锁注释", () => {
-    const mssqlLike = fakeAlterDriver({ alterTableAttributes: ["column_type", "column_nullable"] });
+    const mssqlLike = fakeAlterDriver({
+      alterTableAttributes: [dbdriver.AlterAttribute.AlterColumnType, dbdriver.AlterAttribute.AlterColumnNullable],
+    });
     const draft = addColumn(initDraft(legacyStructure()), mssqlLike).draft;
     expect(lockedFields(mssqlLike, draft.columns[0])).toEqual(["default", "comment"]);
     expect(lockedFields(mssqlLike, draft.columns[2])).toEqual(["comment"]);
@@ -238,7 +256,13 @@ describe("锁定与能力说明", () => {
 
   it("声明了全部属性时没有说明;否则列出能改与不能改的", () => {
     expect(capabilityLimits(MYSQL)).toBeNull();
-    expect(capabilityLimits(fakeAlterDriver({ alterTableAttributes: ["column_type", "column_nullable"] }))).toEqual({
+    expect(
+      capabilityLimits(
+        fakeAlterDriver({
+          alterTableAttributes: [dbdriver.AlterAttribute.AlterColumnType, dbdriver.AlterAttribute.AlterColumnNullable],
+        })
+      )
+    ).toEqual({
       can: ["column_type", "column_nullable"],
       cannot: ["column_default", "column_comment", "table_comment"],
     });
@@ -297,7 +321,7 @@ describe("validateDraft", () => {
   });
 
   it("名称折叠:新起或改过的名字与规则不符时提醒(只提醒),已有的名字不提醒", () => {
-    const oracleLike = fakeAlterDriver({ alterTableAttributes: [], nameFolding: "upper" });
+    const oracleLike = fakeAlterDriver({ alterTableAttributes: [], nameFolding: dbdriver.NameFolding.NameFoldUpper });
     let draft = { ...initDraft(legacyStructure()), name: "orders" };
     const a = addColumn(draft, oracleLike);
     draft = updateColumn(a.draft, a.key, { name: "updated_at", type: "DATE" });
@@ -319,7 +343,7 @@ describe("validateDraft", () => {
 
   it("驱动声明空字符串即 NULL(如 Oracle):新设或改过的默认值是空的「值」时提醒(只提醒),其余写法不提醒", () => {
     const oracleLike = fakeAlterDriver({
-      alterTableAttributes: ["column_default"],
+      alterTableAttributes: [dbdriver.AlterAttribute.AlterColumnDefault],
       explicitDefaults: true,
       emptyStringIsNull: true,
     });
@@ -351,7 +375,7 @@ describe("validateDraft", () => {
   });
 
   it("折叠为小写时提醒含大写字母的名字", () => {
-    const pgLike = fakeAlterDriver({ alterTableAttributes: [], nameFolding: "lower" });
+    const pgLike = fakeAlterDriver({ alterTableAttributes: [], nameFolding: dbdriver.NameFolding.NameFoldLower });
     let draft = initDraft(mysqlStructure());
     draft = updateColumn(draft, keyOf(draft, "status"), { name: "orderStatus" });
     expect(validateDraft(draft, pgLike)).toMatchObject([

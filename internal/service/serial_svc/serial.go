@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/streambatch"
-	"github.com/opskat/opskat/internal/service/sessionid"
+	"github.com/octays/opskat/internal/pkg/streambatch"
+	"github.com/octays/opskat/internal/service/sessionid"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.bug.st/serial"

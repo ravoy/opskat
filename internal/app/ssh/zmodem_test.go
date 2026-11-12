@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/transfer"
-	"github.com/opskat/opskat/internal/service/zmodem_svc"
+	"github.com/octays/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/service/zmodem_svc"
 )
 
 func TestZmodemOpenUploadFilesSkipsInvalidPaths(t *testing.T) {

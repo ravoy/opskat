@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch, Textarea } from "@opskat/ui";
 import { Field, FieldLabel, Segmented } from "@/components/asset/fields";
 import type { UseAssetCredential } from "@/components/asset/useAssetCredential";
-import type { asset_entity } from "../../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { PasswordSourceField } from "@/components/asset/PasswordSourceField";
 import { ConnectionMethodFields } from "@/components/asset/ConnectionMethodFields";
 import { proxyChainLayerErrors, type ConnectionFormFields } from "@/components/asset/proxyConfig";

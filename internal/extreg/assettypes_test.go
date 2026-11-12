@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // AssetScope 是资产类型这一侧给运行时的作用域：端点只来自 format:"endpoint" 字段里写得出端口

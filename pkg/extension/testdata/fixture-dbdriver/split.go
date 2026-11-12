@@ -7,7 +7,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // classify is fixturedb's statement splitter: statements end at a semicolon

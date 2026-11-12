@@ -19,10 +19,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
-	opskat "github.com/opskat/opskat/pkg/extsdk"
-	"github.com/opskat/opskat/pkg/extsdk/sdkdbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
+	opskat "github.com/octays/opskat/pkg/extsdk"
+	"github.com/octays/opskat/pkg/extsdk/sdkdbdriver"
 )
 
 func main() {}

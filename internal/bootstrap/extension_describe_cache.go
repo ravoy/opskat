@@ -3,8 +3,8 @@ package bootstrap
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/model/entity/extension_describe_entity"
-	"github.com/opskat/opskat/internal/repository/extension_describe_repo"
+	"github.com/octays/opskat/internal/model/entity/extension_describe_entity"
+	"github.com/octays/opskat/internal/repository/extension_describe_repo"
 )
 
 // extensionDescribeCache adapts extension_describe_repo to the DescribeCache seam

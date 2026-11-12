@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useSFTPStore, type SFTPTransfer } from "../stores/sftpStore";
-import { SFTPUploadFile } from "../../wailsjs/go/ssh/SSH";
-import { SFTPDownload, SFTPDownloadDir, SFTPCancelTransfer } from "../../wailsjs/go/ssh/SSH";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { SFTPUploadFile } from "@clients/ssh";
+import { SFTPDownload, SFTPDownloadDir, SFTPCancelTransfer } from "@clients/ssh";
+import { EventsOn } from "@/lib/desktop";
 
 function emit(transferId: string, event: Record<string, unknown>) {
   const call = vi

@@ -8,10 +8,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/service/extension_svc"
-	"github.com/opskat/opskat/internal/service/extstore_svc"
-	"github.com/opskat/opskat/pkg/extstore"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/internal/service/extstore_svc"
+	"github.com/octays/opskat/pkg/extstore"
 )
 
 // fakeExtStore stands in for the desktop's extension store. events records the

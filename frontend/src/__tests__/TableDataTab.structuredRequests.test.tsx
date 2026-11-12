@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { CountTableRows, ExecuteSQL, ExecuteSQLPaged, OpenTable, QueryTableRows } from "../../wailsjs/go/query/Query";
+import { CountTableRows, ExecuteSQL, ExecuteSQLPaged, OpenTable, QueryTableRows } from "@clients/query";
 import { FAKE_DRIVER, fakeDriverWith, mockGridEditStatements, provideDrivers } from "./dbDriverFixtures";
 
 // 表浏览(打开、翻页、改每页行数、计数、筛选、排序)发给后端的是结构化请求,由资产的驱动

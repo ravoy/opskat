@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
-import { WriteVNC } from "../../wailsjs/go/vnc/VNC";
+import { EventsOn, EventsOff } from "@/lib/desktop";
+import { WriteVNC } from "@clients/vnc";
 import { WailsRfbChannel } from "@/lib/wailsRfbChannel";
 
 // 捕获 EventsOn 注册的处理器,供测试主动触发。

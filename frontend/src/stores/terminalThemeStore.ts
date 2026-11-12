@@ -222,3 +222,9 @@ export function toXtermTheme(theme: TerminalTheme) {
     brightWhite: theme.brightWhite,
   };
 }
+
+window.addEventListener("storage", (event) => {
+  if (event.key === useTerminalThemeStore.persist.getOptions().name) {
+    void useTerminalThemeStore.persist.rehydrate();
+  }
+});

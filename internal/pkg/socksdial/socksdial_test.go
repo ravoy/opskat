@@ -7,9 +7,9 @@ import (
 	"net"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/socksdial"
-	"github.com/opskat/opskat/internal/pkg/socksdial/socksdialtest"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/socksdial"
+	"github.com/octays/opskat/internal/pkg/socksdial/socksdialtest"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

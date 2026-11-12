@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import type { asset_entity } from "../../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import type { ConfigSectionComponent } from "./formContract";
 
 export interface DetailInfoCardProps {

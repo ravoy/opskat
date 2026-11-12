@@ -9,11 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/transfer"
-	"github.com/opskat/opskat/internal/service/sftp_svc"
+	"github.com/octays/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/service/sftp_svc"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 	cssh "golang.org/x/crypto/ssh"
 )
@@ -54,7 +55,7 @@ func (s *SSH) SFTPListDir(sessionID, dirPath string) ([]sftp_svc.FileEntry, erro
 // SFTPSelectUploadFile 弹出本地文件选择框，返回所选路径（取消时为空）。
 // 上传本身走 SFTPUploadFile：前端要先检查目标是否同名，再决定传到哪里。
 func (s *SSH) SFTPSelectUploadFile() (string, error) {
-	localPath, err := wailsRuntime.OpenFileDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+	localPath, err := desktop.OpenFile(application.OpenFileDialogOptions{
 		Title: "选择上传文件",
 	})
 	if err != nil {
@@ -65,7 +66,7 @@ func (s *SSH) SFTPSelectUploadFile() (string, error) {
 
 // SFTPSelectUploadDir 弹出本地目录选择框，返回所选路径（取消时为空）。
 func (s *SSH) SFTPSelectUploadDir() (string, error) {
-	localDir, err := wailsRuntime.OpenDirectoryDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+	localDir, err := desktop.OpenDirectory(application.OpenFileDialogOptions{
 		Title: "选择上传文件夹",
 	})
 	if err != nil {
@@ -82,9 +83,9 @@ func (s *SSH) SFTPStatTargets(sessionID string, paths []string) ([]sftp_svc.Targ
 // SFTPDownload 下载文件
 func (s *SSH) SFTPDownload(sessionID, remotePath string) (string, error) {
 	defaultName := filepath.Base(remotePath)
-	localPath, err := wailsRuntime.SaveFileDialog(s.ctx, wailsRuntime.SaveDialogOptions{
-		DefaultFilename: defaultName,
-		Title:           "保存到本地",
+	localPath, err := desktop.SaveFile(application.SaveFileDialogOptions{
+		Filename: defaultName,
+		Title:    "保存到本地",
 	})
 	if err != nil {
 		return "", fmt.Errorf("保存文件对话框失败: %w", err)
@@ -96,16 +97,16 @@ func (s *SSH) SFTPDownload(sessionID, remotePath string) (string, error) {
 	transferID := s.sftp.GenerateTransferID()
 	go func() {
 		err := s.sftp.Download(s.ctx, transferID, sessionID, remotePath, localPath, func(p transfer.Progress) {
-			wailsRuntime.EventsEmit(s.ctx, "transfer:progress:"+transferID, p)
+			application.Get().Event.Emit("transfer:progress:"+transferID, p)
 		})
-		wailsRuntime.EventsEmit(s.ctx, "transfer:progress:"+transferID, finalTransferEvent(transferID, localPath, err))
+		application.Get().Event.Emit("transfer:progress:"+transferID, finalTransferEvent(transferID, localPath, err))
 	}()
 	return transferID, nil
 }
 
 // SFTPDownloadDir 下载目录
 func (s *SSH) SFTPDownloadDir(sessionID, remotePath string) (string, error) {
-	localDir, err := wailsRuntime.OpenDirectoryDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+	localDir, err := desktop.OpenDirectory(application.OpenFileDialogOptions{
 		Title: "选择保存目录",
 	})
 	if err != nil {
@@ -120,9 +121,9 @@ func (s *SSH) SFTPDownloadDir(sessionID, remotePath string) (string, error) {
 	transferID := s.sftp.GenerateTransferID()
 	go func() {
 		err := s.sftp.DownloadDir(s.ctx, transferID, sessionID, remotePath, localDir, func(p transfer.Progress) {
-			wailsRuntime.EventsEmit(s.ctx, "transfer:progress:"+transferID, p)
+			application.Get().Event.Emit("transfer:progress:"+transferID, p)
 		})
-		wailsRuntime.EventsEmit(s.ctx, "transfer:progress:"+transferID, finalTransferEvent(transferID, localDir, err))
+		application.Get().Event.Emit("transfer:progress:"+transferID, finalTransferEvent(transferID, localDir, err))
 	}()
 	return transferID, nil
 }
@@ -139,10 +140,10 @@ func (s *SSH) SFTPUploadFile(sessionID, localPath, remotePath string) (string, e
 
 	transferID := s.sftp.GenerateTransferID()
 	emitProgress := func(p transfer.Progress) {
-		wailsRuntime.EventsEmit(s.ctx, "transfer:progress:"+transferID, p)
+		application.Get().Event.Emit("transfer:progress:"+transferID, p)
 	}
 	emitDone := func(err error) {
-		wailsRuntime.EventsEmit(s.ctx, "transfer:progress:"+transferID, finalTransferEvent(transferID, "", err))
+		application.Get().Event.Emit("transfer:progress:"+transferID, finalTransferEvent(transferID, "", err))
 	}
 
 	go func() {
@@ -280,9 +281,9 @@ func (s *SSH) SelectSSHKeyFile() (*LocalSSHKeyInfo, error) {
 	}
 	defaultDir := filepath.Join(homeDir, ".ssh")
 
-	filePath, err := wailsRuntime.OpenFileDialog(s.ctx, wailsRuntime.OpenDialogOptions{
-		Title:            "选择 SSH 私钥文件",
-		DefaultDirectory: defaultDir,
+	filePath, err := desktop.OpenFile(application.OpenFileDialogOptions{
+		Title:     "选择 SSH 私钥文件",
+		Directory: defaultDir,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("打开文件对话框失败: %w", err)

@@ -10,8 +10,8 @@ import (
 
 	gomysql "github.com/go-sql-driver/mysql"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // Open 打开一条 MySQL 会话。

@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // ConformanceStatement 是一致性测试在会话上执行的语句：先 Execute，再用 ExecutePaged 取

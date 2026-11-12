@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/model/entity/host_key_entity"
-	"github.com/opskat/opskat/internal/repository/host_key_repo"
+	"github.com/octays/opskat/internal/model/entity/host_key_entity"
+	"github.com/octays/opskat/internal/repository/host_key_repo"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )

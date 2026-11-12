@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/approval"
-	policyent "github.com/opskat/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/approval"
+	policyent "github.com/octays/opskat/internal/model/entity/policy"
 )
 
 // 多源 cp 的多条主体合进同一个批量确认，审计只有一行：人确认之后，这一行也要带上审核结果，

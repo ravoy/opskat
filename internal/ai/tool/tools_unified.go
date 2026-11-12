@@ -7,7 +7,7 @@ import (
 	"github.com/cago-frame/agents/agent"
 	"github.com/cago-frame/agents/tool"
 
-	"github.com/opskat/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/permission"
 )
 
 // unifiedTools exec 按资产真实类型（见 permission.RegisteredExecTypes，注册发生在

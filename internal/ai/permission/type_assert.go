@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // 驱动名（mysql、postgres、sqlite3 …）来自驱动注册表：每个驱动在描述里声明自己的 id 与

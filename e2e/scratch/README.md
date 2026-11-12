@@ -34,7 +34,7 @@ make test-e2e-scratch                                              # every scrip
 
 Always filter to your scenario — the bare target also runs whatever earlier rounds left behind.
 
-That harness is a *different* run from the sandbox: it launches its own `wails dev` on its
+That harness is a *different* run from the sandbox: it launches its own `wails3 dev` on its
 own port with a temp data dir that **the runner deletes when Playwright exits**, so a spec
 must capture its evidence during the run. The sandbox persists instead — that is why
 interactive verification uses it. `node e2e/oracle.mjs where` prints the paths and ports

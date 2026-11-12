@@ -16,7 +16,7 @@ import {
   RefreshExternalEditSession,
   SaveExternalEditSession,
   SaveExternalEditSessionText,
-} from "../../wailsjs/go/external_edit/ExternalEdit";
+} from "@clients/external_edit";
 
 function makeSession(partial: Partial<ExternalEditSession> & { id: string }): ExternalEditSession {
   return {

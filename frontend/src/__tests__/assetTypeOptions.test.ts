@@ -13,7 +13,7 @@ import {
 import { getAssetType } from "@/lib/assetTypes";
 import { registerExtensionAssetTypes, unregisterExtensionAssetTypes } from "@/extension/assetTypes";
 import type { ExtManifest } from "@/extension/types";
-import { asset_entity } from "../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 const BUILTIN_VALUES = [
   "ssh",

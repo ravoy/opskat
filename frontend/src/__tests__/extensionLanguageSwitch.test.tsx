@@ -4,8 +4,8 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import i18n from "../i18n";
 import { useExtensionStore } from "../extension/store";
 import { useAssetTypeDef } from "@/lib/assetTypes/_register";
-import { ListInstalledExtensions } from "../../wailsjs/go/extension/Extension";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { ListInstalledExtensions } from "@clients/extension";
+import { EventsOn } from "@/lib/desktop";
 import type { LoadedExtension } from "../extension/types";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn(), warning: vi.fn(), info: vi.fn() } }));

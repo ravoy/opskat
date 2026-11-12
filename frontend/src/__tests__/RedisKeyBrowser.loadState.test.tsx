@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { RedisKeyBrowser } from "../components/query/RedisKeyBrowser";
 import { useQueryStore } from "../stores/queryStore";
 import { useTabStore } from "../stores/tabStore";
-import { RedisListDatabases, RedisScanKeys } from "../../wailsjs/go/redis/Redis";
+import { RedisListDatabases, RedisScanKeys } from "@clients/redis";
 
 function setup() {
   useTabStore.setState({

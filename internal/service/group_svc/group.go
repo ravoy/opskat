@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	"github.com/opskat/opskat/internal/pkg/dbutil"
-	"github.com/opskat/opskat/internal/pkg/sortutil"
-	"github.com/opskat/opskat/internal/repository/group_repo"
-	"github.com/opskat/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/pkg/dbutil"
+	"github.com/octays/opskat/internal/pkg/sortutil"
+	"github.com/octays/opskat/internal/repository/group_repo"
+	"github.com/octays/opskat/internal/service/asset_svc"
 )
 
 // GroupSvc 分组业务接口

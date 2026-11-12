@@ -7,11 +7,13 @@
 > This doc **owns** the GUI-e2e harness. For logs / DB / `opsctl` headless verification see
 > [testing-debugging-guide.md](./testing-debugging-guide.md).
 
-OpsKat is an IPC-only Wails desktop app — there is no HTTP API to hit. But `wails dev`
-exposes the app over a browser-accessible IPC bridge, so Playwright (Chromium) can open it
-like a normal page and drive the **real frontend → real Wails IPC → real Go service/
-repository → real SQLite**. That makes it the one harness that exercises the whole stack the
-way a user does.
+Production OpsKat uses native Wails IPC. Verification builds additionally compile
+`internal/desktop/verification_enabled.go` with `opskat_e2e`: the existing Playwright
+browser drives the real frontend and Go backend over a loopback-only HTTP/SSE
+transport while the native windows remain running. The transport rejects foreign
+hosts/origins, is enabled only with `OPSKAT_E2E=1` and `OPSKAT_E2E_PORT`, and is
+absent from production builds. Native window-specific assertions use Wails' debug
+MCP support (`WAILS_MCP=1`, a dedicated `WAILS_MCP_PORT`) when needed.
 
 ## 1. Two modes — pick the right one
 
@@ -38,12 +40,12 @@ See §6.
 ## 2. Architecture
 
 ```
-make test-e2e  →  cd e2e && pnpm test  →  node run-e2e.mjs   (spawns playwright, cleans up after)
+make test-e2e  →  cd e2e && bun --bun run test  →  bun run-e2e.mjs   (spawns playwright, cleans up after)
   └─ playwright (workers:1)
-       ├─ webServer:  wails dev -devserver localhost:<app>    (real Go app, native window opens)
+       ├─ webServer:  wails3 dev -port <app+1000>    (real Go app, native window opens)
        │                 ├─ vite (frontend HMR)
        │                 └─ opskat app  → service/repository → <tmp>/opskat-e2e-data-<ws>/opskat.db
-       └─ chromium → http://localhost:<app>    (Wails IPC websocket bridge → real Go backend)
+       └─ chromium → http://localhost:<app>    (test-only HTTP/SSE IPC bridge → real Go backend)
                          └─ specs assert on the UI …
                               … and on the DB via a direct read-only node:sqlite query (independent oracle)
 ```
@@ -55,13 +57,14 @@ in `main.go` via `resolveBootstrap()` and `initExtensionSystem`):
 |---|---|
 | `OPSKAT_DATA_DIR=<tmp>/opskat-e2e-data-<workspaceId>` | DB, config, sockets, logs all under a throwaway dir |
 | `OPSKAT_MASTER_KEY=<fixed test key>` | passphrase for credential KDF; **bypasses the OS keychain** (`ResolveMasterKey` returns the explicit key) |
+| `OPSKAT_E2E_PORT=<app>` | loopback test IPC listener; Vite uses `<app+1000>` |
 | `OPSKAT_E2E=1` | disables the single-instance lock so the e2e app coexists with a running opskat; also skips the startup *online* update check (`startAutoUpdateCheck`) — its result depends on the live release feed, and the `update:available` toast it pops over the composer would fail specs whenever upstream ships a release |
 | `OPSKAT_EXTENSIONS=1` | runs the extension system, so the `extension-asset-type` spec has one to drive. The harness builds the in-repo extensions and lays them out under `<data dir>/extensions/` before the app boots (`harness/env.js` → `installExtensions`), and the app's own boot scan loads them. It costs one wasm compile per extension on a background goroutine — nothing blocks on it except the extension spec's first wait |
 
 The bridge runs on a **dedicated port** — never Wails' default 34115 — so it never reuses, or
 collides with, a dev server you (or the sibling `agentre` app) already have open. The exact
 number is allocated per checkout (§3, "Workspace"): the first checkout gets 34216, the next
-34224, and so on. `node e2e/oracle.mjs where` prints what yours resolved to.
+34224, and so on. `bun e2e/oracle.mjs where` prints what yours resolved to.
 
 ## 3. Isolation & safety guarantees
 
@@ -106,19 +109,19 @@ worktrees, can overlap freely.
 ## 4. Running the committed suite
 
 ```bash
-cd e2e && pnpm run setup   # one-time: install deps + Chromium (skip if already done / on CI)
-make test-e2e              # or, equivalently: cd e2e && pnpm test
+cd e2e && bun --bun run setup   # one-time: install deps + Chromium (skip if already done / on CI)
+make test-e2e              # or, equivalently: cd e2e && bun --bun run test
 ```
 
-Prereqs: `wails` CLI on PATH, `pnpm`, Node (with the built-in `node:sqlite` — Node ≥ 22).
-`pnpm run setup` installs the e2e deps and the Chromium build **once**; `make test-e2e`
+Prereqs: `wails3` v3.0.0 on PATH and Bun (version pinned in `.bun-version`).
+`bun --bun run setup` installs the e2e deps and the Chromium build **once**; `make test-e2e`
 itself only runs the suite — no per-run install. First run builds Go + Vite (a few minutes)
 and **opens a native OpsKat window** — expected; the test drives the headless browser
 instance, not that window. The window closes when the suite ends.
 
 **Platforms.** Runs on macOS, Linux, and native Windows. `make test-e2e` is a thin alias for
-`cd e2e && pnpm test`, so on Windows (no `make`) run `cd e2e && pnpm test` directly. *All*
-orchestration and cleanup live in `e2e/run-e2e.mjs` (cross-platform Node) — there are no
+`cd e2e && bun --bun run test`, so on Windows (no `make`) run `cd e2e && bun --bun run test` directly. *All*
+orchestration and cleanup live in `e2e/run-e2e.mjs` (cross-platform Bun) — there are no
 shell-only `pkill`/`mkdir -p`/`touch` steps. CI exercises the Linux path.
 
 The suite (`e2e/tests/`): `boot` (app mounts + `OpsKat` title), `smoke` (layout + sidebar
@@ -140,11 +143,13 @@ for approval, executes against Redis, and persists an audit row), plus the **AI 
 approval dialog → real execution → audit row), `ai-exec-crud` (asset CRUD through AI tools),
 `ai-exec-gate` (nothing unexecutable reaches the approval dialog), and `ai-exec-policy`
 (policy allow / deny and grant persistence), all driven by a **scripted model** (§4.1).
-After Playwright exits, `run-e2e.mjs` reaps the orphan `vite` and removes the temp data dir
+After Playwright exits, `run-e2e.mjs` reaps the orphan `vite` and the leftover app tree
+(`scripts/desktop.mjs run` + the app — matched by the run's `OPSKAT_DATA_DIR`, never by
+command line, so a concurrent `make dev` is untouched), then removes the temp data dir
 (see §7). It also removes `<tmpdir>/opskat-e2e-<workspaceId>.log` after a successful run but
 preserves that log after a failure.
 
-The mock Redis (`e2e/fixtures/redis-mock.mjs`, pure Node, no deps) is started as a **second
+The mock Redis (`e2e/fixtures/redis-mock.mjs`, Bun, no additional dependencies) is started as a **second
 Playwright `webServer`** on its own port from this checkout's block (`+0` is the app, `+1` the
 mock); the spec
 reads the port from `process.env.MOCK_REDIS_PORT`. It answers only what go-redis v9's connect
@@ -161,7 +166,7 @@ specs compare the string the *server* received against the one the approval dial
 ### 4.1 Driving the AI stack with a scripted model
 
 The AI specs run the **real** AI stack — `internal/ai/runner` → cago-agents `provider/openai` →
-`sashabaranov/go-openai` — against `e2e/fixtures/openai-mock.mjs` (pure Node) on `+3`,
+`sashabaranov/go-openai` — against `e2e/fixtures/openai-mock.mjs` (Bun) on `+3`,
 a fourth `webServer`. It speaks just enough OpenAI: SSE `/v1/chat/completions` plus a
 control API, so a **spec** decides what the "model" does — the mock hard-codes nothing:
 
@@ -207,13 +212,13 @@ before the app starts — no `make build-ext` step to remember, locally or on CI
   extension has on disk, which the app's boot scan picks up. `playwright.config.ts` calls it in
   the main-runner block, next to the data-dir prep; the sandbox does the same behind
   `make dev-sandbox ARGS=--extensions`. CI needs nothing extra: it already has the Go toolchain
-  for `wails dev`, and `wasip1` needs no SDK.
+  for `wails3 dev`, and `wasip1` needs no SDK.
 - The extension's face — asset type, `configSchema`, tools, `ext:` policy groups — comes from
   the guest's `describe()`, not from `manifest.json`, so the wasm really has to run. That also
   means the type appears in the UI a few seconds *after* the app answers: the spec waits for
   `asset-type-option-<type>` with a long timeout instead of assuming it is there on load.
 - **Not covered:** an extension *page* (the `/extensions/<name>/<entry>` dynamic ESM import) and
-  extension i18n in the frontend. Under `wails dev` the vite dev server answers every unknown
+  extension i18n in the frontend. Under `wails3 dev` the vite dev server answers every unknown
   path with `index.html`, so the app's `/extensions/**` asset handler
   (`internal/app/opsctl/asset_handler.go`) is never reached and both paths get HTML back.
   Covering them needs that route served in dev *and* a sample extension that ships a page.
@@ -289,7 +294,7 @@ rule: drive the real app, then read observable side-effects (UI, DB, logs).
    ```
    It boots the real app on this checkout's own sandbox dir (`~/.opskat-verify/<workspaceId>`,
    persistent across launches) with a **headless** Chromium attached over CDP, and prints the
-   port, data dir, DB path and log paths — run `node e2e/oracle.mjs where` any time to see them
+   port, data dir, DB path and log paths — run `bun e2e/oracle.mjs where` any time to see them
    again. Isolation is the same as §3 — plus a hard gate: `main.go`'s `resolveBootstrap`
    **refuses to boot** any `OPSKAT_E2E=1` run whose data dir resolves to the real one, so this
    cannot be pointed at your live inventory. `ARGS=--headed` shows the browser when you want to
@@ -297,10 +302,10 @@ rule: drive the real app, then read observable side-effects (UI, DB, logs).
 2. **Look, act, observe — one command at a time.** Each `drive.mjs` invocation attaches over
    CDP, does one thing and exits; the page and its state persist in between.
    ```bash
-   node e2e/drive.mjs snapshot                    # visible structure: testids, roles, text, state
-   node e2e/drive.mjs click add-asset-button      # a bare word is a data-testid (§5)
-   node e2e/drive.mjs fill ssh-host-input example.com
-   node e2e/oracle.mjs audit --since=41           # the independent DB oracle, read live
+   bun e2e/drive.mjs snapshot                    # visible structure: testids, roles, text, state
+   bun e2e/drive.mjs click add-asset-button      # a bare word is a data-testid (§5)
+   bun e2e/drive.mjs fill ssh-host-input example.com
+   bun e2e/oracle.mjs audit --since=41           # the independent DB oracle, read live
    ```
    `snapshot` is what removes the selector guesswork: it lists what is actually on screen with
    the testid to address it by, plus roles, values and disabled state — including inside modals,
@@ -318,7 +323,7 @@ rule: drive the real app, then read observable side-effects (UI, DB, logs).
    concurrency as the contract — write it under `e2e/scratch/<scenario>/` (gitignored) with the
    same conventions as §5 and run it on the hermetic harness:
    ```bash
-   cd e2e && pnpm run test:scratch scratch/<scenario>/verify.spec.ts
+   cd e2e && bun --bun run test:scratch scratch/<scenario>/verify.spec.ts
    make test-e2e-scratch        # everything left under e2e/scratch/
    ```
    `playwright.scratch.config.ts` reuses the exact same webServer / env / isolation as the
@@ -336,7 +341,7 @@ verdicts are owned by
 evidence stays throwaway; only genuinely core flows get promoted and committed (§5).
 
 See [`e2e/scratch/README.md`](../../e2e/scratch/README.md) for the copy-paste starter, and
-`node e2e/drive.mjs --help` / `node e2e/oracle.mjs --help` for the full command sets.
+`bun e2e/drive.mjs --help` / `bun e2e/oracle.mjs --help` for the full command sets.
 
 ### Verifying against a real server (`.env` targets)
 
@@ -399,10 +404,10 @@ These bit us while building the harness; keep them in mind when changing it.
   fixed dir (`join(tmpdir(),"opskat-e2e-data")`), cleaned/created **only in the main runner**
   (`if (process.env.TEST_WORKER_INDEX === undefined)`) before the webServer launches; workers
   reuse the same path.
-- **Suite hangs forever after tests pass.** *Symptom:* all green, but `pnpm test` never exits.
-  *Cause:* `wails dev` orphans its `vite` child, which keeps the **piped** webServer stdout's
-  write end open, so the Node runner's readable stream never ends. *Fix:* `stdout/stderr:
-  "ignore"` + redirect the command's own output to a file (`wails dev ... > "$LOG" 2>&1`);
+- **Suite hangs forever after tests pass.** *Symptom:* all green, but `bun --bun run test` never exits.
+  *Cause:* `wails3 dev` orphans its `vite` child, which keeps the **piped** webServer stdout's
+  write end open, so the Bun runner's readable stream never ends. *Fix:* `stdout/stderr:
+  "ignore"` + redirect the command's own output to a file (`wails3 dev ... > "$LOG" 2>&1`);
   readiness is detected via `url` polling, not stdout.
 - **All green but `exit 143` / `make: *** Terminated`.** *Symptom:* tests pass, the run still
   reports failure (SIGTERM). *Cause:* reaping inside `globalTeardown` SIGTERMs Playwright's
@@ -413,7 +418,17 @@ These bit us while building the harness; keep them in mind when changing it.
   webServer down (app gone, db closed, `vite` orphaned) it reaps the orphan `vite` (scoped to
   this repo's frontend so it never touches `agentre`) and removes the temp dir, then exits
   with Playwright's code. No `pkill` / `globalTeardown`, so it's cross-platform and a bare
-  `pnpm test` behaves exactly like `make test-e2e`.
+  `bun --bun run test` behaves exactly like `make test-e2e`.
+- **A second local run reuses a stale app or fails to bind the app port.** *Symptom:* after a
+  suite run, an `opskat` process still listens on the workspace's app port (and a native
+  window stays open); the next run then exercises yesterday's binary or dies on
+  `bind: address already in use`. *Cause:* Playwright's teardown SIGTERMs the webServer
+  *shell*; the `wails3 dev` watcher dies but `scripts/desktop.mjs run` and the app never see
+  a signal (their command lines are indistinguishable from a live `make dev`, so a cmdline
+  sweep would kill that too). *Fix:* `run-e2e.mjs` reaps them by the run's
+  `OPSKAT_DATA_DIR` in their environment (`ps -E` on macOS, `/proc/<pid>/environ` on
+  Linux; a no-op on Windows, where CI's fresh VMs make teardown moot) before wiping the
+  data dir — regression-tested in `e2e/harness/process-cleanup.test.cjs`.
 - **Collision with a running opskat.** *Symptom:* `another instance is already listening on
   …/approval.sock`. *Cause:* socket paths built from `AppDataDir()` ignored the override.
   *Fix:* `internal/app/opsctl/approval.go` uses `bootstrap.ResolvedDataDir()` (§8).
@@ -484,26 +499,26 @@ These bit us while building the harness; keep them in mind when changing it.
 
 | Path | Role | Committed? |
 |---|---|---|
-| `e2e/harness/env.js` | **the shared harness facts**: ports, suite/sandbox data dirs, `.env` loading, `frontend/dist` prep, orphan-vite reaping, the mock list. One owner, so the suite and the sandbox cannot drift apart | yes |
+| `e2e/harness/env.js` | **the shared harness facts**: ports, suite/sandbox data dirs, `.env` loading, `frontend/dist` prep, orphan-vite + leftover-app reaping, the mock list. One owner, so the suite and the sandbox cannot drift apart | yes |
 | `e2e/sandbox.mjs` | the sandbox launcher (§6): `up` / `down` / `status`. `up` starts the real app on `~/.opskat-verify/<workspaceId>` at port `+4` plus a browser host, records the session, and returns | yes |
 | `e2e/harness/browser-host.mjs` | the detached process that owns the sandbox's Chromium, so it outlives `up`. Playwright launches the browser (§7 — a hand-spawned headless Chromium never produces frames) | yes |
 | `e2e/drive.mjs` | drives that sandbox one command at a time over CDP — `snapshot` / `click` / `fill` / `shot` / `eval` (§6) | yes |
 | `e2e/oracle.mjs` | reads the live sandbox's DB and structured logs from the shell — `assets` / `audit` / `mark` / `sql` / `logs` | yes |
-| `e2e/run-e2e.mjs` | cross-platform *suite* runner: spawns `playwright test`, then reaps orphan `vite` + removes temp dir after it exits | yes |
-| `e2e/playwright.config.ts` | base harness: temp dir + env + `frontend/dist` prep, optional repo-root `.env` load (§6), four `webServer`s (mock Redis `+1`, mock SSH `+2`, mock OpenAI `+3`, + `wails dev` on `+0`) — all sourced from `harness/env.js` | yes |
+| `e2e/run-e2e.mjs` | cross-platform *suite* runner: spawns `playwright test`, then reaps orphan `vite` + the leftover app tree and removes temp dir after it exits | yes |
+| `e2e/playwright.config.ts` | base harness: temp dir + env + `frontend/dist` prep, optional repo-root `.env` load (§6), four `webServer`s (mock Redis `+1`, mock SSH `+2`, mock OpenAI `+3`, + `wails3 dev` on `+0`) — all sourced from `harness/env.js` | yes |
 | `e2e/playwright.scratch.config.ts` | extends base, `testDir: ./scratch` for throwaway specs | yes |
 | `e2e/fixtures/db-queries.js` | the read-only `node:sqlite` statements, shared by specs and `oracle.mjs` | yes |
 | `e2e/fixtures/db.ts` | the DB oracle as specs use it: typed views over `db-queries.js` + `waitForAuditLogs`'s Playwright polling | yes |
 | `extensions/notebook/`, `pkg/extension/testdata/fixture-ext/` | the in-repo extensions the harness builds and installs into a run (`HARNESS_EXTENSIONS` → `installExtensions`) | yes |
 | `e2e/fixtures/ai.ts` | AI-spec plumbing: model scripting, provider setup via the real bindings, asset seeding, chat gestures, `execOutcome` (§4.1) | yes |
-| `e2e/fixtures/redis-mock.mjs` | minimal pure-Node RESP mock (HELLO→`-ERR` / PING→`+PONG`), started as a 2nd webServer for the `redis-connect` spec | yes |
+| `e2e/fixtures/redis-mock.mjs` | minimal Bun RESP mock (HELLO→`-ERR` / PING→`+PONG`), started as a 2nd webServer for the `redis-connect` spec | yes |
 | `e2e/fixtures/ssh-mock/main.go` | minimal Go `x/crypto/ssh` server (`NoClientAuth`) that echoes `exec`'d commands, `go run` as a webServer | yes |
 | `e2e/fixtures/openai-mock.mjs` | scripted OpenAI-compatible chat-completions server (SSE + `/__mock/*` control API) on `+3` (§4.1) | yes |
 | `e2e/tests/*.spec.ts` | committed **core-flow** specs | yes |
 | `e2e/scratch/<scenario>/` | one-off verification evidence: `report.md`, screenshots, any throwaway spec | **no (gitignored)** |
 | `e2e/scratch/README.md` | scratch convention + starter template | yes |
 | `e2e/package.json` → `setup` / `test` / `test:scratch` / `sandbox` / `drive` / `oracle` / `typecheck` | one-time install+Chromium / run suite / run scratch / the §6 tools / `tsc` | yes |
-| `Makefile` → `dev-sandbox` / `test-e2e` / `test-e2e-scratch` | start the sandbox (`ARGS=…`) / thin aliases for `pnpm test` / `pnpm run test:scratch` | yes |
+| `Makefile` → `dev-sandbox` / `test-e2e` / `test-e2e-scratch` | start the sandbox (`ARGS=…`) / thin aliases for `bun --bun run test` / `bun --bun run test:scratch` | yes |
 | `.env.example` | template for real-target verification (`.env` schema — one block per asset type), copied to a gitignored `.env` (§6) | yes |
 | `.env` | real verification targets (host / port / user / credentials); read by no app code — `playwright.config.ts` loads it into `process.env` for §6 real-server checks | **no (gitignored)** |
 

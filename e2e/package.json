@@ -4,16 +4,17 @@
   "version": "0.0.0",
   "description": "OpsKat GUI end-to-end tests (Playwright × Wails dev bridge)",
   "scripts": {
-    "setup": "pnpm install && pnpm exec playwright install chromium",
-    "test": "node run-e2e.mjs",
-    "test:scratch": "node run-e2e.mjs -c playwright.scratch.config.ts",
-    "sandbox": "node sandbox.mjs",
-    "drive": "node drive.mjs",
-    "oracle": "node oracle.mjs",
+    "setup": "bun x --bun pnpm@10.11.0 install && bun --bun x playwright install chromium",
+    "test": "bun run-e2e.mjs",
+    "test:scratch": "bun run-e2e.mjs -c playwright.scratch.config.ts",
+    "sandbox": "bun sandbox.mjs",
+    "drive": "bun drive.mjs",
+    "oracle": "bun oracle.mjs",
     "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.0",
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "typescript": "5.9.3"
   }
 }

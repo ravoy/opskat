@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/pkg/netproxy"
 )
 
 const (

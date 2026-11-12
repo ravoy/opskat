@@ -13,7 +13,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	ssh_agent_source_entity "github.com/opskat/opskat/internal/model/entity/ssh_agent_source_entity"
+	ssh_agent_source_entity "github.com/octays/opskat/internal/model/entity/ssh_agent_source_entity"
 	gomock "go.uber.org/mock/gomock"
 )
 

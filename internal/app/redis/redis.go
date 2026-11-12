@@ -4,9 +4,9 @@ package redis
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/service/redis_svc"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/service/redis_svc"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 // LangProvider 由 system binder 实现。

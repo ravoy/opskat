@@ -3,7 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NetworkProxyTestDialog } from "../../../components/settings/NetworkProxyTestDialog";
 import type { NetworkProxyForm } from "../../../components/settings/networkProxyForm";
-import { CancelTest, SaveNetworkProxySettings, TestNetworkProxy } from "../../../../wailsjs/go/system/System";
+import { CancelTest, SaveNetworkProxySettings, TestNetworkProxy } from "@clients/system";
 
 const KEY = "opskat.networkProxy.lastTestUrl";
 

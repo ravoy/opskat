@@ -16,20 +16,20 @@ var importBans = []importBanRule{
 			"cmd/opsctl/command/tty_approval.go": true,
 		},
 		banned: []string{
-			"github.com/opskat/opskat/internal/repository",
-			"github.com/opskat/opskat/internal/pkg/dbutil",
+			"github.com/octays/opskat/internal/repository",
+			"github.com/octays/opskat/internal/pkg/dbutil",
 		},
 		message: "opsctl policy 命令只负责解析与展示，业务和持久化经 policy service（AGENTS.md → bindings → service → repository）",
 	},
 	{
 		dir:       "internal/service/ssh_agent_svc/",
-		banned:    []string{"github.com/opskat/opskat/internal/repository/asset_repo"},
+		banned:    []string{"github.com/octays/opskat/internal/repository/asset_repo"},
 		skipTests: true,
 		message:   "SSH Agent service 不得直接调用资产 repository，经 asset_svc getter 获取跨域资产数据（AGENTS.md → 依赖接口、调 getter）",
 	},
 	{
 		dir:       "internal/app/",
-		banned:    []string{"github.com/opskat/opskat/internal/repository"},
+		banned:    []string{"github.com/octays/opskat/internal/repository"},
 		skipTests: true, // 测试注入 mock repo 属正常用法
 		exempt: map[string]bool{
 			"internal/app/opsctl/approval.go":     true,
@@ -40,7 +40,7 @@ var importBans = []importBanRule{
 	},
 	{
 		dir:       "internal/app/",
-		banned:    []string{"gorm.io/gorm", "github.com/opskat/opskat/internal/db"},
+		banned:    []string{"gorm.io/gorm", "github.com/octays/opskat/internal/db"},
 		skipTests: true,
 		exempt: map[string]bool{
 			"internal/app/ai/chat.go": true,

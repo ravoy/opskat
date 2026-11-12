@@ -289,7 +289,7 @@ import (
     "strings"
     "testing"
 
-    "github.com/opskat/opskat/internal/model/entity/asset_entity"
+    "github.com/octays/opskat/internal/model/entity/asset_entity"
     . "github.com/smartystreets/goconvey/convey"
 )
 
@@ -547,7 +547,7 @@ import (
     "path/filepath"
     "testing"
 
-    "github.com/opskat/opskat/internal/model/entity/asset_entity"
+    "github.com/octays/opskat/internal/model/entity/asset_entity"
     . "github.com/smartystreets/goconvey/convey"
 )
 

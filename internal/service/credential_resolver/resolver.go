@@ -11,16 +11,16 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/crypto/ssh"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/pkg/proxychain"
-	"github.com/opskat/opskat/internal/pkg/sshtuning"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/credential_mgr_svc"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/internal/service/ssh_agent_svc"
-	"github.com/opskat/opskat/internal/service/ssh_svc"
-	"github.com/opskat/opskat/internal/sshagent"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/pkg/proxychain"
+	"github.com/octays/opskat/internal/pkg/sshtuning"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/credential_mgr_svc"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/service/ssh_agent_svc"
+	"github.com/octays/opskat/internal/service/ssh_svc"
+	"github.com/octays/opskat/internal/sshagent"
 )
 
 // Resolver 统一凭据解析服务

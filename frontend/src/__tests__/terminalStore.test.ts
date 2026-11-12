@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { ConnectSSHAsync, SplitSSH } from "../../wailsjs/go/ssh/SSH";
-import { DisconnectSSH, GetSSHSyncState } from "../../wailsjs/go/ssh/SSH";
-import { SplitLocal } from "../../wailsjs/go/local/Local";
-import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
+import { ConnectSSHAsync, SplitSSH } from "@clients/ssh";
+import { DisconnectSSH, GetSSHSyncState } from "@clients/ssh";
+import { SplitLocal } from "@clients/local";
+import { EventsOn, EventsOff } from "@/lib/desktop";
 import { useTabStore } from "../stores/tabStore";
 import {
   __resetTerminalSyncListenersForTest,
@@ -10,7 +10,7 @@ import {
   type TerminalDirectorySyncState,
 } from "../stores/terminalStore";
 import { useAssetStore } from "../stores/assetStore";
-import { asset_entity } from "../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 function makeSSHAsset(id: number, name = `Server ${id}`): asset_entity.Asset {
   return {
@@ -64,14 +64,15 @@ describe("terminalStore.connect", () => {
   });
 
   it("should create a new tab when no existing tab for asset", async () => {
-    vi.mocked(ConnectSSHAsync).mockResolvedValue("conn-123");
+    // 新契约：前端预生成 connectionId（订阅进度事件必须先于连接发起），后端原样采纳。
+    vi.mocked(ConnectSSHAsync).mockImplementation((req) => Promise.resolve(req.connectionId));
 
     const asset = makeSSHAsset(1);
-    await useTerminalStore.getState().connect(asset);
+    const id = await useTerminalStore.getState().connect(asset);
 
     const tabs = useTabStore.getState().tabs;
     expect(tabs).toHaveLength(1);
-    expect(tabs[0].id).toBe("conn-123");
+    expect(tabs[0].id).toBe(id);
     expect(tabs[0].type).toBe("terminal");
     expect((tabs[0].meta as { assetId: number }).assetId).toBe(1);
 
@@ -214,7 +215,7 @@ describe("terminalStore.connect", () => {
       },
     });
 
-    vi.mocked(ConnectSSHAsync).mockResolvedValue("conn-new");
+    vi.mocked(ConnectSSHAsync).mockImplementation((req) => Promise.resolve(req.connectionId));
 
     const asset = makeSSHAsset(1);
     const result = await useTerminalStore.getState().connect(asset, "", true);
@@ -223,11 +224,10 @@ describe("terminalStore.connect", () => {
     expect(ConnectSSHAsync).toHaveBeenCalledTimes(1);
     // Should create a second tab
     expect(useTabStore.getState().tabs).toHaveLength(2);
-    expect(result).toBe("conn-new");
     // Both tabs should exist
     const tabIds = useTabStore.getState().tabs.map((t) => t.id);
     expect(tabIds).toContain("session-abc");
-    expect(tabIds).toContain("conn-new");
+    expect(tabIds).toContain(result);
   });
 
   it("should reuse existing tab when forceNew is false (default)", async () => {
@@ -260,16 +260,16 @@ describe("terminalStore.connect", () => {
   });
 
   it("should open multiple new tabs for same asset with forceNew", async () => {
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-1").mockResolvedValueOnce("conn-2");
+    vi.mocked(ConnectSSHAsync).mockImplementation((req) => Promise.resolve(req.connectionId));
 
     const asset = makeSSHAsset(1);
-    await useTerminalStore.getState().connect(asset, "", true);
-    await useTerminalStore.getState().connect(asset, "", true);
+    const first = await useTerminalStore.getState().connect(asset, "", true);
+    const second = await useTerminalStore.getState().connect(asset, "", true);
 
     const tabs = useTabStore.getState().tabs;
     expect(tabs).toHaveLength(2);
-    expect(tabs[0].id).toBe("conn-1");
-    expect(tabs[1].id).toBe("conn-2");
+    expect(new Set([first, second]).size).toBe(2);
+    expect([tabs[0].id, tabs[1].id].sort()).toEqual([first, second].sort());
     expect(ConnectSSHAsync).toHaveBeenCalledTimes(2);
   });
 
@@ -499,15 +499,13 @@ describe("terminalStore sync listener lifecycle", () => {
     });
   });
 
-  async function connectAndEmitSuccess(
-    connectionId = "conn-1",
-    sessionId = "s1",
-    syncState = makeSyncState({ sessionId })
-  ) {
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce(connectionId);
+  async function connectAndEmitSuccess(sessionId = "s1", syncState = makeSyncState({ sessionId })) {
+    // 新契约：前端预生成 connectionId，后端原样采纳——mock 回显请求里的 id。
+    vi.mocked(ConnectSSHAsync).mockImplementationOnce((req) => Promise.resolve(req.connectionId));
     vi.mocked(GetSSHSyncState).mockResolvedValueOnce(syncState);
 
     await useTerminalStore.getState().connect(makeSSHAsset(1));
+    const connectionId = vi.mocked(ConnectSSHAsync).mock.calls[0][0].connectionId;
 
     const connectHandler = eventHandlers.get(`ssh:connect:${connectionId}`);
     expect(connectHandler).toEqual(expect.any(Function));
@@ -522,7 +520,7 @@ describe("terminalStore sync listener lifecycle", () => {
   }
 
   it("registers a sync listener on successful connect and hydrates initial sync state", async () => {
-    await connectAndEmitSuccess("conn-1", "s1", makeSyncState({ sessionId: "s1", cwd: "/var/www" }));
+    await connectAndEmitSuccess("s1", makeSyncState({ sessionId: "s1", cwd: "/var/www" }));
 
     expect(EventsOn).toHaveBeenCalledWith("ssh:sync:s1", expect.any(Function));
     expect(GetSSHSyncState).toHaveBeenCalledWith("s1");
@@ -530,7 +528,7 @@ describe("terminalStore sync listener lifecycle", () => {
   });
 
   it("does not register a duplicate sync listener for the same session", async () => {
-    const connectHandler = await connectAndEmitSuccess("conn-1", "s1");
+    const connectHandler = await connectAndEmitSuccess("s1");
 
     vi.mocked(EventsOn).mockClear();
     vi.mocked(GetSSHSyncState).mockClear();
@@ -542,7 +540,7 @@ describe("terminalStore sync listener lifecycle", () => {
   });
 
   it("unregisters the sync listener and clears sync state when closing a pane", async () => {
-    await connectAndEmitSuccess("conn-1", "s1", makeSyncState({ sessionId: "s1", cwd: "/srv/app" }));
+    await connectAndEmitSuccess("s1", makeSyncState({ sessionId: "s1", cwd: "/srv/app" }));
     expect(useTerminalStore.getState().sessionSync.s1?.cwd).toBe("/srv/app");
 
     vi.mocked(EventsOff).mockClear();
@@ -554,7 +552,7 @@ describe("terminalStore sync listener lifecycle", () => {
   });
 
   it("unregisters the sync listener and clears sync state when closing a tab", async () => {
-    await connectAndEmitSuccess("conn-1", "s1", makeSyncState({ sessionId: "s1", cwd: "/srv/app" }));
+    await connectAndEmitSuccess("s1", makeSyncState({ sessionId: "s1", cwd: "/srv/app" }));
     expect(useTerminalStore.getState().sessionSync.s1?.cwd).toBe("/srv/app");
 
     vi.mocked(EventsOff).mockClear();
@@ -566,7 +564,7 @@ describe("terminalStore sync listener lifecycle", () => {
   });
 
   it("unregisters the sync listener and clears sync state when disconnecting a pane", async () => {
-    await connectAndEmitSuccess("conn-1", "s1", makeSyncState({ sessionId: "s1", cwd: "/srv/app" }));
+    await connectAndEmitSuccess("s1", makeSyncState({ sessionId: "s1", cwd: "/srv/app" }));
     expect(useTerminalStore.getState().sessionSync.s1?.cwd).toBe("/srv/app");
 
     vi.mocked(EventsOff).mockClear();
@@ -580,7 +578,7 @@ describe("terminalStore sync listener lifecycle", () => {
   });
 
   it("unregisters the sync listener and clears sync state when a pane closes remotely", async () => {
-    await connectAndEmitSuccess("conn-1", "s1", makeSyncState({ sessionId: "s1", cwd: "/srv/app" }));
+    await connectAndEmitSuccess("s1", makeSyncState({ sessionId: "s1", cwd: "/srv/app" }));
     expect(useTerminalStore.getState().sessionSync.s1?.cwd).toBe("/srv/app");
 
     vi.mocked(EventsOff).mockClear();

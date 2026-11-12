@@ -2,11 +2,11 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { DatabaseConfigSection } from "@/components/asset/DatabaseConfigSection";
 import { refreshDatabaseDrivers } from "@/lib/dbDrivers";
-import { asset_entity } from "../../wailsjs/go/models";
-import { ListDatabaseDrivers } from "../../wailsjs/go/query/Query";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import { ListDatabaseDrivers } from "@clients/query";
 import { BUILTIN_DRIVERS } from "./dbDriverFixtures";
 
-vi.mock("../../wailsjs/go/system/System", () => ({
+vi.mock("@clients/system", () => ({
   ListCredentialsByType: () => Promise.resolve([]),
   GetAssetPassword: () => Promise.resolve(""),
   SelectSQLiteFile: () => Promise.resolve(""),

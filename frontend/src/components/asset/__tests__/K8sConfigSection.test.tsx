@@ -4,7 +4,7 @@ import { renderForSave } from "./rejectedSave";
 import { createRef } from "react";
 import { K8sConfigSection } from "@/components/asset/K8sConfigSection";
 import type { AssetFormHandle, AssetFormContext } from "@/lib/assetTypes/formContract";
-import { asset_entity } from "../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 const ctx: AssetFormContext = { isEdit: false, encryptPassword: async (p) => `enc(${p})` };
 

@@ -15,7 +15,7 @@ package extwire
 import (
 	"encoding/json"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // DriverFunction is the guest function every driver call goes through.

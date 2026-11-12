@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { CountTableRows, GetTableMetadata, OpenTable } from "../../wailsjs/go/query/Query";
+import { CountTableRows, GetTableMetadata, OpenTable } from "@clients/query";
 import { BUILTIN_DRIVERS, provideDrivers } from "./dbDriverFixtures";
 
 vi.mock("react-i18next", () => {

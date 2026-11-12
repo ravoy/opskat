@@ -1,7 +1,8 @@
+import { workspaceStorage } from "@/lib/workspace";
 import { useState, useEffect } from "react";
 import { create } from "zustand";
 import { toast } from "sonner";
-import { SendAIMessage } from "../../wailsjs/go/ai/AI";
+import { SendAIMessage } from "@clients/ai";
 import {
   StopAIGeneration,
   QueueAIMessage,
@@ -16,9 +17,11 @@ import {
   DeleteConversation,
   SaveConversationMessages,
   UpdateConversationTitle,
-} from "../../wailsjs/go/ai/AI";
-import { ai, conversation_entity, runner } from "../../wailsjs/go/models";
-import { EventsOn, EventsEmit } from "../../wailsjs/runtime/runtime";
+} from "@clients/ai";
+import * as ai from "@bindings/github.com/octays/opskat/internal/app/ai/models";
+import * as conversation_entity from "@bindings/github.com/octays/opskat/internal/model/entity/conversation_entity/models";
+import * as runner from "@bindings/github.com/octays/opskat/internal/ai/runner/models";
+import { EventsOn, EventsEmit } from "@/lib/desktop";
 import i18n from "../i18n";
 import {
   useTabStore,
@@ -343,8 +346,8 @@ function clearLegacySidebarKeys() {
 
 function persistSidebarTabs(tabs: SidebarAITab[], activeSidebarTabId: string | null) {
   if (tabs.length === 0) {
-    localStorage.removeItem(SIDEBAR_TABS_STORAGE_KEY);
-    localStorage.removeItem(SIDEBAR_ACTIVE_TAB_STORAGE_KEY);
+    workspaceStorage.removeItem(SIDEBAR_TABS_STORAGE_KEY);
+    workspaceStorage.removeItem(SIDEBAR_ACTIVE_TAB_STORAGE_KEY);
     clearLegacySidebarKeys();
     return;
   }
@@ -357,13 +360,13 @@ function persistSidebarTabs(tabs: SidebarAITab[], activeSidebarTabId: string | n
       }))
     )
   );
-  localStorage.setItem(SIDEBAR_ACTIVE_TAB_STORAGE_KEY, activeSidebarTabId ?? tabs[0].id);
+  workspaceStorage.setItem(SIDEBAR_ACTIVE_TAB_STORAGE_KEY, activeSidebarTabId ?? tabs[0].id);
   clearLegacySidebarKeys();
 }
 
 function loadInitialSidebarState() {
-  const storedTabs = localStorage.getItem(SIDEBAR_TABS_STORAGE_KEY);
-  const storedActive = localStorage.getItem(SIDEBAR_ACTIVE_TAB_STORAGE_KEY);
+  const storedTabs = workspaceStorage.getItem(SIDEBAR_TABS_STORAGE_KEY);
+  const storedActive = workspaceStorage.getItem(SIDEBAR_ACTIVE_TAB_STORAGE_KEY);
   if (storedTabs) {
     try {
       const parsed = JSON.parse(storedTabs);
@@ -1597,14 +1600,19 @@ function expandToAPIMessages(messages: ChatMessage[], includeThinking: boolean):
   const out: runner.Message[] = [];
   for (const m of messages) {
     if (m.role !== "assistant") {
-      out.push(new runner.Message({ role: m.role, content: m.content }));
+      out.push(
+        new runner.Message({
+          role: m.role === "user" ? runner.Role.RoleUser : runner.Role.RoleTool,
+          content: m.content,
+        })
+      );
       continue;
     }
 
     // content-only 的 assistant 历史（无 block，如内存里刚构造或旧塌缩数据）：直接按 content
     // 塌缩发送，避免下面基于 block 的展开把 content 丢掉（text 只从 text block 累加）。
     if (m.blocks.length === 0) {
-      out.push(new runner.Message({ role: "assistant", content: m.content }));
+      out.push(new runner.Message({ role: runner.Role.RoleAssistant, content: m.content }));
       continue;
     }
 
@@ -1666,7 +1674,7 @@ function expandToAPIMessages(messages: ChatMessage[], includeThinking: boolean):
         flushAssistant();
         out.push(
           new runner.Message({
-            role: "tool",
+            role: runner.Role.RoleTool,
             content: b.content,
             tool_call_id: b.toolCallId,
           })
@@ -2832,7 +2840,7 @@ function flushAllConversations() {
 
 // flushAllConversationsAsync 等待所有会话落盘完成后返回。
 // Wails OnBeforeClose 场景用这个：后端在等 ai:flush-done 回执再放行。
-async function flushAllConversationsAsync(): Promise<void> {
+export async function flushAllConversationsAsync(): Promise<void> {
   const allMsgs = useAIStore.getState().conversationMessages;
   const promises: Promise<void>[] = [];
   for (const convIdStr of Object.keys(allMsgs)) {
@@ -2852,9 +2860,9 @@ if (typeof window !== "undefined") {
 
 // Wails OnBeforeClose 会 emit ai:flush-all，前端等所有 IPC 回执到位后
 // 再 emit ai:flush-done 通知后端放行，避免后端暴力 sleep。
-EventsOn("ai:flush-all", () => {
+EventsOn("ai:flush-all", (requestID: string) => {
   flushAllConversationsAsync().finally(() => {
-    EventsEmit("ai:flush-done");
+    EventsEmit("ai:flush-done", requestID);
   });
 });
 

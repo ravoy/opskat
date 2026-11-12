@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/opskat/opskat/internal/service/host_key_svc"
+	"github.com/octays/opskat/internal/service/host_key_svc"
 
 	"golang.org/x/crypto/ssh"
 )

@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/opskat/opskat/cmd/opsctl/command"
+	"github.com/octays/opskat/cmd/opsctl/command"
 )
 
 func main() {

@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/pkg/extmanifest"
 )
 
 func ver(version, hostABI, minApp string) Version {

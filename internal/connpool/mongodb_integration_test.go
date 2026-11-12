@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // Run: go test -tags integration ./internal/connpool -run TestDialMongoDBLegacyIntegration -v

@@ -6,10 +6,10 @@ import (
 	"context"
 	"sync"
 
-	"github.com/opskat/opskat/internal/service/external_edit_svc"
+	"github.com/octays/opskat/internal/service/external_edit_svc"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 )
 
@@ -61,7 +61,7 @@ func (e *EventEmitter) Emit(event external_edit_svc.Event) {
 	ctx := e.ctx
 	e.mu.RUnlock()
 	if ctx != nil {
-		wailsRuntime.EventsEmit(ctx, "external-edit:event", event)
+		application.Get().Event.Emit("external-edit:event", event)
 	}
 }
 

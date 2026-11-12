@@ -3,7 +3,7 @@ package oss
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/service/oss_svc"
+	"github.com/octays/opskat/internal/service/oss_svc"
 	"github.com/stretchr/testify/require"
 )
 

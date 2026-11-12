@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/asset_svc"
 )
 
 // sshAssetKey 资产去重键：host:port:username

@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/opskat/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/bootstrap"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

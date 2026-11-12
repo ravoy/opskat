@@ -5,7 +5,7 @@ package system
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/pkg/winclip"
+	"github.com/octays/opskat/internal/pkg/winclip"
 )
 
 func readClipboardText(context.Context) (string, error) {

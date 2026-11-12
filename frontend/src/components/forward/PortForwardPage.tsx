@@ -32,16 +32,17 @@ import {
 import { AssetSelect } from "@/components/asset/AssetSelect";
 import { AsyncState } from "@/components/common/AsyncState";
 import { notifySuccess } from "@/lib/notify";
-import { ListForwardConfigs } from "../../../wailsjs/go/ssh/SSH";
+import { ListForwardConfigs } from "@clients/ssh";
 import {
   CreateForwardConfig,
   UpdateForwardConfig,
   DeleteForwardConfig,
   StartForwardConfig,
   StopForwardConfig,
-} from "../../../wailsjs/go/ssh/SSH";
+} from "@clients/ssh";
 import { errorMessage } from "@/lib/errorMessage";
-import { ssh as ssh_models, forward_entity } from "../../../wailsjs/go/models";
+import * as ssh_models from "@bindings/github.com/octays/opskat/internal/app/ssh/models";
+import * as forward_entity from "@bindings/github.com/octays/opskat/internal/model/entity/forward_entity/models";
 
 // 编辑中的规则（无 id）；key 只在弹窗内标识这一行，删掉别的行后行内错误仍跟着它
 interface EditRule {

@@ -5,12 +5,13 @@ import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
 import { DatabaseConfigSection } from "@/components/asset/DatabaseConfigSection";
 import type { AssetFormHandle, AssetFormContext } from "@/lib/assetTypes/formContract";
-import { asset_entity, dbdriver } from "../../../../wailsjs/go/models";
-import { ListDatabaseDrivers } from "../../../../wailsjs/go/query/Query";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import { ListDatabaseDrivers } from "@clients/query";
 import { refreshDatabaseDrivers } from "@/lib/dbDrivers";
 import { BUILTIN_DRIVERS, EXT_DRIVER } from "@/__tests__/dbDriverFixtures";
 
-vi.mock("../../../../wailsjs/go/system/System", () => ({
+vi.mock("@clients/system", () => ({
   ListCredentialsByType: () => Promise.resolve([]),
   GetAssetPassword: () => Promise.resolve(""),
   SelectSQLiteFile: () => Promise.resolve(""),
@@ -209,8 +210,16 @@ describe("DatabaseConfigSection 证书字段组(tls_cert)", () => {
     aliases: [],
     defaultPort: 1234,
     form: [
-      { tab: "connection", fields: ["host", "port", "username", "password"] },
-      { tab: "tls", fields: ["tls_cert"] },
+      {
+        tab: dbdriver.FormTab.TabConnection,
+        fields: [
+          dbdriver.FormField.FieldHost,
+          dbdriver.FormField.FieldPort,
+          dbdriver.FormField.FieldUsername,
+          dbdriver.FormField.FieldPassword,
+        ],
+      },
+      { tab: dbdriver.FormTab.TabTLS, fields: [dbdriver.FormField.FieldTLSCert] },
     ],
     capabilities: [],
   });
@@ -290,7 +299,18 @@ describe("DatabaseConfigSection Kerberos 字段组(kerberos)", () => {
     order: 902,
     aliases: [],
     defaultPort: 1521,
-    form: [{ tab: "connection", fields: ["host", "port", "username", "password", "kerberos"] }],
+    form: [
+      {
+        tab: dbdriver.FormTab.TabConnection,
+        fields: [
+          dbdriver.FormField.FieldHost,
+          dbdriver.FormField.FieldPort,
+          dbdriver.FormField.FieldUsername,
+          dbdriver.FormField.FieldPassword,
+          dbdriver.FormField.FieldKerberos,
+        ],
+      },
+    ],
     capabilities: [],
   });
   const PLAIN = '{"driver":"krbdb","host":"h","port":1521,"username":"app","password":"STOREDPWD"}';

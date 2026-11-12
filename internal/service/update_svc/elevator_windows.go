@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os/exec"
 
-	"github.com/opskat/opskat/internal/pkg/executil"
+	"github.com/octays/opskat/internal/pkg/executil"
 )
 
 // runInstaller 运行 NSIS 安装程序（用户级安装，无需 UAC 提权）

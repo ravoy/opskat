@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // 行语句：nchar / nvarchar / ntext 列的文本带 N 前缀（没有它，库排序规则不是 Unicode 时中文等

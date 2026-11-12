@@ -12,13 +12,13 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/grant_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	"github.com/opskat/opskat/internal/repository/grant_repo"
-	"github.com/opskat/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/grant_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/repository/grant_repo"
+	"github.com/octays/opskat/internal/service/asset_svc"
 )
 
 // GrantToolCp 是文件传输授权在 grant_items.tool_name 里的取值，同时也是它的审批类型。
@@ -925,6 +925,55 @@ func SaveGrantPattern(ctx context.Context, sessionID string, assetID int64, asse
 	}
 	if err := repo.CreateItems(ctx, []*grant_entity.GrantItem{item}); err != nil {
 		logger.Default().Error("save grant pattern", zap.Error(err))
+	}
+}
+
+// SaveTimedAllowGrant 落限时全量授权：一条 `*` pattern 的 grant item（`*` 语义即
+// 该目标上全权信任，grantItemAppliesTo 让它同时覆盖命令面与 cp 面），到期时间写在
+// item 上，由 ListApprovedItems 统一过滤。AllAssets 时 AssetID/GroupID 归 0——
+// grantItemMatchesTarget 对 0/0 的语义就是匹配全部资产。toolName 落在命令面（cp 触
+// 发的也归一到 exec）：`*` 只有挂在命令面才跨面覆盖 cp，挂在 cp 面反而盖不住命令。
+func SaveTimedAllowGrant(ctx context.Context, sessionID string, assetID int64, assetName, toolName string, minutes int, allAssets bool) {
+	if sessionID == "" {
+		return
+	}
+	repo := grant_repo.Grant()
+	if repo == nil {
+		return
+	}
+	if toolName == GrantToolCp || toolName == GrantToolCpRead || toolName == GrantToolCpWrite {
+		toolName = "exec"
+	}
+	if _, err := repo.GetSession(ctx, sessionID); err != nil {
+		session := &grant_entity.GrantSession{
+			ID:         sessionID,
+			Status:     grant_entity.GrantStatusApproved,
+			Createtime: time.Now().Unix(),
+		}
+		if createErr := repo.CreateSession(ctx, session); createErr != nil {
+			logger.Default().Debug("create grant session (may already exist)", zap.String("sessionID", sessionID), zap.Error(createErr))
+		}
+	}
+
+	itemAssetID, itemAssetName := assetID, assetName
+	if allAssets {
+		itemAssetID, itemAssetName = 0, ""
+	}
+	item := &grant_entity.GrantItem{
+		GrantSessionID: sessionID,
+		ToolName:       toolName,
+		AssetID:        itemAssetID,
+		AssetName:      itemAssetName,
+		Command:        "*",
+		Expiretime:     time.Now().Add(time.Duration(minutes) * time.Minute).Unix(),
+		Createtime:     time.Now().Unix(),
+	}
+	if err := repo.CreateItems(ctx, []*grant_entity.GrantItem{item}); err != nil {
+		logger.Ctx(ctx).Error("save timed allow grant", zap.String("sessionID", sessionID), zap.Int("minutes", minutes), zap.Bool("allAssets", allAssets), zap.Error(err))
+	} else {
+		logger.Ctx(ctx).Info("timed allow grant saved",
+			zap.String("sessionID", sessionID), zap.Int64("assetID", itemAssetID),
+			zap.Int("minutes", minutes), zap.Bool("allAssets", allAssets))
 	}
 }
 

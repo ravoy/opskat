@@ -113,7 +113,7 @@ package k8s
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -156,11 +156,11 @@ In `internal/app/k8s/k8s_ops.go`:
 (a) Add to the imports block (lines 3-22) — `socksdial` and `credential_resolver` (keep imports grouped/sorted as the file already groups stdlib then module then third-party):
 
 ```go
-	k8spkg "github.com/opskat/opskat/internal/pkg/k8s"
-	"github.com/opskat/opskat/internal/pkg/socksdial"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/credential_resolver"
-	"github.com/opskat/opskat/internal/sshpool"
+	k8spkg "github.com/octays/opskat/internal/pkg/k8s"
+	"github.com/octays/opskat/internal/pkg/socksdial"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/sshpool"
 ```
 
 (b) Replace the body of `k8sClientOptions` (lines 184-208) and add the helper. New `k8sClientOptions`:

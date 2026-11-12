@@ -6,7 +6,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 const pendingCalls = new Map<string, (result: string) => void>();
 let holdCalls = false;
 
-vi.mock("../../wailsjs/go/extension/Extension", () => ({
+vi.mock("@clients/extension", () => ({
   CallExtensionTool: vi.fn((_ext: string, _tool: string, _args: string, invocationId: string, _assetId: number) =>
     holdCalls ? new Promise<string>((resolve) => pendingCalls.set(invocationId, resolve)) : Promise.resolve("{}")
   ),
@@ -16,7 +16,7 @@ vi.mock("../../wailsjs/go/extension/Extension", () => ({
 type Listener = (payload: unknown) => void;
 const listeners = new Map<string, Set<Listener>>();
 
-vi.mock("../../wailsjs/runtime/runtime", () => ({
+vi.mock("@/lib/desktop", () => ({
   EventsOn: vi.fn((name: string, cb: Listener) => {
     const set = listeners.get(name) ?? new Set<Listener>();
     set.add(cb);
@@ -26,7 +26,7 @@ vi.mock("../../wailsjs/runtime/runtime", () => ({
   EventsOff: vi.fn((name: string) => listeners.delete(name)),
 }));
 
-import { CallExtensionTool, CancelExtensionTool } from "../../wailsjs/go/extension/Extension";
+import { CallExtensionTool, CancelExtensionTool } from "@clients/extension";
 import { createExtensionAPI } from "../extension/api";
 
 function emit(payload: { extension: string; invocationId: string; eventType: string; data: unknown }) {

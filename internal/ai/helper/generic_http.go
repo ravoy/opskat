@@ -18,11 +18,11 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/connpool"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/pkg/authtmpl"
+	"github.com/octays/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/pkg/authtmpl"
 )
 
 // 通用资产的 HTTP 执行方式（docs/specs/2026-09-28-generic-asset.md「HTTP 请求」）：

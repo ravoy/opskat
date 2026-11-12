@@ -1,15 +1,16 @@
 {
 	"fixed": {
-		"file_version": "{{.Info.ProductVersion}}"
+		"file_version": "OPSKAT_NUMERIC_VERSION",
+		"product_version": "OPSKAT_NUMERIC_VERSION"
 	},
 	"info": {
 		"0000": {
-			"ProductVersion": "{{.Info.ProductVersion}}",
-			"CompanyName": "{{.Info.CompanyName}}",
-			"FileDescription": "{{.Info.ProductName}}",
-			"LegalCopyright": "{{.Info.Copyright}}",
-			"ProductName": "{{.Info.ProductName}}",
-			"Comments": "{{.Info.Comments}}"
+			"ProductVersion": "OPSKAT_VERSION",
+			"CompanyName": "OpsKat",
+			"FileDescription": "OpsKat",
+			"LegalCopyright": "OpsKat contributors",
+			"ProductName": "OpsKat",
+			"Comments": "Infrastructure management desktop"
 		}
 	}
 }

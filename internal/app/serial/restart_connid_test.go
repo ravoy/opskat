@@ -29,3 +29,27 @@ func TestConnectionIDsSurviveRestart(t *testing.T) {
 		}
 	}
 }
+
+type connIDTestLang struct{}
+
+func (connIDTestLang) Lang() string { return "en" }
+
+// TestResolveConnectionIDHonorsClientID：连接进度事件可能跑赢绑定调用的响应，
+// 前端只有预先拿到 id 才能先订阅再连接（见 SSHConnectRequest.ConnectionID）。
+// 合法 id 原样采纳，非法 id 报错（IPC 边界输入），留空回退服务端生成。
+func TestResolveConnectionIDHonorsClientID(t *testing.T) {
+	s := New(context.TODO(), connIDTestLang{}, nil)
+
+	const clientID = "conn-2f0d9c58-11a7-4c8f-9d3e-7a1b0c9d8e7f"
+	if got, err := s.resolveConnectionID(clientID); err != nil || got != clientID {
+		t.Fatalf("client connection id not honored: got %q, err %v", got, err)
+	}
+	if got, err := s.resolveConnectionID(""); err != nil || !strings.HasPrefix(got, "conn-") {
+		t.Fatalf("empty connection id must fall back to a server id, got %q, err %v", got, err)
+	}
+	for _, bad := range []string{"spaces in id", "slash/id", strings.Repeat("a", 65)} {
+		if _, err := s.resolveConnectionID(bad); err == nil {
+			t.Fatalf("invalid connection id %q was accepted", bad)
+		}
+	}
+}

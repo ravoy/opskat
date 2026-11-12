@@ -6,18 +6,18 @@ import { I18nextProvider, initReactI18next } from "react-i18next";
 import zhCommon from "@/i18n/locales/zh-CN/common.json";
 import { RedisConfigSection } from "@/components/asset/RedisConfigSection";
 import type { AssetFormHandle, AssetFormContext } from "@/lib/assetTypes/formContract";
-import { asset_entity } from "../../../../wailsjs/go/models";
-import { RedisProbe } from "../../../../wailsjs/go/query/Query";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import { RedisProbe } from "@clients/query";
 
 // spec 要求测试连接成功行的最终展示文本(含分隔符「 · 」而非壳共享外壳的「：」),
 // 这些字符在 setup.ts 的 t = key => key 全局 mock 下看不出来,必须用真实 i18next 渲染才能验证。
 vi.unmock("react-i18next");
-vi.mock("../../../../wailsjs/go/system/System", () => ({
+vi.mock("@clients/system", () => ({
   ListCredentialsByType: vi.fn().mockResolvedValue([]),
   GetAssetPassword: vi.fn().mockResolvedValue(""),
   CancelTest: vi.fn().mockResolvedValue(undefined),
 }));
-vi.mock("../../../../wailsjs/go/query/Query", () => ({
+vi.mock("@clients/query", () => ({
   RedisProbe: vi.fn(),
 }));
 

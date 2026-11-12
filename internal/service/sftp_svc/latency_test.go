@@ -66,8 +66,9 @@ func newProbeClient(t *testing.T, root string, rtt time.Duration) (*sftp.Client,
 	cc, sc := net.Pipe()
 	server, err := sftp.NewServer(sc, sftp.WithServerWorkingDirectory(root))
 	require.NoError(t, err)
-	done := make(chan error, 1)
-	go func() { done <- server.Serve() }()
+	// cleanup 只等 Serve 返回（Close 后必然返回），不消费它的错误值。
+	done := make(chan struct{})
+	go func() { _ = server.Serve(); close(done) }()
 	pc := &probeConn{Conn: cc, pending: make(chan delayed, 1024)}
 	go pc.forward()
 	client, err := sftp.NewClientPipe(pc, pc)
@@ -164,8 +165,9 @@ func TestConcurrentFirstUseKeepsOneClientPerSession(t *testing.T) {
 	require.Same(t, first, svc.cacheClient("s", first))
 	require.Same(t, first, svc.cacheClient("s", second), "the client cached first wins")
 
-	done := make(chan error, 1)
-	go func() { done <- second.Wait() }()
+	// Wait 返回即"输家已被关闭"；它的错误值不是本测试的断言对象。
+	done := make(chan struct{})
+	go func() { _ = second.Wait(); close(done) }()
 	select {
 	case <-done:
 	case <-time.After(5 * time.Second):

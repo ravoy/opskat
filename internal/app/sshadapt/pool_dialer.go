@@ -8,7 +8,7 @@ import (
 	"context"
 	"io"
 
-	"github.com/opskat/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/service/credential_resolver"
 	"golang.org/x/crypto/ssh"
 )
 

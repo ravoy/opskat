@@ -7,8 +7,8 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/approval"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/approval"
 )
 
 // storeSearchFn / storeInstallFn are the desktop round trips behind ext search /

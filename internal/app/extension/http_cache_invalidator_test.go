@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/opskat/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/assetconn"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

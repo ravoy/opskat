@@ -8,9 +8,9 @@ import (
 	"maps"
 	"sort"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/pkg/jsonscalar"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/pkg/jsonscalar"
 )
 
 // AutomationContract is owned by one registered asset type. It declares the

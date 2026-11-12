@@ -9,7 +9,7 @@ import { PasswordSourceField } from "@/components/asset/PasswordSourceField";
 import { useConfigSection } from "@/components/asset/useConfigSection";
 import { resolveTLSKey, tlsCertFields } from "./tlsCertConfig";
 import { proxyChainValidationKey, resolveSaveProxyChainSecrets, resolveSaveProxyPassword } from "./proxyConfig";
-import { credential_entity } from "../../../wailsjs/go/models";
+import * as credential_entity from "@bindings/github.com/octays/opskat/internal/model/entity/credential_entity/models";
 import type { ConfigSectionProps } from "@/lib/assetTypes/formContract";
 import type { ListLoad } from "@/hooks/useAsyncList";
 import { useAssetCredential } from "./useAssetCredential";

@@ -3,8 +3,8 @@ package bootstrap
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/repository/custom_type_repo"
-	"github.com/opskat/opskat/internal/repository/ssh_agent_source_repo"
+	"github.com/octays/opskat/internal/repository/custom_type_repo"
+	"github.com/octays/opskat/internal/repository/ssh_agent_source_repo"
 )
 
 // TestRegisterRepositoriesAgentSourceRepo 回归：registerRepositories() 必须注册

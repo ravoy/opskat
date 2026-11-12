@@ -7,8 +7,8 @@ import { Field, Segmented } from "@/components/asset/fields";
 import { AsyncState } from "@/components/common/AsyncState";
 import type { ListLoad } from "@/hooks/useAsyncList";
 import { SecretInput } from "@/components/SecretInput";
-import { credential_entity } from "../../../wailsjs/go/models";
-import { GetAssetPassword } from "../../../wailsjs/go/system/System";
+import * as credential_entity from "@bindings/github.com/octays/opskat/internal/model/entity/credential_entity/models";
+import { GetAssetPassword } from "@clients/system";
 import { errorMessage } from "@/lib/errorMessage";
 
 interface PasswordSourceFieldProps {

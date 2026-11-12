@@ -8,7 +8,7 @@ import (
 
 	"github.com/cago-frame/cago/database/db"
 
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
 )
 
 // CustomTypeRepo 自定义类型数据访问接口。未找到时 Find / FindBySlug 返回

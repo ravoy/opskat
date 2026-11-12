@@ -6,9 +6,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/service/asset_credential_svc"
-	"github.com/opskat/opskat/internal/service/ssh_agent_svc"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/service/asset_credential_svc"
+	"github.com/octays/opskat/internal/service/ssh_agent_svc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"

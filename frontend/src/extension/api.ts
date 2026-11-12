@@ -1,6 +1,6 @@
 // frontend/src/extension/api.ts
-import { CallExtensionTool, CancelExtensionTool } from "../../wailsjs/go/extension/Extension";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { CallExtensionTool, CancelExtensionTool } from "@clients/extension";
+import { EventsOn } from "@/lib/desktop";
 import type { ExtAPI, ExtCallOptions, ExtEvent } from "./types";
 
 // crypto.randomUUID is available in every WebView the app supports; a collision

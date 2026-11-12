@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 表设计器里列的两项能力：默认值按写法给出、新列自增。各由一个可选的方言接口开启——方言实现即开启，

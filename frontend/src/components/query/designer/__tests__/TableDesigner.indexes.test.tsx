@@ -1,14 +1,9 @@
+import { OpenPageWindow } from "@clients/system";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
-import { dbdriver } from "../../../../../wailsjs/go/models";
-import {
-  DatabaseDriverOwner,
-  GetAlterTableModel,
-  GetAlterTableStatements,
-  GetTableMetadata,
-} from "../../../../../wailsjs/go/query/Query";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import { DatabaseDriverOwner, GetAlterTableModel, GetAlterTableStatements, GetTableMetadata } from "@clients/query";
 import { useTabStore } from "@/stores/tabStore";
-import { useSettingsUiStore } from "@/stores/settingsUiStore";
 import { BUILTIN_DRIVERS, fakeAlterDriver } from "@/__tests__/dbDriverFixtures";
 import {
   lastRequest,
@@ -65,11 +60,16 @@ function richModel(): dbdriver.AlterTableModel {
     ...model.indexes!,
     new dbdriver.IndexDefinition({
       name: "idx_lower",
-      type: "normal",
+      type: dbdriver.IndexType.IndexTypeNormal,
       columns: [{ name: "lower(note)", expression: true }],
       readOnlyReason: "表达式索引,只能删除",
     }),
-    new dbdriver.IndexDefinition({ name: "uk_auto", type: "unique", columns: [{ name: "status" }], undroppable: true }),
+    new dbdriver.IndexDefinition({
+      name: "uk_auto",
+      type: dbdriver.IndexType.IndexTypeUnique,
+      columns: [{ name: "status" }],
+      undroppable: true,
+    }),
   ];
   return model;
 }
@@ -259,7 +259,7 @@ describe("设计表:索引编辑", () => {
     model.indexes = [
       new dbdriver.IndexDefinition({
         name: "PK_orders",
-        type: "primary",
+        type: dbdriver.IndexType.IndexTypePrimary,
         columns: [{ name: "id" }],
         options: { clustered: true },
       }),
@@ -285,8 +285,8 @@ describe("驱动没声明索引编辑", () => {
     const update = await screen.findByRole("button", { name: "query.designer.updateDriver" });
     expect(DatabaseDriverOwner).toHaveBeenCalledWith(legacyDriver.id);
     act(() => fireEvent.click(update));
-    expect(useTabStore.getState().activeTabId).toBe("settings");
-    expect(useSettingsUiStore.getState().activeTab).toBe("extensions");
+    expect(OpenPageWindow).toHaveBeenCalledWith(expect.objectContaining({ page: "settings", section: "extensions" }));
+    expect(useTabStore.getState().activeTabId).toBe("query-1");
   });
 
   it("内置驱动(不归任何扩展):没有「去更新」;请求里不带索引字段", async () => {

@@ -24,10 +24,12 @@ import {
   TabsList,
   TabsTrigger,
 } from "@opskat/ui";
-import { ListAuditLogs } from "../../../wailsjs/go/system/System";
-import { ListAuditSessions } from "../../../wailsjs/go/system/System";
-import { GetSSHPoolConnections } from "../../../wailsjs/go/ssh/SSH";
-import { audit_entity, audit_repo, sshpool } from "../../../wailsjs/go/models";
+import { ListAuditLogs } from "@clients/system";
+import { ListAuditSessions } from "@clients/system";
+import { GetSSHPoolConnections } from "@clients/ssh";
+import * as audit_entity from "@bindings/github.com/octays/opskat/internal/model/entity/audit_entity/models";
+import * as audit_repo from "@bindings/github.com/octays/opskat/internal/repository/audit_repo/models";
+import * as sshpool from "@bindings/github.com/octays/opskat/internal/sshpool/models";
 import { ReviewMark, ReviewNotice, ReviewScores } from "@/components/approval/ReviewNotice";
 import { parseReviewInfo } from "@/lib/commandReview";
 
@@ -166,7 +168,12 @@ export function AuditLogPage() {
     const endTime = computeEndTime();
     return ListAuditLogs("", 0, startTime, endTime, page * PAGE_SIZE, PAGE_SIZE, sessionFilter)
       .then((result) => {
-        setLogs(result?.items || []);
+        setLogs(
+          (result.items ?? []).map((item) => {
+            if (!item) throw new Error("ListAuditLogs returned a null item");
+            return item;
+          })
+        );
         setTotal(result?.total || 0);
         setLogsError(null);
       })

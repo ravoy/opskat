@@ -3,7 +3,7 @@ import { act, render, screen } from "@testing-library/react";
 import { ApprovalBlock } from "../components/approval/ApprovalBlock";
 import { OpsctlApprovalDialog } from "../components/approval/OpsctlApprovalDialog";
 import type { ContentBlock } from "../stores/aiStore";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { EventsOn } from "@/lib/desktop";
 
 // 辅助审批下审核没通过的命令转人工确认时，审批项带着审核结果，人要能看到为什么要确认。
 const review = {

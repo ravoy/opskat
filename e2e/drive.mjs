@@ -6,12 +6,12 @@
 // write, run once, and delete.
 //
 //   make dev-sandbox                              # once, in another terminal
-//   node e2e/drive.mjs snapshot                   # what's on screen right now
-//   node e2e/drive.mjs click add-asset-button
-//   node e2e/drive.mjs fill asset-form-name-input my-server
-//   node e2e/drive.mjs click asset-form-submit
-//   node e2e/drive.mjs shot after-create          # → e2e/scratch/<scenario>/
-//   node e2e/oracle.mjs assets my-server          # …and confirm it really persisted
+//   bun e2e/drive.mjs snapshot                   # what's on screen right now
+//   bun e2e/drive.mjs click add-asset-button
+//   bun e2e/drive.mjs fill asset-form-name-input my-server
+//   bun e2e/drive.mjs click asset-form-submit
+//   bun e2e/drive.mjs shot after-create          # → e2e/scratch/<scenario>/
+//   bun e2e/oracle.mjs assets my-server          # …and confirm it really persisted
 //
 // Selectors: a bare word is this repo's `data-testid` convention, so
 // `click add-asset-button` means `getByTestId("add-asset-button")`. Otherwise use an
@@ -46,7 +46,7 @@ const option = (name, fallback) => {
   return hit ? hit.slice(name.length + 3) : fallback;
 };
 
-const USAGE = `Usage: node e2e/drive.mjs <command> [args] [--flags]
+const USAGE = `Usage: bun e2e/drive.mjs <command> [args] [--flags]
 
   Look
     snapshot [sel]        visible structure: testids, roles, text, state

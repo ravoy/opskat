@@ -13,7 +13,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	ai_provider_entity "github.com/opskat/opskat/internal/model/entity/ai_provider_entity"
+	ai_provider_entity "github.com/octays/opskat/internal/model/entity/ai_provider_entity"
 	gomock "go.uber.org/mock/gomock"
 )
 

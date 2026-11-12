@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // ClassifyForAsset 切分并分类 sql：资产的驱动声明了语句切分分类（CapClassifyStatements）时

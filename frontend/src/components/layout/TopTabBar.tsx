@@ -1,3 +1,4 @@
+import { canOpenTabWindow, openTabWindow } from "@/lib/openTabWindow";
 import { createContext, use, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { X } from "lucide-react";
@@ -103,6 +104,9 @@ function TabItem({
       </ContextMenuTrigger>
       <ContextMenuContent>
         <ContextMenuItem onClick={onClose}>{t("tab.close")}</ContextMenuItem>
+        <ContextMenuItem onClick={() => void openTabWindow(tabKey)} disabled={!canOpenTabWindow(tabKey)}>
+          {t("tab.openInNewWindow")}
+        </ContextMenuItem>
         <ContextMenuItem onClick={() => useTabStore.getState().closeOtherTabs(tabKey)} disabled={total <= 1}>
           {t("tab.closeOthers")}
         </ContextMenuItem>

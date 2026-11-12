@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // 改表：列按表所在的 schema 查 information_schema（自定义类型显示类型名），注释用 col_description /

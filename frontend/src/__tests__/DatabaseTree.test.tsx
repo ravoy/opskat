@@ -3,7 +3,7 @@ import { act, render, screen, fireEvent, waitFor } from "@testing-library/react"
 import { DatabaseTree } from "../components/query/DatabaseTree";
 import { useQueryStore } from "../stores/queryStore";
 import { useTabStore } from "../stores/tabStore";
-import { ExecuteSQL, GetCreateDatabaseStatements, GetStarterQuery, ListTables } from "../../wailsjs/go/query/Query";
+import { ExecuteSQL, GetCreateDatabaseStatements, GetStarterQuery, ListDatabases, ListTables } from "@clients/query";
 import { profiled } from "./renderCount";
 import { BUILTIN_DRIVERS, FAKE_DRIVER, mockSchemaStatements, provideDrivers } from "./dbDriverFixtures";
 
@@ -232,6 +232,7 @@ describe("DatabaseTree", () => {
 
   it("creates a database with the statement the driver wrote, from the driver's declared option fields", async () => {
     mockSchemaStatements();
+    vi.mocked(ListDatabases).mockResolvedValue(["appdb", "reports"]);
     await renderTree();
 
     fireEvent.pointerDown(screen.getByTestId("database-new-menu"), { button: 0, ctrlKey: false });
@@ -267,6 +268,7 @@ describe("DatabaseTree", () => {
         "appdb"
       );
     });
+    await waitFor(() => expect(screen.getByText("reports")).toBeInTheDocument());
   });
 });
 

@@ -2,7 +2,7 @@ import { useEffect, useEffectEvent, useMemo, useRef, useState, type ReactNode } 
 import { useTranslation } from "react-i18next";
 import { Code2, Columns3, Link2, ListTree, Plus } from "lucide-react";
 import { Button, ConfirmDialog, TabsContent } from "@opskat/ui";
-import type { dbdriver } from "../../../../wailsjs/go/models";
+import type * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { useQueryStore } from "@/stores/queryStore";
 import { eventMatchesBinding, formatBinding, useShortcutStore } from "@/stores/shortcutStore";
 import { driverCanAlter, type DriverDescriptor } from "@/lib/dbDrivers";

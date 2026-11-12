@@ -25,17 +25,13 @@ import {
   SFTPSelectUploadFile,
   SFTPStatTargets,
   SFTPUploadFile,
-} from "../../wailsjs/go/ssh/SSH";
-import { OnFileDrop } from "../../wailsjs/runtime/runtime";
-import { StatLocalPaths } from "../../wailsjs/go/system/System";
-import { sftp_svc } from "../../wailsjs/go/models";
+} from "@clients/ssh";
+import { OnFileDrop } from "@/lib/desktop";
+import { StatLocalPaths } from "@clients/system";
+import * as sftp_svc from "@bindings/github.com/octays/opskat/internal/service/sftp_svc/models";
 import { profiled } from "./renderCount";
 import { formatBytes, formatDate, planChainRender } from "../components/terminal/file-manager/utils";
-import {
-  OpenExternalEdit,
-  PrepareExternalEditMerge,
-  SaveExternalEditSessionText,
-} from "../../wailsjs/go/external_edit/ExternalEdit";
+import { OpenExternalEdit, PrepareExternalEditMerge, SaveExternalEditSessionText } from "@clients/external_edit";
 
 const { toastError, toastSuccess } = vi.hoisted(() => ({
   toastError: vi.fn(),

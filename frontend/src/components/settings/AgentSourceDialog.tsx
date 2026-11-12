@@ -17,8 +17,8 @@ import {
   SelectValue,
 } from "@opskat/ui";
 import { CheckCircle2, Inbox, Loader2, PlugZap, X, XCircle } from "lucide-react";
-import { ProbeAgentSource } from "../../../wailsjs/go/system/System";
-import type { ssh_agent_svc } from "../../../wailsjs/go/models";
+import { ProbeAgentSource } from "@clients/system";
+import type * as ssh_agent_svc from "@bindings/github.com/octays/opskat/internal/service/ssh_agent_svc/models";
 import { usePlatform } from "@/hooks/usePlatform";
 import {
   AGENT_ENDPOINT_TYPES,

@@ -2,7 +2,7 @@
 import { useMemo, type ComponentType } from "react";
 import { getAllAssetTypes, useAssetTypes } from "./index";
 import type { AssetTypeCategory, AssetTypeDefinition } from "./types";
-import type { asset_entity } from "../../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { getIconComponent } from "@/components/asset/IconPicker";
 
 export type { AssetTypeCategory };

@@ -5,7 +5,7 @@ import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
 import { isMac } from "@/stores/shortcutStore";
-import { OpenTable } from "../../wailsjs/go/query/Query";
+import { OpenTable } from "@clients/query";
 import { BUILTIN_DRIVERS, provideDrivers } from "./dbDriverFixtures";
 
 function setupStores() {

@@ -8,8 +8,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // 改表：列照 SHOW FULL COLUMNS 读（同时拿到对话框不显示的 Collation 与 Extra），表注释查

@@ -9,12 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/helper"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/buildinfo"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/buildinfo"
+	"github.com/octays/opskat/internal/sshpool"
 
 	"github.com/cago-frame/cago/configs"
 )

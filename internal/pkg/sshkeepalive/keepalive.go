@@ -88,9 +88,11 @@ func start(p Pinger, ticks <-chan time.Time, stopTicker func(), replyTimeout tim
 // request outlives the heartbeat goroutine.
 func ping(p Pinger, replyTimeout time.Duration) bool {
 	replied := make(chan error, 1)
+	returned := make(chan struct{})
 	go func() {
 		_, _, err := p.SendRequest("keepalive@openssh.com", true, nil)
 		replied <- err
+		close(returned)
 	}()
 	timer := time.NewTimer(replyTimeout)
 	defer timer.Stop()
@@ -102,7 +104,8 @@ func ping(p Pinger, replyTimeout time.Duration) bool {
 		if err := p.Close(); err != nil {
 			logger.Default().Warn("close ssh client after keepalive timeout", zap.Error(err))
 		}
-		<-replied
+		// 连接已关、结果已定为超时：这里只等被中断的请求返回，不再消费它的错误。
+		<-returned
 		return false
 	}
 }

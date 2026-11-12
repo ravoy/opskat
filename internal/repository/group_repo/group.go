@@ -3,7 +3,7 @@ package group_repo
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
 
 	"github.com/cago-frame/cago/database/db"
 )

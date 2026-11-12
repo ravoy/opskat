@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	cagoi18n "github.com/cago-frame/cago/pkg/i18n"
-	"github.com/opskat/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/aictx"
 )
 
 // Ctx 把 lang 同时绑定到 cago i18n 与 ai policy 两套 context key。

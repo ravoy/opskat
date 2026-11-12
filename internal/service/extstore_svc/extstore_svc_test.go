@@ -15,10 +15,10 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/internal/pkg/ociclient"
-	"github.com/opskat/opskat/pkg/extstore"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/internal/pkg/ociclient"
+	"github.com/octays/opskat/pkg/extstore"
 )
 
 var release = appversion.Info{Version: "1.14.0", Kind: appversion.KindRelease}

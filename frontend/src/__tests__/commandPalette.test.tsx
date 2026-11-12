@@ -1,13 +1,15 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { asset_entity, snippet_entity, snippet_svc } from "../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as snippet_entity from "@bindings/github.com/octays/opskat/internal/model/entity/snippet_entity/models";
+import * as snippet_svc from "@bindings/github.com/octays/opskat/internal/service/snippet_svc/models";
 import { useTabStore } from "../stores/tabStore";
 import { useAssetStore } from "../stores/assetStore";
 import { useRecentAssetStore } from "../stores/recentAssetStore";
 import { useSnippetStore } from "../stores/snippetStore";
 import { CommandPalette } from "../components/command/CommandPalette";
 import * as openAssetDefaultModule from "../lib/openAssetDefault";
-import { ListSnippets, ListSnippetCategories } from "../../wailsjs/go/extension/Extension";
+import { ListSnippets, ListSnippetCategories } from "@clients/extension";
 import { runSnippetOnAsset } from "../components/snippet/snippetRun";
 
 // Keep the real runnable helpers; stub only the side-effecting runner.

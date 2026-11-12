@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/pkg/extmanifest"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extwire"
 
 	cagologger "github.com/cago-frame/cago/pkg/logger"
 	. "github.com/smartystreets/goconvey/convey"

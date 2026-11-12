@@ -13,8 +13,8 @@ import (
 	context "context"
 	reflect "reflect"
 
-	snippet_entity "github.com/opskat/opskat/internal/model/entity/snippet_entity"
-	snippet_repo "github.com/opskat/opskat/internal/repository/snippet_repo"
+	snippet_entity "github.com/octays/opskat/internal/model/entity/snippet_entity"
+	snippet_repo "github.com/octays/opskat/internal/repository/snippet_repo"
 	gomock "go.uber.org/mock/gomock"
 )
 

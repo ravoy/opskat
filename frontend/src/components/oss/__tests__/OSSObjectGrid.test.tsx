@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { OSSObjectGrid } from "../OSSObjectGrid";
-import type { oss_svc } from "../../../../wailsjs/go/models";
+import type * as oss_svc from "@bindings/github.com/octays/opskat/internal/service/oss_svc/models";
 
 beforeEach(() => {
   vi.stubGlobal(

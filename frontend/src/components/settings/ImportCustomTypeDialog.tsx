@@ -6,7 +6,8 @@ import { Button, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,
 import { notifySuccess } from "@/lib/notify";
 import { useCustomTypeStore } from "@/stores/customTypeStore";
 import { issueText } from "./customTypeIssue";
-import { custom_type_entity, customtype } from "../../../wailsjs/go/models";
+import * as custom_type_entity from "@bindings/github.com/octays/opskat/internal/model/entity/custom_type_entity/models";
+import * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 interface ImportCustomTypeDialogProps {

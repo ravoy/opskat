@@ -85,12 +85,12 @@ func TestReleaseInfoDownloadURL(t *testing.T) {
 	convey.Convey("release-info.json URL 构造", t, func() {
 		convey.Convey("stable 通道", func() {
 			url := releaseInfoURL(ChannelStable)
-			assert.Equal(t, "https://github.com/opskat/opskat/releases/latest/download/release-info.json", url)
+			assert.Equal(t, "https://github.com/octays/opskat/releases/latest/download/release-info.json", url)
 		})
 
 		convey.Convey("nightly 通道", func() {
 			url := releaseInfoURL(ChannelNightly)
-			assert.Equal(t, "https://github.com/opskat/opskat/releases/download/nightly/release-info.json", url)
+			assert.Equal(t, "https://github.com/octays/opskat/releases/download/nightly/release-info.json", url)
 		})
 
 		convey.Convey("beta 通道返回空（不支持镜像回退）", func() {

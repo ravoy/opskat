@@ -14,13 +14,13 @@ import (
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"github.com/google/uuid"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/host_key_entity"
-	"github.com/opskat/opskat/internal/pkg/proxychain"
-	"github.com/opskat/opskat/internal/pkg/streambatch"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/service/credential_resolver"
-	"github.com/opskat/opskat/internal/service/host_key_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/host_key_entity"
+	"github.com/octays/opskat/internal/pkg/proxychain"
+	"github.com/octays/opskat/internal/pkg/streambatch"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/service/host_key_svc"
 	"go.uber.org/zap"
 )
 

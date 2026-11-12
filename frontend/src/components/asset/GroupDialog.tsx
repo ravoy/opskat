@@ -15,7 +15,7 @@ import {
 import { IconPicker } from "@/components/asset/IconPicker";
 import { GroupSelect } from "@/components/asset/GroupSelect";
 import { useAssetStore } from "@/stores/assetStore";
-import { group_entity } from "../../../wailsjs/go/models";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 interface GroupDialogProps {

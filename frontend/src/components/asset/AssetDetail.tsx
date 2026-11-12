@@ -13,8 +13,8 @@ import { AssetIcon } from "@/components/asset/AssetIcon";
 import { AssetTypeSectionSuspense } from "@/components/asset/AssetTypeSectionSuspense";
 import { CommandPolicyCard } from "@/components/asset/CommandPolicyCard";
 import { PermissionModeCard } from "@/components/asset/PermissionModeCard";
-import { asset_entity } from "../../../wailsjs/go/models";
-import { GetDefaultPolicy } from "../../../wailsjs/go/system/System";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import { GetDefaultPolicy } from "@clients/system";
 import { errorMessage } from "@/lib/errorMessage";
 
 interface AssetDetailProps {

@@ -4,7 +4,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TooltipProvider } from "@opskat/ui";
 import { ImportDialog } from "@/components/settings/ImportDialog";
-import { import_svc } from "../../wailsjs/go/models";
+import * as import_svc from "@bindings/github.com/octays/opskat/internal/service/import_svc/models";
 
 vi.mock("@/stores/assetStore", () => ({
   useAssetStore: () => ({ refresh: vi.fn().mockResolvedValue(undefined) }),

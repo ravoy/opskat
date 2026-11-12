@@ -9,7 +9,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extmanifest"
 )
 
 // Manifest is the host's complete view of one extension as the runtime holds it:

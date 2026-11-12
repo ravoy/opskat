@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extension"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // The host capabilities below are the ones only the desktop window can offer. The
@@ -22,28 +23,28 @@ type fileDialogOpener struct {
 func (o *fileDialogOpener) FileDialog(dialogType string, opts extension.DialogOptions) (string, error) {
 	switch dialogType {
 	case "open":
-		return wailsRuntime.OpenFileDialog(o.ctx, wailsRuntime.OpenDialogOptions{
+		return desktop.OpenFile(application.OpenFileDialogOptions{
 			Title:   opts.Title,
 			Filters: toWailsFilters(opts.Filters),
 		})
 	case "save":
-		return wailsRuntime.SaveFileDialog(o.ctx, wailsRuntime.SaveDialogOptions{
-			Title:           opts.Title,
-			DefaultFilename: opts.DefaultName,
-			Filters:         toWailsFilters(opts.Filters),
+		return desktop.SaveFile(application.SaveFileDialogOptions{
+			Title:    opts.Title,
+			Filename: opts.DefaultName,
+			Filters:  toWailsFilters(opts.Filters),
 		})
 	default:
 		return "", fmt.Errorf("unknown dialog type: %q", dialogType)
 	}
 }
 
-func toWailsFilters(filters []string) []wailsRuntime.FileFilter {
+func toWailsFilters(filters []string) []application.FileFilter {
 	if len(filters) == 0 {
 		return nil
 	}
-	result := make([]wailsRuntime.FileFilter, 0, len(filters))
+	result := make([]application.FileFilter, 0, len(filters))
 	for _, f := range filters {
-		result = append(result, wailsRuntime.FileFilter{
+		result = append(result, application.FileFilter{
 			DisplayName: f,
 			Pattern:     f,
 		})

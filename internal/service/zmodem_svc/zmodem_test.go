@@ -8,7 +8,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/pkg/transfer"
 )
 
 // collector 是线程安全的进度收集器，供并发测试使用。

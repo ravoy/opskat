@@ -7,8 +7,9 @@ import {
   GetCustomTypeUsage,
   SaveCustomType,
   DeleteCustomType,
-} from "../../wailsjs/go/customtype/CustomType";
-import type { customtype, custom_type_entity } from "../../wailsjs/go/models";
+} from "@clients/customtype";
+import type * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
+import type * as custom_type_entity from "@bindings/github.com/octays/opskat/internal/model/entity/custom_type_entity/models";
 import { useAssetStore } from "./assetStore";
 import { errorMessage } from "@/lib/errorMessage";
 

@@ -1,12 +1,13 @@
 import { describe, it, expect } from "vitest";
 import { buildTreeIndex, flattenTree } from "../flattenTree";
-import { asset_entity, group_entity } from "../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
 
 function g(id: number, parentID = 0): group_entity.Group {
-  return new group_entity.Group({ ID: id, ParentID: parentID, Status: 1 });
+  return new group_entity.Group({ ID: id, ParentID: parentID });
 }
 function a(id: number, groupID: number): asset_entity.Asset {
-  return new asset_entity.Asset({ ID: id, GroupID: groupID, Status: 1 });
+  return new asset_entity.Asset({ Status: 1, ID: id, GroupID: groupID });
 }
 
 describe("flattenTree", () => {

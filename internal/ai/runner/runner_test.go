@@ -17,9 +17,9 @@ import (
 
 	"github.com/cago-frame/agents/provider"
 	"github.com/cago-frame/agents/provider/providertest"
-	"github.com/opskat/opskat/internal/ai/permission"
-	aitool "github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/model/entity/ai_provider_entity"
+	"github.com/octays/opskat/internal/ai/permission"
+	aitool "github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/model/entity/ai_provider_entity"
 	. "github.com/smartystreets/goconvey/convey"
 )
 

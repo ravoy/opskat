@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/authtmpl"
+	"github.com/octays/opskat/internal/pkg/authtmpl"
 )
 
 func TestAuthType_HeaderApply(t *testing.T) {

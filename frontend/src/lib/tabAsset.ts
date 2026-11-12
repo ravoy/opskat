@@ -1,4 +1,4 @@
-import type { asset_entity } from "../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import type { Tab, PageTabMeta, QueryTabMeta } from "@/stores/tabStore";
 
 /** 从一个工作区 Tab 提取资产引用；非资产 tab（ai/info 或无 assetId）返回 null。 */

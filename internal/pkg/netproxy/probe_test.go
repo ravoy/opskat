@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/netproxy"
-	"github.com/opskat/opskat/internal/pkg/netproxy/netproxytest"
+	"github.com/octays/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/pkg/netproxy/netproxytest"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

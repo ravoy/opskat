@@ -7,7 +7,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/opskat/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/bootstrap"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

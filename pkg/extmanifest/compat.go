@@ -10,7 +10,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/internal/pkg/appversion"
 )
 
 // IncompatibleReason names which half of the compatibility rule an extension broke.

@@ -11,7 +11,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // installFixture writes the fixture extension (slim manifest + real reactor

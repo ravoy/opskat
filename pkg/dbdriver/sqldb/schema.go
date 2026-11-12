@@ -7,7 +7,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // TableTruncator 是方言里「清空一张表怎么写」：多数方言是 TRUNCATE TABLE，没有它的方言（SQLite）

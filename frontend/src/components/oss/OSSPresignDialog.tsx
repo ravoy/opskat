@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Link, Copy, RefreshCw, Hourglass } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, Button } from "@opskat/ui";
-import { OSSPresignGet, OSSPresignPut } from "../../../wailsjs/go/oss/OSS";
+import { OSSPresignGet, OSSPresignPut } from "@clients/oss";
 import { notifyCopied } from "@/lib/notify";
 import { prefixLeafName } from "@/lib/ossPrefixTree";
 import { typeIcon, typeIconColor } from "@/lib/objectContentType";

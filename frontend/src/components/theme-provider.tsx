@@ -51,6 +51,17 @@ export function ThemeProvider({
     return () => mediaQuery.removeEventListener("change", handler);
   }, [theme]);
 
+  useEffect(() => {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== storageKey) return;
+      const next = event.newValue;
+      if (next === null) setTheme(defaultTheme);
+      else if (next === "dark" || next === "light" || next === "system") setTheme(next);
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, [defaultTheme, storageKey]);
+
   const value = {
     theme,
     setTheme: (theme: Theme) => {

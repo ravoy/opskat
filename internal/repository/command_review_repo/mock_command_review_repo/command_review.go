@@ -13,7 +13,7 @@ import (
 	context "context"
 	reflect "reflect"
 
-	command_review_entity "github.com/opskat/opskat/internal/model/entity/command_review_entity"
+	command_review_entity "github.com/octays/opskat/internal/model/entity/command_review_entity"
 	gomock "go.uber.org/mock/gomock"
 )
 

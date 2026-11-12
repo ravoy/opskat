@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/opskat/opskat/internal/service/external_edit_svc"
+	"github.com/octays/opskat/internal/service/external_edit_svc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

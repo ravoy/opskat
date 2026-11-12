@@ -8,8 +8,8 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	_ "github.com/opskat/opskat/internal/dbdriver/sqlite"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	_ "github.com/octays/opskat/internal/dbdriver/sqlite"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // SQLite 自己的连接串、只读与远端打开的断言在 internal/dbdriver/sqlite；这里测的是经共享

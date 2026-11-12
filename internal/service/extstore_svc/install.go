@@ -13,12 +13,12 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/pkg/ociclient"
-	"github.com/opskat/opskat/internal/service/extension_svc"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extmanifest"
-	"github.com/opskat/opskat/pkg/extstore"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/pkg/ociclient"
+	"github.com/octays/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extstore"
 )
 
 // progressInterval bounds how often download progress is reported.

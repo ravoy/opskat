@@ -7,7 +7,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/cmdline"
 )
 
 // KafkaCommand 是 kafka 富命令串的结构形式。

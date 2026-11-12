@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/approval"
+	"github.com/octays/opskat/internal/approval"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

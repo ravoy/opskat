@@ -9,7 +9,7 @@ import {
   ZmodemReadChunk,
   ZmodemFinishUpload,
   ZmodemAbortUpload,
-} from "../../../../wailsjs/go/ssh/SSH";
+} from "@clients/ssh";
 import { bytesToBase64 } from "@/lib/terminalEncode";
 import { createOrderedQueue } from "@/lib/orderedQueue";
 import { useSFTPStore, type SFTPTransferTarget } from "@/stores/sftpStore";

@@ -7,14 +7,14 @@ import (
 	"github.com/cago-frame/agents/agent"
 	"go.uber.org/mock/gomock"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 
 	// Blank-imported for its init() side effect only: internal/ai/tool registers the
 	// get_asset_secret result projector there (audit.RegisterResultProjector). This test
 	// exercises the real end-to-end path — auditMiddleware -> DefaultAuditWriter -> the
 	// registered projector — not a fake stand-in for it.
-	_ "github.com/opskat/opskat/internal/ai/tool"
+	_ "github.com/octays/opskat/internal/ai/tool"
 
 	. "github.com/smartystreets/goconvey/convey"
 )

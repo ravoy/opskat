@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useServerStatusStore } from "./serverStatusStore";
-import { GetSSHServerStatus } from "../../wailsjs/go/ssh/SSH";
+import { GetSSHServerStatus } from "@clients/ssh";
 
-vi.mock("../../wailsjs/go/ssh/SSH", () => ({ GetSSHServerStatus: vi.fn() }));
+vi.mock("@clients/ssh", () => ({ GetSSHServerStatus: vi.fn() }));
 
 const snap = (cpu: number) => ({
   hostname: "h",

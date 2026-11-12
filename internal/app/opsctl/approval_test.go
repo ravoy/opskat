@@ -12,8 +12,8 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest/observer"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	approvalpkg "github.com/opskat/opskat/internal/approval"
+	"github.com/octays/opskat/internal/ai/permission"
+	approvalpkg "github.com/octays/opskat/internal/approval"
 )
 
 func TestGrantItemsForPersistenceKeepsRawSubjects(t *testing.T) {

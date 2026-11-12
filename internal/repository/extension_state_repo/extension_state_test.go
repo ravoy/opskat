@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/model/entity/extension_state_entity"
-	"github.com/opskat/opskat/migrations"
+	"github.com/octays/opskat/internal/model/entity/extension_state_entity"
+	"github.com/octays/opskat/migrations"
 )
 
 // A disabled extension must stay disabled for every process: the first row ever

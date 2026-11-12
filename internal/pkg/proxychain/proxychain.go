@@ -20,7 +20,7 @@ import (
 
 	"golang.org/x/crypto/ssh"
 
-	"github.com/opskat/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/pkg/netdial"
 )
 
 const (

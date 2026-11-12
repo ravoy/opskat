@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 
+import { callBinding } from "../fixtures/bindings";
 import { createCommandCustomTypeViaUI, createGenericAssetViaUI, createHttpCustomTypeViaUI } from "../fixtures/customTypes";
 import { findCustomTypeBySlug, waitForAuditLogs } from "../fixtures/db";
 import { startHttpMock } from "../fixtures/http-mock";
@@ -185,15 +186,10 @@ test("a custom type read back through the binder saves again under a new slug, a
     authValueTemplate: "{{apiKey}}",
   });
 
-  const exported = await page.evaluate(async (typeSlug) => {
-    const api = (
-      window as unknown as { go: { customtype: { CustomType: Record<string, (...a: unknown[]) => Promise<unknown>> } } }
-    ).go.customtype.CustomType;
-    const list = (await api.ListCustomTypes()) as Array<{ id: number; slug: string }>;
-    const summary = list.find((t) => t.slug === typeSlug);
-    if (!summary) throw new Error(`custom type ${typeSlug} not found in ListCustomTypes`);
-    return api.GetCustomType(summary.id);
-  }, slug);
+  const list = await callBinding<Array<{ id: number; slug: string }>>(page, "/clients/customtype.ts", "ListCustomTypes");
+  const summary = list.find((t) => t.slug === slug);
+  if (!summary) throw new Error(`custom type ${slug} not found in ListCustomTypes`);
+  const exported = await callBinding<Record<string, unknown>>(page, "/clients/customtype.ts", "GetCustomType", summary.id);
 
   const exportedFields = exported as { fields: Array<{ name: string; secret: boolean }> };
   expect(exportedFields.fields.find((f) => f.name === "apiKey")?.secret).toBe(true);
@@ -202,17 +198,14 @@ test("a custom type read back through the binder saves again under a new slug, a
   // what ImportCustomTypeDialog's confirm button does with the file's parsed type
   // (custom_type_entity.CustomType(...ct, id: 0, slug, name)).
   const importedSlug = `${slug}-copy`;
-  const saveResult = await page.evaluate(
-    async ({ ct, importedSlug: newSlug }) => {
-      const api = (
-        window as unknown as { go: { customtype: { CustomType: Record<string, (...a: unknown[]) => Promise<unknown>> } } }
-      ).go.customtype.CustomType;
-      return api.SaveCustomType({ ...(ct as Record<string, unknown>), id: 0, slug: newSlug });
-    },
-    { ct: exported, importedSlug }
+  const saveResult = await callBinding<{ issues?: unknown[]; type?: { slug: string; fields: unknown } }>(
+    page,
+    "/clients/customtype.ts",
+    "SaveCustomType",
+    { ...exported, id: 0, slug: importedSlug }
   );
 
-  const saved = saveResult as { issues?: unknown[]; type?: { slug: string; fields: unknown } };
+  const saved = saveResult;
   expect(saved.issues ?? []).toEqual([]);
   expect(saved.type?.slug).toBe(importedSlug);
   expect(saved.type?.fields).toEqual(exportedFields.fields);
@@ -228,18 +221,14 @@ test("a custom type read back through the binder saves again under a new slug, a
   // Re-importing the same file again must not overwrite the original or the copy —
   // the identifier is taken, so it comes back as a validation issue (design decision
   // 16: "标识冲突时必须填新标识，不能覆盖已有类型").
-  const rejected = await page.evaluate(
-    async ({ ct, takenSlug }) => {
-      const api = (
-        window as unknown as { go: { customtype: { CustomType: Record<string, (...a: unknown[]) => Promise<unknown>> } } }
-      ).go.customtype.CustomType;
-      return api.SaveCustomType({ ...(ct as Record<string, unknown>), id: 0, slug: takenSlug });
-    },
-    { ct: exported, takenSlug: slug }
+  const rejected = await callBinding<{ issues?: Array<{ path: string }>; type?: unknown }>(
+    page,
+    "/clients/customtype.ts",
+    "SaveCustomType",
+    { ...exported, id: 0, slug }
   );
-  const rejectedResult = rejected as { issues?: Array<{ path: string }>; type?: unknown };
-  expect(rejectedResult.type).toBeFalsy();
-  expect(rejectedResult.issues?.some((i) => i.path === "slug")).toBe(true);
+  expect(rejected.type).toBeFalsy();
+  expect(rejected.issues?.some((i) => i.path === "slug")).toBe(true);
 });
 
 test("custom type editor: the first click after typing into a template input takes effect", async ({ page }) => {

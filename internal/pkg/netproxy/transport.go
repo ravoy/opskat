@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/pkg/netdial"
 	"go.uber.org/zap"
 )
 

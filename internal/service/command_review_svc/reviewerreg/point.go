@@ -8,10 +8,10 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/extreg"
-	"github.com/opskat/opskat/internal/service/command_review_svc"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/extreg"
+	"github.com/octays/opskat/internal/service/command_review_svc"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // questionIDRe is a question id: a lowercase letter, then lowercase letters,

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/opskat/opskat/internal/service/credential_query_svc"
+	"github.com/octays/opskat/internal/service/credential_query_svc"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

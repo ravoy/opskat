@@ -2,18 +2,20 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AssetForm } from "@/components/asset/AssetForm";
-import { asset_entity, custom_type_entity, customtype } from "../../../../wailsjs/go/models";
-import { GetCustomType, ListCustomTypes } from "../../../../wailsjs/go/customtype/CustomType";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as custom_type_entity from "@bindings/github.com/octays/opskat/internal/model/entity/custom_type_entity/models";
+import * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
+import { GetCustomType, ListCustomTypes } from "@clients/customtype";
 import { useCustomTypeStore } from "@/stores/customTypeStore";
-import { CancelTest, TestAssetConnection } from "../../../../wailsjs/go/system/System";
-import { CreateAsset, UpdateAsset, ListAssets } from "../../../../wailsjs/go/system/System";
-import { ConnectVNCTemporary, DisconnectVNC } from "../../../../wailsjs/go/vnc/VNC";
+import { CancelTest, TestAssetConnection } from "@clients/system";
+import { CreateAsset, UpdateAsset, ListAssets } from "@clients/system";
+import { ConnectVNCTemporary, DisconnectVNC } from "@clients/vnc";
 import { startVNCClient, VNCClientError, type VNCNegotiatedSecurity } from "@/lib/vncClient";
 import { notifySuccess } from "@/lib/notify";
 import { toast } from "sonner";
-import { EventsOff } from "../../../../wailsjs/runtime/runtime";
+import { EventsOff } from "@/lib/desktop";
 import { registerExtensionAssetTypes, unregisterExtensionAssetTypes } from "@/extension/assetTypes";
-import { GetDecryptedExtensionConfig } from "../../../../wailsjs/go/extension/Extension";
+import { GetDecryptedExtensionConfig } from "@clients/extension";
 import type { ExtManifest } from "@/extension/types";
 
 const mocks = vi.hoisted(() => ({

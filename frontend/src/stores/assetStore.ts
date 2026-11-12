@@ -1,8 +1,9 @@
 import { errorMessage } from "@/lib/errorMessage";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { asset_entity, group_entity } from "../../wailsjs/go/models";
-import { ListAssets } from "../../wailsjs/go/system/System";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
+import { ListAssets } from "@clients/system";
 import {
   CreateAsset,
   UpdateAsset,
@@ -12,7 +13,7 @@ import {
   CreateGroup,
   UpdateGroup,
   DeleteGroup,
-} from "../../wailsjs/go/system/System";
+} from "@clients/system";
 import { useRecentAssetStore } from "./recentAssetStore";
 import { formatAssetPath } from "@/lib/groupPath";
 

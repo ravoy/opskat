@@ -7,7 +7,7 @@ import { TRANSFER_STATUS } from "@/components/common/transferStatus";
 import { errorMessage } from "@/lib/errorMessage";
 import { formatBytes, formatSpeed } from "@/lib/formatBytes";
 import { pathBaseName } from "@/lib/pathBaseName";
-import { OpenDirectory } from "../../../../wailsjs/go/system/System";
+import { OpenDirectory } from "@clients/system";
 
 interface TransferSectionProps {
   tabId: string;

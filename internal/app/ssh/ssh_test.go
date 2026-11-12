@@ -3,8 +3,8 @@ package ssh
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/dirsync"
-	"github.com/opskat/opskat/internal/service/ssh_svc"
+	"github.com/octays/opskat/internal/pkg/dirsync"
+	"github.com/octays/opskat/internal/service/ssh_svc"
 )
 
 func TestChangeSSHDirectoryReturnsSessionNotFoundForUnknownID(t *testing.T) {

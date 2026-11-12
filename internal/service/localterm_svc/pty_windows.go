@@ -3,8 +3,8 @@
 package localterm_svc
 
 import (
-	"github.com/opskat/opskat/internal/pkg/shellutil"
-	"github.com/opskat/opskat/internal/pkg/winconpty"
+	"github.com/octays/opskat/internal/pkg/shellutil"
+	"github.com/octays/opskat/internal/pkg/winconpty"
 )
 
 type winPTY struct {

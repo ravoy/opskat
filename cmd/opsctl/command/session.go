@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/opskat/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/bootstrap"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

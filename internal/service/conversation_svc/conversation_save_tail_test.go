@@ -7,8 +7,8 @@ import (
 
 	"github.com/cago-frame/cago/database/db"
 	"github.com/glebarez/sqlite"
-	"github.com/opskat/opskat/internal/model/entity/conversation_entity"
-	"github.com/opskat/opskat/internal/repository/conversation_repo"
+	"github.com/octays/opskat/internal/model/entity/conversation_entity"
+	"github.com/octays/opskat/internal/repository/conversation_repo"
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 )

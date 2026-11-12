@@ -43,6 +43,33 @@ test("a non-interactive opsctl command is approved by the desktop and audited", 
   });
 });
 
+// 限时全量授权：审批弹窗里选「1 小时 · 本资产」后，授权期内同资产的命令直接执行，
+// 不再逐条弹窗（grant 落 `*` pattern + 到期时间，ListApprovedItems 到期过滤）。
+test("a timed allow on this asset runs the next command without another approval", async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.goto("/");
+  await expect(page.getByTestId("app-root")).toBeVisible();
+
+  const asset = `e2e-timed-${Date.now()}`;
+  await createRedisAssetViaUI(page, { name: asset, host: "127.0.0.1", port: MOCK_REDIS_PORT });
+
+  const first = runOpsctl([
+    "--data-dir", process.env.OPSKAT_DATA_DIR!, "exec", asset, "--type", "redis", "--", "SET", "timed:first", "1",
+  ]);
+  await expect(page.getByTestId("opsctl-approval-dialog")).toBeVisible({ timeout: 60_000 });
+  await page.getByTestId("opsctl-approval-timed-open").click();
+  await page.getByTestId("opsctl-approval-timed-60").click();
+  await page.getByTestId("opsctl-approval-timed-confirm").click();
+  expect((await first).code).toBe(0);
+
+  // 授权期内同资产的第二条命令：没有新弹窗，直接执行成功。
+  const second = await runOpsctl([
+    "--data-dir", process.env.OPSKAT_DATA_DIR!, "exec", asset, "--type", "redis", "--", "SET", "timed:second", "2",
+  ]);
+  expect(second.code, second.stderr).toBe(0);
+  expect(JSON.parse(second.stdout)).toEqual({ type: "string", value: "OK" });
+});
+
 // A scripted `opsctl a && opsctl b` raises the second approval a moment after the first
 // is answered — while the first dialog is still animating out. The dialog has to come
 // back clickable: if the backdrop is re-mounted above the still-mounted panel, the
@@ -57,11 +84,16 @@ test("an approval arriving while the previous dialog is closing can still be cli
     // Raise one approval; once it is up, answer it and raise the next `delay` ms later.
     // The gap is timed inside the page, where the animation runs.
     await page.evaluate(
-      ([ms, tag]) => {
+      async ([ms, tag]) => {
+        // Wails v3 has no window.runtime global — the runtime is an ES module served
+        // by the dev server (same route the native specs take via js_eval). The path
+        // goes through a variable so tsc leaves the non-literal specifier alone.
+        const runtimePath = "/src/lib/desktop.ts";
+        const { EventsEmit } = (await import(runtimePath)) as {
+          EventsEmit: (name: string, data?: unknown) => Promise<void>;
+        };
         const raise = (id: string) =>
-          (
-            window as unknown as { runtime: { EventsEmit: (name: string, data: unknown) => void } }
-          ).runtime.EventsEmit("opsctl:approval", {
+          EventsEmit("opsctl:approval", {
             confirm_id: id,
             kind: "once",
             type: "exec",

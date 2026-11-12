@@ -3,8 +3,8 @@ package mysql
 import (
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // 清空与新建数据库：TRUNCATE TABLE；CREATE DATABASE 带 CHARACTER SET / COLLATE。

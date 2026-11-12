@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { toast } from "sonner";
 import { TransferSection } from "../TransferSection";
 import { useSFTPStore, type SFTPTransfer } from "@/stores/sftpStore";
-import { OpenDirectory } from "../../../../../wailsjs/go/system/System";
+import { OpenDirectory } from "@clients/system";
 
 function tx(over: Partial<SFTPTransfer>): SFTPTransfer {
   return {

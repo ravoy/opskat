@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/internal/pkg/appversion"
 )
 
 func TestCheckCompatible(t *testing.T) {

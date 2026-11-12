@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // Asset is the asset a call runs against, named by the host rather than by the

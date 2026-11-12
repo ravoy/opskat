@@ -3,7 +3,7 @@ import { Boxes } from "lucide-react";
 import { registerAssetType } from "./_register";
 import { parseGenericConfig } from "@/components/asset/GenericConfigSection.config";
 import { useCustomTypeStore } from "@/stores/customTypeStore";
-import type { asset_entity } from "../../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 const GenericDetailInfoCard = lazy(() =>
   import("@/components/asset/detail/GenericDetailInfoCard").then((m) => ({ default: m.GenericDetailInfoCard }))

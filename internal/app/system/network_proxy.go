@@ -7,10 +7,10 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/pkg/netproxy"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/pkg/netproxy"
+	"github.com/octays/opskat/internal/service/credential_svc"
 )
 
 // NetworkProxyEnvVar 是 OpsKat 进程实际读到的一个代理环境变量（代理地址里的密码已遮为 ***）。

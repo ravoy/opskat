@@ -25,8 +25,8 @@ import {
 import { AsyncState, type AsyncStatus } from "@/components/common/AsyncState";
 import { SecretInput } from "@/components/SecretInput";
 import { notifySuccess } from "@/lib/notify";
-import { GetNetworkProxySettings, SaveNetworkProxySettings } from "../../../wailsjs/go/system/System";
-import type { system } from "../../../wailsjs/go/models";
+import { GetNetworkProxySettings, SaveNetworkProxySettings } from "@clients/system";
+import type * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
 import { NetworkProxyTestDialog } from "./NetworkProxyTestDialog";
 import {
   networkProxyFormFromView,

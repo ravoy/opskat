@@ -3,7 +3,7 @@ package extstore_svc
 import (
 	"context"
 
-	"github.com/opskat/opskat/pkg/extstore"
+	"github.com/octays/opskat/pkg/extstore"
 )
 
 // Listing is one extension as `opsctl ext search` lists it: its store card plus

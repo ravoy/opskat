@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/aictx"
 	"go.uber.org/zap"
 )
 

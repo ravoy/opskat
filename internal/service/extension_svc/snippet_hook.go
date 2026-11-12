@@ -3,7 +3,7 @@ package extension_svc
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/service/snippet_svc"
+	"github.com/octays/opskat/internal/service/snippet_svc"
 )
 
 // SnippetExtensionHook 扩展生命周期与 snippet_svc 的边界接口。

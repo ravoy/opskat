@@ -11,9 +11,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/host_key_entity"
-	"github.com/opskat/opskat/internal/service/host_key_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/host_key_entity"
+	"github.com/octays/opskat/internal/service/host_key_svc"
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 )

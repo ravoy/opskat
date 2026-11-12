@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { dbdriver, query_svc } from "../../../../../wailsjs/go/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import type { TFunction } from "i18next";
 import {
   declaredLabel,
@@ -16,7 +17,7 @@ const metadata = (patch: Record<string, unknown> = {}) =>
     columns: [
       { name: "id", type: "bigint", nullable: false, primaryKey: true, comment: "订单 ID", default: null },
       { name: "status", type: "varchar(16)", nullable: false, primaryKey: false, comment: "", default: "'pending'" },
-      { name: "note", type: "text", nullable: true, primaryKey: false, comment: "" },
+      { name: "note", type: "text", nullable: true, primaryKey: false, default: null, comment: "" },
     ],
     indexes: [
       { name: "PRIMARY", columns: ["id"], unique: true },
@@ -145,7 +146,7 @@ describe("structureFromAlterModel", () => {
           nullable: false,
           defaultValue: "",
           comment: "",
-          defaultKind: "none",
+          defaultKind: dbdriver.DefaultKind.DefaultKindNone,
           autoIncrement: true,
         },
         {
@@ -154,7 +155,7 @@ describe("structureFromAlterModel", () => {
           nullable: false,
           defaultValue: "pending",
           comment: "",
-          defaultKind: "value",
+          defaultKind: dbdriver.DefaultKind.DefaultKindValue,
         },
         {
           name: "created_at",
@@ -162,9 +163,16 @@ describe("structureFromAlterModel", () => {
           nullable: true,
           defaultValue: "CURRENT_TIMESTAMP",
           comment: "",
-          defaultKind: "expression",
+          defaultKind: dbdriver.DefaultKind.DefaultKindExpression,
         },
-        { name: "note", type: "text", nullable: true, defaultValue: "", comment: "", defaultKind: "null" },
+        {
+          name: "note",
+          type: "text",
+          nullable: true,
+          defaultValue: "",
+          comment: "",
+          defaultKind: dbdriver.DefaultKind.DefaultKindNull,
+        },
       ],
       ...patch,
     });
@@ -279,7 +287,10 @@ describe("declaredLabel / indexTypeLabel", () => {
   it("索引类型的显示名取声明并翻译", () => {
     const descriptor = new dbdriver.Descriptor({
       ...fakeDriverWith(["alter_table"]),
-      indexEditing: { types: [{ id: "unique", label: "query.designer.indexType.unique" }], nameScope: "table" },
+      indexEditing: {
+        types: [{ id: dbdriver.IndexType.IndexTypeUnique, label: "query.designer.indexType.unique" }],
+        nameScope: dbdriver.IndexNameScope.IndexScopeTable,
+      },
     });
     expect(indexTypeLabel(descriptor, "unique", t)).toBe("Unique");
   });

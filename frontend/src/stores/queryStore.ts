@@ -1,8 +1,10 @@
+import { workspaceStorage } from "@/lib/workspace";
 import { create } from "zustand";
-import { GetTableMetadata, ListDatabaseObjects, ListDatabases, ListTables } from "../../wailsjs/go/query/Query";
-import { RedisGetKeyDetail, RedisListDatabases, RedisScanKeys } from "../../wailsjs/go/redis/Redis";
-import { ListMongoDatabases, ListMongoCollections } from "../../wailsjs/go/query/Query";
-import { asset_entity, query_svc } from "../../wailsjs/go/models";
+import { GetTableMetadata, ListDatabaseObjects, ListDatabases, ListTables } from "@clients/query";
+import { RedisGetKeyDetail, RedisListDatabases, RedisScanKeys } from "@clients/redis";
+import { ListMongoDatabases, ListMongoCollections } from "@clients/query";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import { useTabStore, registerTabCloseHook, registerTabRestoreHook, type QueryTabMeta } from "./tabStore";
 import { useAssetStore } from "./assetStore";
 import {
@@ -1729,7 +1731,7 @@ function stripMongoState(s: MongoDBTabState): PersistedMongoState {
 
 function loadPersistedQueryStore(): PersistedQueryStore {
   try {
-    const raw = localStorage.getItem(QUERY_STORE_KEY);
+    const raw = workspaceStorage.getItem(QUERY_STORE_KEY);
     if (!raw) return { dbStates: {}, mongoStates: {} };
     const parsed = JSON.parse(raw) as Partial<PersistedQueryStore>;
     return {
@@ -1754,7 +1756,7 @@ function savePersistedQueryStore() {
     data.mongoStates[tabId] = stripMongoState(s);
   }
   try {
-    localStorage.setItem(QUERY_STORE_KEY, JSON.stringify(data));
+    workspaceStorage.setItem(QUERY_STORE_KEY, JSON.stringify(data));
   } catch {
     /* storage full — ignore */
   }

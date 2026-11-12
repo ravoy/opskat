@@ -4,9 +4,9 @@ import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from "vite
 import { RedisOpsPanel } from "../components/query/RedisOpsPanel";
 import { useTabStore } from "../stores/tabStore";
 import { useQueryStore } from "../stores/queryStore";
-import { ExecuteRedis } from "../../wailsjs/go/query/Query";
-import { RedisClusterOverview, RedisSentinelOverview } from "../../wailsjs/go/redis/Redis";
-import { redis_svc } from "../../wailsjs/go/models";
+import { ExecuteRedis } from "@clients/query";
+import { RedisClusterOverview, RedisSentinelOverview } from "@clients/redis";
+import * as redis_svc from "@bindings/github.com/octays/opskat/internal/service/redis_svc/models";
 
 // Radix menus need these DOM APIs happy-dom doesn't implement (see VNCToolbar.test.tsx).
 beforeAll(() => {
@@ -62,12 +62,15 @@ describe("RedisOpsPanel", () => {
 
     render(<RedisOpsPanel tabId="query-10" />);
 
+    // Wait for the parsed INFO values to commit: the mock being called doesn't
+    // guarantee the awaited continuation and re-render have flushed, so the
+    // value assertions below must not run before "7.4.8" is on screen.
     await waitFor(() => {
-      expect(ExecuteRedis).toHaveBeenCalledWith(10, "INFO", "0");
+      expect(screen.getAllByText("7.4.8").length).toBeGreaterThan(0);
     });
+    expect(ExecuteRedis).toHaveBeenCalledWith(10, "INFO", "0");
     expect(screen.getByText("query.redisServer")).toBeInTheDocument();
     expect(screen.getByText("query.redisVersion:")).toBeInTheDocument();
-    expect(screen.getAllByText("7.4.8").length).toBeGreaterThan(0);
     expect(screen.getAllByText("db0").length).toBeGreaterThan(0);
     expect(screen.getByText("8,795")).toBeInTheDocument();
     expect(screen.getByText("253,391,607")).toBeInTheDocument();

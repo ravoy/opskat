@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { toast } from "sonner";
 import { TooltipProvider } from "@opskat/ui";
 import { NetworkSection } from "../../../components/settings/NetworkSection";
-import { GetNetworkProxySettings, SaveNetworkProxySettings } from "../../../../wailsjs/go/system/System";
+import { GetNetworkProxySettings, SaveNetworkProxySettings } from "@clients/system";
 import { notifySuccess } from "@/lib/notify";
 
 vi.mock("@/lib/notify", () => ({ notifySuccess: vi.fn(), notifyCopied: vi.fn() }));

@@ -5,8 +5,8 @@ import type { DetailInfoCardProps } from "@/lib/assetTypes/types";
 import type { ProxyConfigJSON, ProxyChainJSON } from "../proxyConfig";
 import { DetailGrid, DetailSection, InfoItem, ProxyChainDetailSection, ProxyDetailSection } from "./InfoItem";
 import { parseDetailConfig } from "./utils";
-import { GetAgentAssetDetail } from "../../../../wailsjs/go/system/System";
-import { system as system_models } from "../../../../wailsjs/go/models";
+import { GetAgentAssetDetail } from "@clients/system";
+import * as system_models from "@bindings/github.com/octays/opskat/internal/app/system/models";
 import { agentStatusLabel } from "@/components/settings/agentSource";
 
 interface SSHConfig {

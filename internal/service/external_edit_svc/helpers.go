@@ -12,8 +12,8 @@ import (
 	"strings"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/service/sftp_svc"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/service/sftp_svc"
 	"go.uber.org/zap"
 )
 

@@ -10,16 +10,16 @@ This guide covers the contribution workflow. The detailed development handbook l
 
 ## Ways to Contribute
 
-- **Report a bug** — open an [issue](https://github.com/opskat/opskat/issues/new/choose) using the bug report template. Reproduction steps and relevant logs help a lot.
-- **Suggest a feature** — open a feature request, or start a thread in [Discussions](https://github.com/opskat/opskat/discussions) if it's still an early idea.
-- **Security vulnerabilities** — please do **not** open a public issue; report privately via [GitHub Security Advisories](https://github.com/opskat/opskat/security/advisories/new).
+- **Report a bug** — open an [issue](https://github.com/octays/opskat/issues/new/choose) using the bug report template. Reproduction steps and relevant logs help a lot.
+- **Suggest a feature** — open a feature request, or start a thread in [Discussions](https://github.com/octays/opskat/discussions) if it's still an early idea.
+- **Security vulnerabilities** — please do **not** open a public issue; report privately via [GitHub Security Advisories](https://github.com/octays/opskat/security/advisories/new).
 - **Improve docs** — typo fixes and clarifications are always welcome.
 - **Write code** — fix a bug or implement a feature. For anything non-trivial, open an issue first to discuss the approach before investing time.
-- **Extensions** — extension source lives in a separate repository: [opskat/extensions](https://github.com/opskat/extensions).
+- **Extensions** — extension source lives in a separate repository: [opskat/extensions](https://github.com/octays/extensions).
 
 ## Development Setup
 
-Prerequisites: [Go 1.26+](https://go.dev/), [Node.js 22+](https://nodejs.org/) with [pnpm](https://pnpm.io/), and the [Wails v2 CLI](https://wails.io/docs/gettingstarted/installation).
+Prerequisites: [Go 1.26+](https://go.dev/), [Bun](https://bun.sh/) (version in `.bun-version`), and the [Wails v3 CLI](https://wails.io/getting-started/installation/).
 
 ```bash
 make install        # Install frontend dependencies
@@ -28,7 +28,7 @@ make dev            # Development mode (hot reload)
 
 The full command list (build, opsctl CLI, extension development, coverage, …) is in [docs/DEVELOP.md → Common Commands](./docs/DEVELOP.md#common-commands).
 
-> ⚠️ Some files are **generated** (e.g. `frontend/wailsjs/`, `mock_*/`, lockfiles) — never hand-edit them. See [docs/DEVELOP.md → Generated / auto-managed files](./docs/DEVELOP.md#️-generated--auto-managed-files).
+> ⚠️ Some files are **generated** (e.g. `frontend/bindings/`, `mock_*/`, lockfiles) — never hand-edit them. See [docs/DEVELOP.md → Generated / auto-managed files](./docs/DEVELOP.md#️-generated--auto-managed-files).
 
 ## Testing & Linting
 
@@ -37,7 +37,7 @@ Run these before opening a PR — CI runs the same checks:
 ```bash
 make test                                 # Go tests
 make lint                                 # Go lint
-cd frontend && pnpm test && pnpm lint     # Frontend tests + lint
+cd frontend && bun --bun run test && bun --bun run lint     # Frontend tests + lint
 ```
 
 CI additionally runs the GUI e2e suite (`make test-e2e`, Playwright driving the real Wails app).
@@ -64,7 +64,7 @@ Commit messages may be written in Chinese or English — the emoji-first rule is
 
 ## Pull Requests
 
-1. **Fork** the repository on GitHub (the "Fork" button on [opskat/opskat](https://github.com/opskat/opskat)), then clone your fork:
+1. **Fork** the repository on GitHub (the "Fork" button on [opskat/opskat](https://github.com/octays/opskat)), then clone your fork:
 
    ```bash
    git clone https://github.com/<your-username>/opskat.git

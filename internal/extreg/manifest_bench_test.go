@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 func describedBench(b *testing.B, describeJSON string) *extension.Manifest {

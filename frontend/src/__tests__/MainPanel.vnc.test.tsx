@@ -4,7 +4,7 @@ import { MainPanel } from "@/components/layout/MainPanel";
 import { useAssetStore } from "@/stores/assetStore";
 import { useLayoutStore } from "@/stores/layoutStore";
 import { useTabStore } from "@/stores/tabStore";
-import { asset_entity } from "../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 const unmounted = vi.fn();
 

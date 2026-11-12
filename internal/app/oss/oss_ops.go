@@ -7,7 +7,7 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/service/oss_svc"
+	"github.com/octays/opskat/internal/service/oss_svc"
 )
 
 func logOSSStart(ctx context.Context, operation string, assetID int64) {

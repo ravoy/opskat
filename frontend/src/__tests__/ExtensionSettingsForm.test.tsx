@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { ExtensionSettingsForm } from "../components/settings/ExtensionSettingsForm";
-import { GetExtensionSettings, SaveExtensionSettings, TestCommandReviewer } from "../../wailsjs/go/extension/Extension";
+import { GetExtensionSettings, SaveExtensionSettings, TestCommandReviewer } from "@clients/extension";
 
 const toastError = vi.hoisted(() => vi.fn());
 const notifySuccess = vi.hoisted(() => vi.fn());

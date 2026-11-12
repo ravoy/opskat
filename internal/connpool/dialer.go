@@ -6,11 +6,11 @@ import (
 	"net"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/netdial"
-	"github.com/opskat/opskat/internal/pkg/proxychain"
-	"github.com/opskat/opskat/internal/pkg/socksdial"
-	"github.com/opskat/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/netdial"
+	"github.com/octays/opskat/internal/pkg/proxychain"
+	"github.com/octays/opskat/internal/pkg/socksdial"
+	"github.com/octays/opskat/internal/service/credential_resolver"
 )
 
 // dialContextFunc 按目标地址建立底层 TCP 连接。

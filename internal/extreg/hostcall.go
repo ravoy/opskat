@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // hostToolDefaultTimeout is the limit of a tool that declares no timeout: the

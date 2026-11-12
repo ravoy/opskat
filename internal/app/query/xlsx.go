@@ -8,9 +8,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/query_svc"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/query_svc"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // xlsxExportTimeout 是一次 XLSX 导出的时限：整张表的导出可能很长，不受资产的查询超时限制。

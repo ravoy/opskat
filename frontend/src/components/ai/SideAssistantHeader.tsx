@@ -1,4 +1,4 @@
-import { Bot, History, Plus, PanelRightOpen, ArrowUpRight } from "lucide-react";
+import { Bot, History, Plus, AppWindow, PanelRightOpen, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@opskat/ui";
 
@@ -6,6 +6,7 @@ interface SideAssistantHeaderProps {
   onToggleCollapse: () => void;
   onOpenHistory: () => void;
   onNewChat: () => void;
+  onNewWindow: () => void;
   onPromoteToTab: () => void;
   canPromote: boolean;
 }
@@ -14,6 +15,7 @@ export function SideAssistantHeader({
   onToggleCollapse,
   onOpenHistory,
   onNewChat,
+  onNewWindow,
   onPromoteToTab,
   canPromote,
 }: SideAssistantHeaderProps) {
@@ -26,6 +28,22 @@ export function SideAssistantHeader({
       </div>
       <TooltipProvider>
         <div className="flex gap-0.5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6"
+                onClick={onNewWindow}
+                aria-label={t("ai.sidebar.newWindow")}
+                title={t("ai.sidebar.newWindow")}
+                data-testid="ai-new-window"
+              >
+                <AppWindow className="h-3.5 w-3.5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">{t("ai.sidebar.newWindow")}</TooltipContent>
+          </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button

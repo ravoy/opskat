@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, act, fireEvent } from "@testing-library/react";
 import { OpsctlApprovalDialog } from "../components/approval/OpsctlApprovalDialog";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
-import { RespondOpsctlApproval } from "../../wailsjs/go/opsctl/Opsctl";
+import { EventsOn } from "@/lib/desktop";
+import { RespondOpsctlApproval } from "@clients/opsctl";
 
 // opsctl:approval 事件处理器按事件名捕获，测试里直接调用模拟后端 EventsEmit。
 function captureHandlers() {
@@ -438,5 +438,59 @@ describe("OpsctlApprovalDialog 按钮文案与 AI 审批块一致（决策 3）"
     fireBatchApproval(handlers, batchItems(2));
     expect(screen.getByTestId("opsctl-approval-allow")).toHaveTextContent("ai.approvalAllowAll");
     expect(screen.getByTestId("opsctl-approval-deny")).toHaveTextContent("ai.approvalDenyAll");
+  });
+});
+
+// 限时放行：single/once/batch 且带会话才渲染；选时长与范围后按 allow_timed 决策应答，
+// 参数随决策一起发（后端 ParseApprovalResponse 按白名单校验）。
+describe("OpsctlApprovalDialog timed allow", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("无会话的单条审批不渲染限时放行——授权按会话落库", () => {
+    const handlers = captureHandlers();
+    render(<OpsctlApprovalDialog />);
+    fireSingleApproval(handlers, { session_id: "" });
+    expect(screen.queryByTestId("opsctl-approval-timed")).not.toBeInTheDocument();
+  });
+
+  it("选择 1 小时 + 全部资产后按 allow_timed 应答并携带参数", () => {
+    const handlers = captureHandlers();
+    render(<OpsctlApprovalDialog />);
+    fireSingleApproval(handlers, { session_id: "session-1" });
+
+    fireEvent.click(screen.getByTestId("opsctl-approval-timed").querySelector("button")!);
+    fireEvent.click(screen.getByTestId("opsctl-approval-timed-60"));
+    fireEvent.click(screen.getByTestId("opsctl-approval-timed-scope-all"));
+    fireEvent.click(screen.getByTestId("opsctl-approval-timed-confirm"));
+
+    expect(vi.mocked(RespondOpsctlApproval)).toHaveBeenCalledWith(
+      "opsctl_1",
+      expect.objectContaining({
+        decision: "allow_timed",
+        timed_allow_minutes: 60,
+        timed_allow_all_assets: true,
+      })
+    );
+  });
+
+  it("自定义时长非法（0）时确认禁用，改回快捷项可用", () => {
+    const handlers = captureHandlers();
+    render(<OpsctlApprovalDialog />);
+    fireSingleApproval(handlers, { session_id: "session-1" });
+
+    fireEvent.click(screen.getByTestId("opsctl-approval-timed").querySelector("button")!);
+    const custom = screen.getByTestId("opsctl-approval-timed-custom");
+    fireEvent.change(custom, { target: { value: "0" } });
+    expect(screen.getByTestId("opsctl-approval-timed-confirm")).toBeDisabled();
+
+    fireEvent.change(custom, { target: { value: "45" } });
+    expect(screen.getByTestId("opsctl-approval-timed-confirm")).toBeEnabled();
+    fireEvent.click(screen.getByTestId("opsctl-approval-timed-confirm"));
+    expect(vi.mocked(RespondOpsctlApproval)).toHaveBeenCalledWith(
+      "opsctl_1",
+      expect.objectContaining({ decision: "allow_timed", timed_allow_minutes: 45 })
+    );
   });
 });

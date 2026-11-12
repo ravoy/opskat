@@ -5,8 +5,8 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/pkg/extmanifest"
 )
 
 // IncompatibleMessage renders why an extension cannot be installed, in ctx's

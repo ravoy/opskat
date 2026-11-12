@@ -1,8 +1,8 @@
 package system
 
 import (
-	"github.com/opskat/opskat/internal/status"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/status"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // GetSystemStatus 返回启动阶段收集的状态条目（前端设置页主动查询）
@@ -14,6 +14,6 @@ func (s *System) GetSystemStatus() []status.Entry {
 func (s *System) emitSystemStatusImpl() {
 	entries := status.List()
 	if len(entries) > 0 && s.ctx != nil {
-		wailsRuntime.EventsEmit(s.ctx, "system:status", entries)
+		application.Get().Event.Emit("system:status", entries)
 	}
 }

@@ -1,7 +1,9 @@
 import i18n, { type ResourceKey } from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import { SetLanguage } from "../../wailsjs/go/system/System";
+import { toast } from "sonner";
+import { errorMessage } from "@/lib/errorMessage";
+import { SetLanguage } from "@clients/system";
 
 // 语言包按需加载：每个都是独立 chunk，启动只拉当前语言（main.tsx 等 i18nReady 再挂载，
 // 首屏不会闪 key），另一种语言在切换时才拉。
@@ -66,6 +68,12 @@ export const i18nReady: Promise<void> = loadLocale(initialLanguage);
 void SetLanguage(initialLanguage);
 i18n.on("languageChanged", (lng) => {
   void SetLanguage(lng);
+});
+
+window.addEventListener("storage", (event) => {
+  if (event.key === "language" && event.newValue && isSupportedLanguage(event.newValue)) {
+    void i18n.changeLanguage(event.newValue).catch((error) => toast.error(errorMessage(error)));
+  }
 });
 
 export default i18n;

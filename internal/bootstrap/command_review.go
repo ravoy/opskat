@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/repository/command_review_repo"
-	"github.com/opskat/opskat/internal/service/command_review_svc"
-	"github.com/opskat/opskat/internal/service/command_review_svc/reviewerreg"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/repository/command_review_repo"
+	"github.com/octays/opskat/internal/service/command_review_svc"
+	"github.com/octays/opskat/internal/service/command_review_svc/reviewerreg"
 )
 
 // commandReviewers 是审核服务的审核器来源：进程的审核器注册表（commandReviewer 贡献点

@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/aictx"
 )
 
 // ShellCommandRules 去掉命令策略列表里的文件传输规则（cp:*、cp:read:<路径>、cp:write:<路径>）。

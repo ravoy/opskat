@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { WindowIsFullscreen } from "../../wailsjs/runtime/runtime";
+import { WindowIsFullscreen } from "@/lib/desktop";
 
 export function useFullscreen() {
   const [isFullscreen, setIsFullscreen] = useState(false);

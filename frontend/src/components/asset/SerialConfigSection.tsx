@@ -4,7 +4,7 @@ import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, Select
 import { RefreshCw } from "lucide-react";
 import { CheckedField, Field } from "@/components/asset/fields";
 import { useConfigSection } from "@/components/asset/useConfigSection";
-import { ListSerialPorts } from "../../../wailsjs/go/serial/Serial";
+import { ListSerialPorts } from "@clients/serial";
 import type { ConfigSectionProps } from "@/lib/assetTypes/formContract";
 import {
   buildSerialConfig,

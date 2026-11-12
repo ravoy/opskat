@@ -3,8 +3,8 @@ import { describe, it, expect, vi } from "vitest";
 import userEvent, { PointerEventsCheckLevel } from "@testing-library/user-event";
 import { toast } from "sonner";
 import { PasswordSourceField } from "../components/asset/PasswordSourceField";
-import { credential_entity } from "../../wailsjs/go/models";
-import { GetAssetPassword } from "../../wailsjs/go/system/System";
+import * as credential_entity from "@bindings/github.com/octays/opskat/internal/model/entity/credential_entity/models";
+import { GetAssetPassword } from "@clients/system";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn() } }));
 

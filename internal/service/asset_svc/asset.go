@@ -8,12 +8,12 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/pkg/dbutil"
-	"github.com/opskat/opskat/internal/pkg/sortutil"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/pkg/dbutil"
+	"github.com/octays/opskat/internal/pkg/sortutil"
+	"github.com/octays/opskat/internal/repository/asset_repo"
 )
 
 // AssetSvc 资产业务接口

@@ -5,9 +5,9 @@ import { vi } from "vitest";
 import { buildLocalConfig, parseLocalConfig, LOCAL_DEFAULTS } from "@/components/asset/LocalConfigSection.config";
 import { LocalConfigSection } from "@/components/asset/LocalConfigSection";
 import type { AssetFormHandle, AssetFormContext } from "@/lib/assetTypes/formContract";
-import { asset_entity } from "../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
-vi.mock("../../../../wailsjs/go/local/Local", () => ({ ListLocalShells: () => Promise.resolve([]) }));
+vi.mock("@clients/local", () => ({ ListLocalShells: () => Promise.resolve([]) }));
 
 const fakeCtx: AssetFormContext = { isEdit: false, encryptPassword: async (p) => p };
 

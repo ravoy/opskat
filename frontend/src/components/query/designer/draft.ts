@@ -1,4 +1,5 @@
-import { dbdriver } from "../../../../wailsjs/go/models";
+import { toDriverDefaultKind } from "./model";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { driverCanAlter, type DriverDescriptor } from "@/lib/dbDrivers";
 import type { DesignerColumn, DesignerDefault, TableStructure } from "./model";
 import {
@@ -251,7 +252,7 @@ export function buildAlterRequest(
         comment: c.comment,
       };
       // text 是驱动没给写法的原文:不带写法,按旧规则由驱动猜。
-      if (explicitDefaults && c.default.kind !== "text") column.defaultKind = c.default.kind;
+      if (explicitDefaults && c.default.kind !== "text") column.defaultKind = toDriverDefaultKind(c.default.kind);
       if (autoIncrement && !c.original && c.autoIncrement) column.autoIncrement = true;
       return column;
     });
@@ -393,7 +394,7 @@ export interface DraftIssue {
  */
 export function validateDraft(draft: TableDraft, descriptor: DriverDescriptor | undefined): DraftIssue[] {
   const issues: DraftIssue[] = [];
-  const folding = descriptor?.nameFolding ?? "";
+  const folding = descriptor?.nameFolding ?? dbdriver.NameFolding.$zero;
   const tableName = draft.name.trim();
   if (!tableName) issues.push({ severity: "error", code: "tableNameEmpty", target: { kind: "tableName" } });
 

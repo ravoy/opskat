@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollText, Square, Play } from "lucide-react";
-import { StartK8sPodLogs } from "../../../wailsjs/go/k8s/K8s";
-import { StopK8sPodLogs } from "../../../wailsjs/go/k8s/K8s";
-import { EventsOn, EventsOff } from "../../../wailsjs/runtime/runtime";
+import { StartK8sPodLogs } from "@clients/k8s";
+import { StopK8sPodLogs } from "@clients/k8s";
+import { EventsOn, EventsOff } from "@/lib/desktop";
 import { K8sSectionCard } from "./K8sSectionCard";
 import { K8sLogTerminal, type K8sLogTerminalHandle } from "./K8sLogTerminal";
 import { buildLogBufferKey, MAX_LOG_CHUNKS, type LogTabState, type LogTabStateUpdate } from "./k8sLogState";

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { SFTPListDir } from "../../../../wailsjs/go/ssh/SSH";
-import { sftp_svc } from "../../../../wailsjs/go/models";
+import { SFTPListDir } from "@clients/ssh";
+import * as sftp_svc from "@bindings/github.com/octays/opskat/internal/service/sftp_svc/models";
 import { addExpandedPath, flattenSftpTree, type SftpTreeNode } from "@/lib/sftpDirTree";
 import { useSFTPStore } from "@/stores/sftpStore";
 import { normalizeRemotePath } from "./utils";

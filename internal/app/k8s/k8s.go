@@ -6,7 +6,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 // LangProvider 由 system binder 实现。

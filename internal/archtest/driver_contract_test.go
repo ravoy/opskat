@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-const modulePath = "github.com/opskat/opskat"
+const modulePath = "github.com/octays/opskat"
 
 // publicDriverContract 是数据库驱动的公开契约：扩展（编译到 GOOS=wasip1）与宿主共用的
 // 描述、会话、请求与结果类型，以及通用实现 sqldb。

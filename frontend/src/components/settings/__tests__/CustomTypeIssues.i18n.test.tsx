@@ -9,7 +9,7 @@ import enCommon from "@/i18n/locales/en/common.json";
 import zhCommon from "@/i18n/locales/zh-CN/common.json";
 import { CustomTypeEditorDialog } from "@/components/settings/CustomTypeEditorDialog";
 import { ImportCustomTypeDialog } from "@/components/settings/ImportCustomTypeDialog";
-import { customtype } from "../../../../wailsjs/go/models";
+import * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
 
 // 后端校验问题只带 Code + Params,文案由前端按界面语言翻译(英文界面不能冒出中文,
 // 也不能出现 "authtmpl:" 这类内部前缀)。setup.ts 的 t = key => key 看不出最终文案,
@@ -40,12 +40,12 @@ const HAN = /\p{Script=Han}/u;
 
 describe("custom type validation issues follow the UI language", () => {
   beforeEach(async () => {
-    const mod = await import("../../../../wailsjs/go/customtype/CustomType");
+    const mod = await import("@clients/customtype");
     vi.mocked(mod.SaveCustomType).mockReset();
   });
 
   it("type editor: renders translated issues next to their rows", async () => {
-    const { SaveCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     vi.mocked(SaveCustomType).mockResolvedValue(
       new customtype.SaveResult({
         issues: [
@@ -72,7 +72,7 @@ describe("custom type validation issues follow the UI language", () => {
   });
 
   it("type editor: template parse errors carry no authtmpl: prefix and stay English in the English UI", async () => {
-    const { SaveCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     vi.mocked(SaveCustomType).mockResolvedValue(
       new customtype.SaveResult({
         issues: [
@@ -96,7 +96,7 @@ describe("custom type validation issues follow the UI language", () => {
   });
 
   it("type editor: the footer says how many assets use the type being edited", async () => {
-    const { GetCustomType, GetCustomTypeUsage } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { GetCustomType, GetCustomTypeUsage } = await import("@clients/customtype");
     vi.mocked(GetCustomType).mockResolvedValue({
       id: 3,
       slug: "grafana",

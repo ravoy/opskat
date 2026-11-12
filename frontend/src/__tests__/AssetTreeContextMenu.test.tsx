@@ -3,7 +3,8 @@ import { render, screen, fireEvent, within } from "@testing-library/react";
 import { TooltipProvider } from "@opskat/ui";
 import { AssetTree } from "@/components/layout/AssetTree";
 import { useAssetStore } from "@/stores/assetStore";
-import { asset_entity, group_entity } from "../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
 
 function makeGroup(id: number, name: string): group_entity.Group {
   return new group_entity.Group({
@@ -12,19 +13,11 @@ function makeGroup(id: number, name: string): group_entity.Group {
     ParentID: 0,
     Icon: "",
     SortOrder: id,
-    Status: 1,
   });
 }
 
 function makeAsset(id: number, name: string, groupId: number, type = "ssh"): asset_entity.Asset {
-  return new asset_entity.Asset({
-    ID: id,
-    Name: name,
-    Type: type,
-    GroupID: groupId,
-    Icon: "",
-    Status: 1,
-  });
+  return new asset_entity.Asset({ Status: 1, ID: id, Name: name, Type: type, GroupID: groupId, Icon: "" });
 }
 
 function renderTree({

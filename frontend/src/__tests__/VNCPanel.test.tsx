@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import { asset_entity } from "../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import {
   CheckVNCServerKey,
   ConnectVNC,
@@ -9,10 +9,10 @@ import {
   EncodeVNCClipboardText,
   StartVNCStream,
   TrustVNCServerKey,
-} from "../../wailsjs/go/vnc/VNC";
-import { DisconnectSSH, OpenSFTPSession } from "../../wailsjs/go/ssh/SSH";
-import { ClipboardSetText } from "../../wailsjs/runtime";
-import { ReadClipboardText } from "../../wailsjs/go/system/System";
+} from "@clients/vnc";
+import { DisconnectSSH, OpenSFTPSession } from "@clients/ssh";
+import { ClipboardSetText } from "@/lib/desktop";
+import { ReadClipboardText } from "@clients/system";
 import { VNCPanel } from "@/components/vnc/VNCPanel";
 import { toast } from "sonner";
 
@@ -70,7 +70,7 @@ beforeAll(() => {
   Element.prototype.releasePointerCapture = vi.fn();
 });
 
-vi.mock("../../wailsjs/go/vnc/VNC", () => ({
+vi.mock("@clients/vnc", () => ({
   CheckVNCServerKey: vi.fn(),
   ConnectVNC: vi.fn(),
   DisconnectVNC: vi.fn(),
@@ -80,8 +80,8 @@ vi.mock("../../wailsjs/go/vnc/VNC", () => ({
   WriteVNC: vi.fn(),
 }));
 
-vi.mock("../../wailsjs/go/ssh/SSH", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("../../wailsjs/go/ssh/SSH")>()),
+vi.mock("@clients/ssh", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@clients/ssh")>()),
   DisconnectSSH: vi.fn(),
   OpenSFTPSession: vi.fn(),
 }));
@@ -126,7 +126,7 @@ describe("VNCPanel", () => {
     vi.mocked(DisconnectSSH).mockReset();
     vi.mocked(OpenSFTPSession).mockReset().mockResolvedValue("sftp-session");
     vi.mocked(ReadClipboardText).mockReset().mockResolvedValue("");
-    vi.mocked(ClipboardSetText).mockReset().mockResolvedValue(true);
+    vi.mocked(ClipboardSetText).mockReset().mockResolvedValue(undefined);
     vi.mocked(toast.error).mockReset();
     vi.mocked(EncodeVNCClipboardText)
       .mockReset()

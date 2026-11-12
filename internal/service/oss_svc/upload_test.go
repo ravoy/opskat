@@ -19,7 +19,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/pkg/transfer"
 )
 
 // multipartStub 是一个只会做分片上传的 S3 桩:记录 UploadPart 的最大同时在途数,

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/pkg/skillmd"
+	"github.com/octays/opskat/pkg/skillmd"
 	"go.uber.org/zap"
 )
 

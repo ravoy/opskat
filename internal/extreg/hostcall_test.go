@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/extension/extensiontest"
+	"github.com/octays/opskat/pkg/extension/extensiontest"
 )
 
 // CallHostTool is how a host subsystem calls a host-only tool of a loaded

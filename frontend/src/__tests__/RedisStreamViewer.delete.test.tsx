@@ -12,7 +12,7 @@ vi.mock("../components/query/useRedisValueVirtualizer", () => ({
 }));
 
 import { RedisStreamViewer } from "@/components/query/RedisStreamViewer";
-import { RedisStreamDelete } from "../../wailsjs/go/redis/Redis";
+import { RedisStreamDelete } from "@clients/redis";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
 

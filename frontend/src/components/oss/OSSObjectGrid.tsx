@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Folder, Download } from "lucide-react";
-import type { oss_svc } from "../../../wailsjs/go/models";
+import type * as oss_svc from "@bindings/github.com/octays/opskat/internal/service/oss_svc/models";
 import { prefixLeafName } from "@/lib/ossPrefixTree";
 import { formatBytes } from "@/lib/formatBytes";
 import { OSSThumbnail } from "./OSSThumbnail";

@@ -1,9 +1,9 @@
+import { OpenPageWindow } from "@clients/system";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act, render } from "@testing-library/react";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { EventsOn } from "@/lib/desktop";
 import { CommandReviewConfigErrorListener } from "../components/settings/CommandReviewConfigErrorListener";
 import { useSettingsUiStore } from "../stores/settingsUiStore";
-import { useTabStore } from "../stores/tabStore";
 
 const warning = vi.hoisted(() => vi.fn());
 vi.mock("sonner", () => ({ toast: { warning, error: vi.fn(), info: vi.fn(), success: vi.fn() } }));
@@ -32,8 +32,8 @@ describe("CommandReviewConfigErrorListener", () => {
 
     useSettingsUiStore.setState({ activeTab: "backup" });
     act(() => options.action.onClick());
-    expect(useSettingsUiStore.getState().activeTab).toBe("ai");
-    expect(useTabStore.getState().tabs.some((tab) => tab.id === "settings")).toBe(true);
+    expect(OpenPageWindow).toHaveBeenCalledWith(expect.objectContaining({ page: "settings", section: "ai" }));
+    expect(useSettingsUiStore.getState().activeTab).toBe("backup");
   });
 
   it("没有可用的审核扩展也是设置问题，要提醒", () => {

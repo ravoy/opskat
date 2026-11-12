@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useTerminalThemeStore } from "@/stores/terminalThemeStore";
 import { BackupImportDialog, type BackupImportSource } from "@/components/settings/BackupImportDialog";
-import { backup_svc } from "../../../../wailsjs/go/models";
+import * as backup_svc from "@bindings/github.com/octays/opskat/internal/service/backup_svc/models";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn() } }));
 

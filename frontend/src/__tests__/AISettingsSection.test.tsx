@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AISettingsSection } from "@/components/settings/AISettingsSection";
-import { DetectOpsctl } from "../../wailsjs/go/system/System";
+import { DetectOpsctl } from "@clients/system";
 import {
   DetectSkills,
   GetAppVersion,
@@ -10,10 +10,10 @@ import {
   GetOpsctlInstallDir,
   GetSkillPreview,
   UninstallSkill,
-} from "../../wailsjs/go/system/System";
-import { ListAIProviders } from "../../wailsjs/go/ai/AI";
-import { system } from "../../wailsjs/go/models";
-import { BrowserOpenURL } from "../../wailsjs/runtime/runtime";
+} from "@clients/system";
+import { ListAIProviders } from "@clients/ai";
+import * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
+import { BrowserOpenURL } from "@/lib/desktop";
 
 describe("AISettingsSection", () => {
   beforeEach(() => {
@@ -44,7 +44,7 @@ describe("AISettingsSection", () => {
 
     await userEvent.click(await screen.findByRole("button", { name: /GitHub Releases/i }));
 
-    expect(BrowserOpenURL).toHaveBeenCalledWith("https://github.com/opskat/opskat/releases");
+    expect(BrowserOpenURL).toHaveBeenCalledWith("https://github.com/octays/opskat/releases");
   });
 
   it("allows users to select the rendered CLI paths and skill preview", async () => {

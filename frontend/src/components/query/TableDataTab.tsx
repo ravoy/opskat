@@ -25,8 +25,9 @@ import {
   GetTableMetadata,
   OpenTable,
   QueryTableRows,
-} from "../../../wailsjs/go/query/Query";
-import { dbdriver, query_svc } from "../../../wailsjs/go/models";
+} from "@clients/query";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import {
   QueryResultTable,
   CellEdit,

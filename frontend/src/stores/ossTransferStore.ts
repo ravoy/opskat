@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { toast } from "sonner";
-import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
+import { EventsOn, EventsOff } from "@/lib/desktop";
 import {
   OSSPickUploadFiles,
   OSSUploadObjectPath,
@@ -8,7 +8,7 @@ import {
   OSSDownloadFolder,
   OSSStartTransfer,
   OSSCancelTransfer,
-} from "../../wailsjs/go/oss/OSS";
+} from "@clients/oss";
 import { registerTabCloseHook, type QueryTabMeta } from "./tabStore";
 import { useOssBrowserStore } from "./ossBrowserStore";
 import i18n from "../i18n";

@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/audit"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/audit"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/bootstrap"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"

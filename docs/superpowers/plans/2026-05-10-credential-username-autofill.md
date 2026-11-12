@@ -378,7 +378,7 @@ func TestImportSSHKeyFromPEM_PersistsUsername(t *testing.T) {
 }
 ```
 
-注意：测试顶部 import 区需要包含 `context`、`fmt`、`sync`、`github.com/opskat/opskat/internal/repository/credential_repo`、`github.com/opskat/opskat/internal/service/credential_svc`。文件原有的 `crypto/ed25519`、`crypto/rand`、`encoding/pem`、`gossh` import 已经存在，无需重复。
+注意：测试顶部 import 区需要包含 `context`、`fmt`、`sync`、`github.com/octays/opskat/internal/repository/credential_repo`、`github.com/octays/opskat/internal/service/credential_svc`。文件原有的 `crypto/ed25519`、`crypto/rand`、`encoding/pem`、`gossh` import 已经存在，无需重复。
 
 - [ ] **Step 2: 运行测试看通过**
 

@@ -8,7 +8,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // Direction 是端点在一次传输里被使用的方向。展开（DirList）自己也是一个方向：枚举读的是

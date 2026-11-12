@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
 )
 
 // 两份给 AI / opsctl 用户看的静态文本（SKILL.md、commands.md）手写了驱动名单，没法由注册表生成。

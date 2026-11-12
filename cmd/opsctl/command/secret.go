@@ -7,11 +7,11 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // secretApprovalFn is secret get's approval entry point, variable for the same reason as

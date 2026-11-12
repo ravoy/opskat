@@ -12,18 +12,18 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/dirsync"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/credential_resolver"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/internal/service/server_status_svc"
-	"github.com/opskat/opskat/internal/service/ssh_svc"
-	"github.com/opskat/opskat/internal/sshagent"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/dirsync"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/service/server_status_svc"
+	"github.com/octays/opskat/internal/service/ssh_svc"
+	"github.com/octays/opskat/internal/sshagent"
+	"github.com/octays/opskat/internal/sshpool"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // SSHConnectRequest 前端 SSH 连接请求
@@ -36,6 +36,10 @@ type SSHConnectRequest struct {
 	// InitialWorkdir 仅重连时由前端携带上次已知 cwd，请求新会话 cd 回该目录；
 	// 首次连接为空。是否真正恢复由资产的 RestoreCwdOnReconnect 开关决定。
 	InitialWorkdir string `json:"initialWorkdir"`
+	// ConnectionID 由前端预生成：连接进度事件走 `${prefix}:connect:${id}` 事件名，
+	// 订阅必须先于调用（事件可能跑赢绑定的 HTTP 响应），因此 id 只能由调用方先定。
+	// 留空则由服务端生成（不订阅进度事件的调用方）。
+	ConnectionID string `json:"connectionId"`
 }
 
 // ConnectSSH 连接 SSH 服务器，返回会话 ID
@@ -81,13 +85,13 @@ func (s *SSH) ConnectSSH(req SSHConnectRequest) (string, error) {
 		InitialWorkdir:           req.InitialWorkdir,
 		StartupCommand:           sshCfg.StartupCommand,
 		OnData: func(sid string, data []byte) {
-			wailsRuntime.EventsEmit(s.ctx, "ssh:data:"+sid, base64.StdEncoding.EncodeToString(data))
+			application.Get().Event.Emit("ssh:data:"+sid, base64.StdEncoding.EncodeToString(data))
 		},
 		OnClosed: func(sid string) {
-			wailsRuntime.EventsEmit(s.ctx, "ssh:closed:"+sid, nil)
+			application.Get().Event.Emit("ssh:closed:"+sid, nil)
 		},
 		OnSync: func(sid string, state ssh_svc.DirectorySyncState) {
-			wailsRuntime.EventsEmit(s.ctx, "ssh:sync:"+sid, state)
+			application.Get().Event.Emit("ssh:sync:"+sid, state)
 		},
 	}
 	agentCfg, err := credential_resolver.Default().ResolveAgentAuthConfig(sshCfg)
@@ -153,7 +157,7 @@ func (s *SSH) OpenSFTPSession(assetID int64) (string, error) {
 		HostKeyVerifyFunc:        ssh_svc.AutoTrustFirstRejectChangeVerifyFunc(),
 		KeepAliveIntervalSeconds: sshCfg.KeepAliveIntervalSeconds,
 		OnClosed: func(sid string) {
-			wailsRuntime.EventsEmit(s.ctx, "ssh:closed:"+sid, nil)
+			application.Get().Event.Emit("ssh:closed:"+sid, nil)
 		},
 	}
 	agentCfg, err := credential_resolver.Default().ResolveAgentAuthConfig(sshCfg)
@@ -182,7 +186,10 @@ func (s *SSH) ConnectSSHAsync(req SSHConnectRequest) (string, error) {
 		return "", fmt.Errorf("资产不是SSH类型")
 	}
 
-	connectionID := s.nextConnectionID()
+	connectionID, err := s.resolveConnectionID(req.ConnectionID)
+	if err != nil {
+		return "", err
+	}
 
 	// 创建可取消的 context
 	connCtx, cancel := context.WithCancel(s.ctx)
@@ -191,7 +198,7 @@ func (s *SSH) ConnectSSHAsync(req SSHConnectRequest) (string, error) {
 	eventName := "ssh:connect:" + connectionID
 
 	emitEvent := func(event SSHConnectEvent) {
-		wailsRuntime.EventsEmit(s.ctx, eventName, event)
+		application.Get().Event.Emit(eventName, event)
 	}
 
 	go func() {
@@ -239,13 +246,13 @@ func (s *SSH) ConnectSSHAsync(req SSHConnectRequest) (string, error) {
 			InitialWorkdir:           req.InitialWorkdir,
 			StartupCommand:           sshCfg.StartupCommand,
 			OnData: func(sid string, data []byte) {
-				wailsRuntime.EventsEmit(s.ctx, "ssh:data:"+sid, base64.StdEncoding.EncodeToString(data))
+				application.Get().Event.Emit("ssh:data:"+sid, base64.StdEncoding.EncodeToString(data))
 			},
 			OnClosed: func(sid string) {
-				wailsRuntime.EventsEmit(s.ctx, "ssh:closed:"+sid, nil)
+				application.Get().Event.Emit("ssh:closed:"+sid, nil)
 			},
 			OnSync: func(sid string, state ssh_svc.DirectorySyncState) {
-				wailsRuntime.EventsEmit(s.ctx, "ssh:sync:"+sid, state)
+				application.Get().Event.Emit("ssh:sync:"+sid, state)
 			},
 			OnProgress: func(step, message string) {
 				emitEvent(SSHConnectEvent{Type: "progress", Step: step, Message: message})
@@ -593,13 +600,13 @@ func (s *SSH) EnableSSHSync(sessionID string) error {
 func (s *SSH) SplitSSH(existingSessionID string, cols, rows int) (string, error) {
 	return s.manager.NewSessionFrom(existingSessionID, cols, rows,
 		func(sid string, data []byte) {
-			wailsRuntime.EventsEmit(s.ctx, "ssh:data:"+sid, base64.StdEncoding.EncodeToString(data))
+			application.Get().Event.Emit("ssh:data:"+sid, base64.StdEncoding.EncodeToString(data))
 		},
 		func(sid string) {
-			wailsRuntime.EventsEmit(s.ctx, "ssh:closed:"+sid, nil)
+			application.Get().Event.Emit("ssh:closed:"+sid, nil)
 		},
 		func(sid string, state ssh_svc.DirectorySyncState) {
-			wailsRuntime.EventsEmit(s.ctx, "ssh:sync:"+sid, state)
+			application.Get().Event.Emit("ssh:sync:"+sid, state)
 		},
 	)
 }

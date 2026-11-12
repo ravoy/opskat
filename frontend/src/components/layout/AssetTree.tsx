@@ -69,9 +69,10 @@ import { selectLoadError, useAssetStore } from "@/stores/assetStore";
 import { formatBinding, useShortcutStore } from "@/stores/shortcutStore";
 import { useTerminalStore } from "@/stores/terminalStore";
 import { useActiveAssetIds } from "@/hooks/useActiveAssetIds";
-import { MoveAsset } from "../../../wailsjs/go/system/System";
-import { MoveGroup, ReorderAsset, ReorderGroup } from "../../../wailsjs/go/system/System";
-import { asset_entity, group_entity } from "../../../wailsjs/go/models";
+import { MoveAsset } from "@clients/system";
+import { MoveGroup, ReorderAsset, ReorderGroup } from "@clients/system";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
 import {
   DndContext,
   DragOverlay,

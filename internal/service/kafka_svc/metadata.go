@@ -10,7 +10,7 @@ import (
 	"github.com/twmb/franz-go/pkg/kadm"
 	"github.com/twmb/franz-go/pkg/kgo"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 func (s *Service) GetBrokerConfig(ctx context.Context, assetID int64, brokerID int32) (BrokerConfigResponse, error) {

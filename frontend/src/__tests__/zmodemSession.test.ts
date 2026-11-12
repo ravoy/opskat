@@ -11,8 +11,8 @@ import {
   ZmodemPickUploadFiles,
   ZmodemReadChunk,
   ZmodemFinishUpload,
-} from "../../wailsjs/go/ssh/SSH";
-import { SFTPCancelTransfer } from "../../wailsjs/go/ssh/SSH";
+} from "@clients/ssh";
+import { SFTPCancelTransfer } from "@clients/ssh";
 import { notifySuccess } from "../lib/notify";
 
 // 用可控的假 Sentry 捕获其 options，便于在测试里驱动 on_detect / to_terminal。

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useAsyncList, type ListLoad } from "@/hooks/useAsyncList";
-import { ListCredentialsByType } from "../../../wailsjs/go/system/System";
-import { asset_entity, credential_entity } from "../../../wailsjs/go/models";
+import { ListCredentialsByType } from "@clients/system";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as credential_entity from "@bindings/github.com/octays/opskat/internal/model/entity/credential_entity/models";
 import {
   CREDENTIAL_DEFAULTS,
   initCredentialFromConfig,

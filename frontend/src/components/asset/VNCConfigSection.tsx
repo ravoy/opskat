@@ -18,13 +18,7 @@ import {
   type VNCFormState,
 } from "./VNCConfigSection.config";
 import type { AssetFormHandle, AssetTestAttempt, ConfigSectionProps } from "@/lib/assetTypes/formContract";
-import {
-  CheckVNCServerKey,
-  ConnectVNCTemporary,
-  DisconnectVNC,
-  StartVNCStream,
-  TrustVNCServerKey,
-} from "../../../wailsjs/go/vnc/VNC";
+import { CheckVNCServerKey, ConnectVNCTemporary, DisconnectVNC, StartVNCStream, TrustVNCServerKey } from "@clients/vnc";
 import { WailsRfbChannel } from "@/lib/wailsRfbChannel";
 import type { VNCClientHandle } from "@/lib/vncClient";
 import {

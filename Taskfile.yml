@@ -1,0 +1,17 @@
+version: '3'
+
+vars:
+  TARGET_OS: '{{.GOOS | default OS}}'
+  TARGET_ARCH: '{{.ARCH | default ARCH}}'
+
+tasks:
+  build:
+    desc: Build the Wails v3 desktop app with generated bindings
+    cmds:
+      - bun scripts/desktop.mjs build --platform {{.TARGET_OS}}/{{.TARGET_ARCH}} {{if eq .DEV "true"}}--dev{{end}} {{if .EXTRA_TAGS}}--tags {{.EXTRA_TAGS}}{{end}}
+  run:
+    cmds:
+      - bun scripts/desktop.mjs run
+  dev:
+    cmds:
+      - wails3 dev

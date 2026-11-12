@@ -25,9 +25,9 @@ import {
 import { cn } from "@/lib/utils";
 import { useTabStore, type QueryTabMeta } from "@/stores/tabStore";
 import { useQueryStore } from "@/stores/queryStore";
-import { ExecuteRedis } from "../../../wailsjs/go/query/Query";
-import { RedisClusterOverview, RedisSentinelOverview } from "../../../wailsjs/go/redis/Redis";
-import { redis_svc } from "../../../wailsjs/go/models";
+import { ExecuteRedis } from "@clients/query";
+import { RedisClusterOverview, RedisSentinelOverview } from "@clients/redis";
+import * as redis_svc from "@bindings/github.com/octays/opskat/internal/service/redis_svc/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 const CLUSTER_TOTAL_SLOTS = 16384;

@@ -15,7 +15,7 @@ import {
   ConfirmDialog,
   Input,
 } from "@opskat/ui";
-import { GetAppVersion } from "../../../wailsjs/go/system/System";
+import { GetAppVersion } from "@clients/system";
 import {
   GetUpdateChannel,
   SetUpdateChannel,
@@ -25,15 +25,15 @@ import {
   SetDownloadMirror,
   GetAvailableMirrors,
   RestartApp,
-} from "../../../wailsjs/go/system/System";
+} from "@clients/system";
 import { Download, Loader2, ExternalLink, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { notifySuccess } from "@/lib/notify";
-import { BrowserOpenURL, EventsOn } from "../../../wailsjs/runtime/runtime";
+import { BrowserOpenURL, EventsOn } from "@/lib/desktop";
 import { DOWNLOAD_MIRROR_SETTING_ID } from "./downloadMirror";
 import { errorMessage } from "@/lib/errorMessage";
 
-export const REPOSITORY_URL = "https://github.com/opskat/opskat";
+export const REPOSITORY_URL = "https://github.com/octays/opskat";
 
 export function UpdateSection() {
   const { t } = useTranslation();

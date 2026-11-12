@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "@opskat/ui";
 import { Copy, Link, Download, Trash2, X, Pencil, MoveRight } from "lucide-react";
-import type { oss_svc } from "../../../wailsjs/go/models";
+import type * as oss_svc from "@bindings/github.com/octays/opskat/internal/service/oss_svc/models";
 import { formatBytes } from "@/lib/formatBytes";
 import { notifyCopied } from "@/lib/notify";
 import { prefixLeafName } from "@/lib/ossPrefixTree";

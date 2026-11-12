@@ -19,13 +19,13 @@ It **returns** — nothing to keep in a foreground terminal — and it is idempo
 Everything after that is an ad-hoc command against the live session — no spec file, no rerun, no rebuild between steps:
 
 ```bash
-node e2e/drive.mjs snapshot                        # what is on screen right now
-node e2e/drive.mjs click add-asset-button          # a bare word is a data-testid
-node e2e/drive.mjs fill asset-form-name-input box1
-node e2e/drive.mjs click asset-form-submit
-node e2e/drive.mjs wait asset-form-dialog --hidden
-node e2e/drive.mjs shot created                    # → e2e/scratch/<scenario>/created.png
-node e2e/oracle.mjs assets box1                    # …and confirm it really hit the disk
+bun e2e/drive.mjs snapshot                        # what is on screen right now
+bun e2e/drive.mjs click add-asset-button          # a bare word is a data-testid
+bun e2e/drive.mjs fill asset-form-name-input box1
+bun e2e/drive.mjs click asset-form-submit
+bun e2e/drive.mjs wait asset-form-dialog --hidden
+bun e2e/drive.mjs shot created                    # → e2e/scratch/<scenario>/created.png
+bun e2e/oracle.mjs assets box1                    # …and confirm it really hit the disk
 ```
 
 `drive.mjs --help` and `oracle.mjs --help` list the full command set. The browser, the page and its state persist between commands, so you can look, act, look again, and change your mind — which is the point. Write a spec only for the third row of the table below.
@@ -34,19 +34,19 @@ node e2e/oracle.mjs assets box1                    # …and confirm it really hi
 
 **Every command is recorded.** Each `drive.mjs` call appends one line — command, arguments, and outcome including failures and refusals — to `e2e/scratch/<scenario>/drive.log`. The sequence that produced a screenshot is captured as it happens rather than reconstructed from shell history afterwards.
 
-**The browser is headless.** Driving it steals no focus and flashes no windows; `shot` and `snapshot` are how you see it. Pass `ARGS=--headed` when you want to watch. (The native Wails window that `wails dev` itself opens is separate and still appears — the app under test is a desktop app.)
+**The browser is headless.** Driving it steals no focus and flashes no windows; `shot` and `snapshot` are how you see it. Pass `ARGS=--headed` when you want to watch. (The native Wails window that `wails3 dev` itself opens is separate and still appears — the app under test is a desktop app.)
 
 **Data isolation is enforced, not assumed.** The sandbox boots with `OPSKAT_DATA_DIR` pointing at its own directory and `OPSKAT_E2E=1`, and `resolveBootstrap` in `main.go` refuses to start any run marked `OPSKAT_E2E=1` whose data dir resolves to your real one. So no verification can reach your live asset inventory, credentials, `master.key` or audit log, however it is invoked. `make dev` is the opposite — it *is* your real data directory, so it is for using the app, not for verifying against it.
 
 Two guards, because they stop different things. The Go one stops a verification run from *booting* on real data; `drive.mjs` separately refuses to *drive* any URL that is not this checkout's own — so `open http://localhost:34115` (that is `make dev`, your real data) is rejected rather than silently obeyed.
 
-**Worktrees run concurrently.** Ports, data dir, browser profile, logs and the session file are all keyed by a hash of the checkout path, and the block assignment is recorded in `~/.opskat-verify/workspaces.json`, so two worktrees each get a disjoint set and never see each other. `drive.mjs` and `oracle.mjs` resolve the session for *their own* checkout, so the same command means different things in different worktrees — which is what you want. `node e2e/oracle.mjs where` prints what the current one resolved to.
+**Worktrees run concurrently.** Ports, data dir, browser profile, logs and the session file are all keyed by a hash of the checkout path, and the block assignment is recorded in `~/.opskat-verify/workspaces.json`, so two worktrees each get a disjoint set and never see each other. `drive.mjs` and `oracle.mjs` resolve the session for *their own* checkout, so the same command means different things in different worktrees — which is what you want. `bun e2e/oracle.mjs where` prints what the current one resolved to.
 
 The sandbox data dir persists across launches; `make dev-sandbox ARGS=--reset` wipes it. `ARGS=--mocks` also starts the in-harness Redis / SSH / OpenAI mocks so Test Connection and the AI stack work with no real infrastructure; `ARGS=--extensions` builds the in-repo extensions into the sandbox and turns the extension system on (off by default — the wasm compile is slow).
 
 ## Workflow
 
-1. Run `make lint` and the targeted tests; run `go test ./...` and `pnpm test` only when the blast radius is not confirmed local or a gate requires it ([DEVELOP.md](DEVELOP.md#common-commands)).
+1. Run `make lint` and the targeted tests; run `go test ./...` and `bun --bun run test` only when the blast radius is not confirmed local or a gate requires it ([DEVELOP.md](DEVELOP.md#common-commands)).
 2. Start the drivable target. A real external dependency is reached through the gitignored `.env`, which the sandbox and `playwright.config.ts` load; configuration it lacks is asked for, not arranged around ([e2e-harness-guide.md](references/e2e-harness-guide.md#verifying-against-a-real-server-env-targets)).
 3. Choose the cheapest form that observes the contract, and put everything it produces under gitignored `e2e/scratch/<scenario>/`:
 

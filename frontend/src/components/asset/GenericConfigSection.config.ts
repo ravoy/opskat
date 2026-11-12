@@ -1,4 +1,4 @@
-import type { custom_type_entity } from "../../../wailsjs/go/models";
+import type * as custom_type_entity from "@bindings/github.com/octays/opskat/internal/model/entity/custom_type_entity/models";
 import {
   CONNECTION_DEFAULTS,
   buildProxyChainJSON,

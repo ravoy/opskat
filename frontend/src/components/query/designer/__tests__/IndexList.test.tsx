@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import { IndexList } from "../IndexList";
 import type { DesignerIndex } from "../model";
-import { dbdriver } from "../../../../../wailsjs/go/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { fakeDriverWith } from "@/__tests__/dbDriverFixtures";
 
 function index(patch: Partial<DesignerIndex>): DesignerIndex {
@@ -24,12 +24,12 @@ const rowOf = (name: string) => screen.getByText(name).closest('[role="row"]') a
 const withIndexEditing = (editing: Partial<dbdriver.IndexEditing>) =>
   new dbdriver.Descriptor({
     ...fakeDriverWith(["alter_table"]),
-    indexEditing: { types: [], nameScope: "table", ...editing },
+    indexEditing: { types: [], nameScope: dbdriver.IndexNameScope.IndexScopeTable, ...editing },
   });
 
 describe("IndexList", () => {
   it("类型取驱动声明的名称;未声明时内置类型用宿主文案,其余显示原样", () => {
-    const descriptor = withIndexEditing({ types: [{ id: "unique", label: "唯一键" }] });
+    const descriptor = withIndexEditing({ types: [{ id: dbdriver.IndexType.IndexTypeUnique, label: "唯一键" }] });
     render(
       <IndexList
         descriptor={descriptor}
@@ -88,8 +88,8 @@ describe("IndexList", () => {
     const descriptor = withIndexEditing({
       comments: true,
       options: [
-        { key: "method", label: "方法", type: "enum", enum: ["BTREE", "HASH"] },
-        { key: "clustered", label: "聚集", type: "switch" },
+        { key: "method", label: "方法", type: dbdriver.DriverFieldType.FieldTypeEnum, enum: ["BTREE", "HASH"] },
+        { key: "clustered", label: "聚集", type: dbdriver.DriverFieldType.FieldTypeSwitch },
       ],
     });
     render(

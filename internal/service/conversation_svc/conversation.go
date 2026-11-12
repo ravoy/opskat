@@ -10,9 +10,9 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/internal/model/entity/conversation_entity"
-	"github.com/opskat/opskat/internal/pkg/dbutil"
-	"github.com/opskat/opskat/internal/repository/conversation_repo"
+	"github.com/octays/opskat/internal/model/entity/conversation_entity"
+	"github.com/octays/opskat/internal/pkg/dbutil"
+	"github.com/octays/opskat/internal/repository/conversation_repo"
 )
 
 // ConversationSvc 会话业务接口

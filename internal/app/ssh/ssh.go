@@ -3,20 +3,23 @@ package ssh
 
 import (
 	"context"
+	"fmt"
+	"regexp"
 	"sync"
 
-	"github.com/opskat/opskat/internal/assetconn"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/transfer"
-	"github.com/opskat/opskat/internal/service/conntest"
-	"github.com/opskat/opskat/internal/service/forward_svc"
-	"github.com/opskat/opskat/internal/service/sessionid"
-	"github.com/opskat/opskat/internal/service/sftp_svc"
-	"github.com/opskat/opskat/internal/service/ssh_svc"
-	"github.com/opskat/opskat/internal/service/zmodem_svc"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/assetconn"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/transfer"
+	"github.com/octays/opskat/internal/service/conntest"
+	"github.com/octays/opskat/internal/service/forward_svc"
+	"github.com/octays/opskat/internal/service/sessionid"
+	"github.com/octays/opskat/internal/service/sftp_svc"
+	"github.com/octays/opskat/internal/service/ssh_svc"
+	"github.com/octays/opskat/internal/service/zmodem_svc"
+	"github.com/octays/opskat/internal/sshpool"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // LangProvider 由 system binder 实现，提供当前 UI 语言。
@@ -75,7 +78,7 @@ func New(appCtx context.Context, lang LangProvider, mgr *ssh_svc.Manager, sftp *
 	// ZMODEM 文件桥的进度复用 SFTP 同一套 "transfer:progress:<id>" 事件管线。
 	// emit 在调用时才读 s.ctx（Startup 注入），传输总发生在 Startup 之后，故安全。
 	s.zmodem = zmodem_svc.New(func(p transfer.Progress) {
-		wailsRuntime.EventsEmit(s.ctx, "transfer:progress:"+p.TransferID, p)
+		application.Get().Event.Emit("transfer:progress:"+p.TransferID, p)
 	})
 	s.forwardManager = NewForwardManager(&poolDialer{})
 	s.forward = forward_svc.New(s.forwardManager)
@@ -112,6 +115,22 @@ func (s *SSH) dropPooledConns(_ context.Context, assetID int64) error {
 // 避免与持久化的旧 connecting tab 撞号(issue #141)。
 func (s *SSH) nextConnectionID() string {
 	return s.connIDGen.Next()
+}
+
+// clientConnectionIDPattern 约束前端预生成的连接 ID：字母数字开头，可含 - _ ，
+// 长度 1-64。IPC 边界输入，先校验再当 map key / 事件名使用。
+var clientConnectionIDPattern = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$`)
+
+// resolveConnectionID 采纳前端预生成的连接 ID（订阅进度事件必须先于连接调用，
+// 见 SSHConnectRequest.ConnectionID），非法值报错；留空回退服务端生成。
+func (s *SSH) resolveConnectionID(clientID string) (string, error) {
+	if clientID == "" {
+		return s.nextConnectionID(), nil
+	}
+	if !clientConnectionIDPattern.MatchString(clientID) {
+		return "", fmt.Errorf("%s: %q", i18n.Pick(s.lang.Lang(), "无效的连接 ID", "invalid connection id"), clientID)
+	}
+	return clientID, nil
 }
 
 // Startup 保存 Wails ctx，方便 EventsEmit 用。

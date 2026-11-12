@@ -33,7 +33,12 @@ type GrantItem struct {
 	GroupName      string `gorm:"column:group_name;type:varchar(255)"`
 	Command        string `gorm:"column:command;type:text"`
 	Detail         string `gorm:"column:detail;type:text"`
-	Createtime     int64  `gorm:"column:createtime"`
+	// Expiretime 是该条授权的到期时间（unix 秒）。0 = 未单独设期，跟随会话的
+	// 24 小时上限（opsctl sessionMaxAge）。限时全量授权（"30分钟内不再询问"）写
+	// now+时长；读取侧在 ListApprovedItems 统一过滤，消费方（AI exec / opsctl /
+	// policy show）无需各自判断。
+	Expiretime int64 `gorm:"column:expiretime;default:0"`
+	Createtime int64 `gorm:"column:createtime"`
 }
 
 // TableName GORM 表名

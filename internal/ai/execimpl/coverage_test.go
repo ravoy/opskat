@@ -6,9 +6,9 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // exemptFromExec 是尚未接入统一 exec 的资产类型；新增资产类型应实现执行器，

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/service/extstore_svc"
-	"github.com/opskat/opskat/pkg/extstore"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/service/extstore_svc"
+	"github.com/octays/opskat/pkg/extstore"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
@@ -27,6 +27,8 @@ type ExtStore interface {
 }
 
 // SetExtStore main.go 注入扩展商店。
+//
+//wails:ignore
 func (o *Opsctl) SetExtStore(s ExtStore) { o.extStore = s }
 
 // handleExtStoreSearch 处理 `opsctl ext search`：只读，不弹窗、不拉起窗口。

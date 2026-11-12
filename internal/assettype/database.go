@@ -7,14 +7,14 @@ import (
 	"slices"
 	"strings"
 
-	dbregistry "github.com/opskat/opskat/internal/dbdriver"
+	dbregistry "github.com/octays/opskat/internal/dbdriver"
 	// 数据库资产类型离不开驱动：链接它的二进制同时链接全部内置驱动。
-	_ "github.com/opskat/opskat/internal/dbdriver/builtin"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/service/credential_resolver"
-	"github.com/opskat/opskat/internal/service/credential_svc"
-	"github.com/opskat/opskat/pkg/dbdriver"
+	_ "github.com/octays/opskat/internal/dbdriver/builtin"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 type databaseHandler struct{}

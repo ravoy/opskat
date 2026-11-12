@@ -1,4 +1,5 @@
-import { dbdriver } from "../../../../wailsjs/go/models";
+import { toDriverDefaultKind } from "./model";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import type { DriverDescriptor } from "@/lib/dbDrivers";
 import type { TableStructure } from "./model";
 import { defaultText, type DraftColumn, type TableDraft } from "./draft";
@@ -103,7 +104,8 @@ export function buildCreateRequest(
       };
       if (comments && c.comment.trim() !== "") column.comment = c.comment.trim();
       // text 是没给写法的原文:不带写法,按旧规则由驱动猜。
-      if (descriptor?.explicitDefaults && c.default.kind !== "text") column.defaultKind = c.default.kind;
+      if (descriptor?.explicitDefaults && c.default.kind !== "text")
+        column.defaultKind = toDriverDefaultKind(c.default.kind);
       if (descriptor?.autoIncrement && c.autoIncrement) column.autoIncrement = true;
       return column;
     });

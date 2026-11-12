@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
 import { LocalConfigSection } from "@/components/asset/LocalConfigSection";
 import type { AssetFormContext } from "@/lib/assetTypes/formContract";
-import { ListLocalShells } from "../../../../wailsjs/go/local/Local";
+import { ListLocalShells } from "@clients/local";
 
 const ctx: AssetFormContext = { isEdit: false, encryptPassword: async (p) => p };
 

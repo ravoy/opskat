@@ -7,8 +7,9 @@ import { AssetTree } from "@/components/layout/AssetTree";
 import { useAssetStore } from "@/stores/assetStore";
 import { useTerminalStore } from "@/stores/terminalStore";
 import { useTabStore } from "@/stores/tabStore";
-import { ListAssets, ListGroups } from "../../wailsjs/go/system/System";
-import { asset_entity, group_entity } from "../../wailsjs/go/models";
+import { ListAssets, ListGroups } from "@clients/system";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
 import { profiled } from "./renderCount";
 
 // Every asset row renders exactly one EntityIcon with the Server fallback (group rows use
@@ -66,12 +67,12 @@ function seed() {
       const n = assetId++;
       assets.push(
         new asset_entity.Asset({
+          Status: 1,
           ID: n,
           Name: n % 2 ? `服务器${n}` : `web-${n}`,
           Type: "ssh",
           GroupID: g.ID,
           Icon: "",
-          Status: 1,
           SortOrder: n,
         })
       );
@@ -202,7 +203,7 @@ describe("AssetTree render cost (1000 assets / 100 groups)", () => {
     const parent = new group_entity.Group({ ID: 1, Name: "父组", ParentID: 0, Icon: "", SortOrder: 1 });
     const child = new group_entity.Group({ ID: 2, Name: "子组", ParentID: 1, Icon: "", SortOrder: 2 });
     const mk = (id: number, groupId: number) =>
-      new asset_entity.Asset({ ID: id, Name: `a${id}`, Type: "ssh", GroupID: groupId, Icon: "", Status: 1 });
+      new asset_entity.Asset({ Status: 1, ID: id, Name: `a${id}`, Type: "ssh", GroupID: groupId, Icon: "" });
     const assets = [mk(1, 1), mk(2, 2), mk(3, 2), mk(4, 0), mk(5, 0)];
     vi.mocked(ListAssets).mockResolvedValue(assets);
     vi.mocked(ListGroups).mockResolvedValue([parent, child]);

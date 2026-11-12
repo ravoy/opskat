@@ -5,15 +5,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, Button, Input, Separa
 import { PolicyTagEditor } from "@/components/asset/PolicyTagEditor";
 import { toast } from "sonner";
 import { notifySuccess } from "@/lib/notify";
-import { ListPolicyGroups } from "../../../wailsjs/go/system/System";
-import {
-  CreatePolicyGroup,
-  UpdatePolicyGroup,
-  DeletePolicyGroup,
-  CopyPolicyGroup,
-} from "../../../wailsjs/go/system/System";
+import { ListPolicyGroups } from "@clients/system";
+import { CreatePolicyGroup, UpdatePolicyGroup, DeletePolicyGroup, CopyPolicyGroup } from "@clients/system";
 import { loadExtensionLocales } from "@/extension/i18n";
-import { policy_group_entity } from "../../../wailsjs/go/models";
+import * as policy_group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/policy_group_entity/models";
 import { AsyncState, type AsyncStatus } from "@/components/common/AsyncState";
 import { errorMessage } from "@/lib/errorMessage";
 

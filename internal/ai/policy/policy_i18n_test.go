@@ -3,7 +3,7 @@ package policy
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/aictx"
 )
 
 // IsZh/PolicyMsg pick the language opsctl-initiated approval flows show the

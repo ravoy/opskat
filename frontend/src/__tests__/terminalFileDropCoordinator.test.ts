@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { OnFileDrop, OnFileDropOff } from "../../wailsjs/runtime/runtime";
+import { OnFileDrop, OnFileDropOff } from "@/lib/desktop";
 import {
   registerFileManagerDropTarget,
   registerFileDropTarget,

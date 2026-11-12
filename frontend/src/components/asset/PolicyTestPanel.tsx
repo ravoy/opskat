@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlaskConical, ShieldCheck, ShieldX, ShieldAlert, Loader2 } from "lucide-react";
 import { cn, Input, Button } from "@opskat/ui";
-import { TestPolicyRule } from "../../../wailsjs/go/system/System";
-import { system as system_models } from "../../../wailsjs/go/models";
+import { TestPolicyRule } from "@clients/system";
+import * as system_models from "@bindings/github.com/octays/opskat/internal/app/system/models";
 
 interface PolicyTestPanelProps {
   policyType: string;

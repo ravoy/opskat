@@ -14,10 +14,10 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest/observer"
 
-	"github.com/opskat/opskat/internal/approval"
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/internal/service/extension_svc"
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/internal/approval"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/internal/service/extension_svc"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // recordingDevInstaller stands in for extension_svc.Install: it reads the

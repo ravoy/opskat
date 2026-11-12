@@ -8,7 +8,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/sshagent"
+	"github.com/octays/opskat/internal/sshagent"
 )
 
 // 来源生命周期相关的稳定错误码（与规格错误码表一致）。传输层错误码由

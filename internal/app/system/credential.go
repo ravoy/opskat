@@ -5,14 +5,15 @@ import (
 	"strings"
 
 	"github.com/cago-frame/cago/pkg/logger"
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/service/asset_credential_svc"
-	"github.com/opskat/opskat/internal/service/credential_mgr_svc"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/service/asset_credential_svc"
+	"github.com/octays/opskat/internal/service/credential_mgr_svc"
+	"github.com/octays/opskat/internal/service/credential_svc"
 	"go.uber.org/zap"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // --- 凭证操作 ---
@@ -63,7 +64,7 @@ func (s *System) GenerateSSHKey(name, comment, keyType string, keySize int, pass
 
 // ImportSSHKeyFile 通过文件选择框导入 SSH 密钥
 func (s *System) ImportSSHKeyFile(name, comment, passphrase, username string) (*credential_entity.Credential, error) {
-	filePath, err := wailsRuntime.OpenFileDialog(s.ctx, wailsRuntime.OpenDialogOptions{
+	filePath, err := desktop.OpenFile(application.OpenFileDialogOptions{
 		Title: "选择 SSH 私钥文件",
 	})
 	if err != nil {
@@ -126,9 +127,9 @@ func (s *System) ExportSSHPrivateKey(id int64) (bool, error) {
 		return false, fmt.Errorf("凭证类型不是 SSH 密钥")
 	}
 
-	filePath, err := wailsRuntime.SaveFileDialog(s.ctx, wailsRuntime.SaveDialogOptions{
-		Title:           "导出 SSH 私钥",
-		DefaultFilename: privateKeyExportFilename(cred.Name),
+	filePath, err := desktop.SaveFile(application.SaveFileDialogOptions{
+		Title:    "导出 SSH 私钥",
+		Filename: privateKeyExportFilename(cred.Name),
 	})
 	if err != nil {
 		return false, fmt.Errorf("保存文件对话框失败: %w", err)

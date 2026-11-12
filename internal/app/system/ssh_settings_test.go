@@ -3,8 +3,8 @@ package system
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/pkg/sshtuning"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/pkg/sshtuning"
 )
 
 func TestGetSSHConnectionSettingsReturnsDefaultsWhenUnset(t *testing.T) {

@@ -10,7 +10,7 @@ import (
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"github.com/google/uuid"
-	"github.com/opskat/opskat/internal/service/sftp_svc"
+	"github.com/octays/opskat/internal/service/sftp_svc"
 	"go.uber.org/zap"
 	"golang.org/x/text/encoding"
 	"golang.org/x/text/encoding/simplifiedchinese"

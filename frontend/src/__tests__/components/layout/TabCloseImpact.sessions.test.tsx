@@ -5,12 +5,12 @@ import { useTabStore, type Tab } from "@/stores/tabStore";
 import { useSFTPStore, type SFTPTransfer } from "@/stores/sftpStore";
 import { TRANSPORTS, useTerminalStore, type TerminalTabData } from "@/stores/terminalStore";
 import { VNCPanel } from "@/components/vnc/VNCPanel";
-import { ConnectVNC } from "../../../../wailsjs/go/vnc/VNC";
-import type { asset_entity } from "../../../../wailsjs/go/models";
+import { ConnectVNC } from "@clients/vnc";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 const onConnected: { current: (() => void) | null } = { current: null };
 
-vi.mock("../../../../wailsjs/go/vnc/VNC", () => ({
+vi.mock("@clients/vnc", () => ({
   CheckVNCServerKey: vi.fn(),
   ConnectVNC: vi.fn(),
   DisconnectVNC: vi.fn().mockResolvedValue(undefined),

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/pkg/sshtuning"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/pkg/sshtuning"
 )
 
 // 保活间隔的允许范围（秒）。范围校验在 IPC 边界做，避免把无意义的值（如 1 秒一次

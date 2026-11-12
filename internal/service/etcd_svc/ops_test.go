@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/opskat/opskat/internal/service/etcd_svc/mock_kv"
+	"github.com/octays/opskat/internal/service/etcd_svc/mock_kv"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.etcd.io/etcd/api/v3/etcdserverpb"

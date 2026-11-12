@@ -1,3 +1,8 @@
+import { focusedWindow } from "@/lib/workspace";
+import { currentWindowPage } from "@/lib/openPageWindow";
+import { WindowTitleBar } from "@/components/layout/WindowTitleBar";
+import { resolveTabLabel } from "@/components/layout/pageTabMeta";
+import { useWorkspaceWindow } from "@/hooks/useWorkspaceWindow";
 import { useState, useCallback, useRef, useEffect, lazy, Suspense } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -40,12 +45,14 @@ import { openAssetConnection } from "@/lib/openAsset";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useExternalEditStore } from "@/stores/externalEditStore";
 import { useAIStore } from "@/stores/aiStore";
-import { asset_entity, group_entity } from "../wailsjs/go/models";
-import { EventsEmit, EventsOn, WindowToggleMaximise } from "../wailsjs/runtime/runtime";
-import { ConfirmQuit } from "../wailsjs/go/system/System";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
+import { EventsEmit, EventsOn, WindowToggleMaximise } from "@/lib/desktop";
+import { ConfirmQuit } from "@clients/system";
 import { errorMessage } from "@/lib/errorMessage";
 
 function App() {
+  const workspaceWindow = useWorkspaceWindow();
   const { t } = useTranslation();
   const [quitActivities, setQuitActivities] = useState<QuitActivity[] | null>(null);
 
@@ -365,7 +372,8 @@ function App() {
       <ErrorBoundary>
         <TooltipProvider>
           <div className="flex h-screen w-screen flex-col overflow-hidden bg-background" data-testid="app-root">
-            {!sidebarHidden && (
+            {focusedWindow && <WindowTitleBar title={activeTab ? resolveTabLabel(activeTab, t) : "OpsKat"} />}
+            {!focusedWindow && !sidebarHidden && (
               <TopBar
                 commandOpen={commandOpen}
                 onCommandOpenChange={setCommandOpen}
@@ -376,7 +384,7 @@ function App() {
                 onToggleAIPanel={toggleAIPanel}
               />
             )}
-            {sidebarHidden && (
+            {(sidebarHidden || focusedWindow) && (
               <CommandPaletteDialog
                 open={commandOpen}
                 onOpenChange={setCommandOpen}
@@ -385,99 +393,101 @@ function App() {
             )}
             <WindowControls />
             <div className="flex flex-1 min-h-0 overflow-hidden">
-              {tabBarLayout === "left" ? (
-                <>
-                  {!sidebarHidden && (
-                    <Sidebar
-                      activePage={activePage}
-                      onPageChange={handlePageChange}
-                      onHideSidebar={toggleSidebarHidden}
-                    />
-                  )}
-                  {leftPanelVisible && (
-                    <LeftPanel>
-                      {activeSidePanel === "assets" ? (
-                        <AssetTree
-                          collapsed={false}
-                          sidebarHidden={sidebarHidden}
-                          onShowSidebar={toggleSidebarHidden}
-                          onAddAsset={handleAddAsset}
-                          onAddGroup={() => {
-                            setEditingGroup(null);
-                            setGroupDialogOpen(true);
-                          }}
-                          onEditGroup={(group) => {
-                            setEditingGroup(group);
-                            setGroupDialogOpen(true);
-                          }}
-                          onGroupDetail={openGroupDetail}
-                          onEditAsset={handleEditAsset}
-                          onCopyAsset={handleCopyAsset}
-                          onConnectAsset={handleConnectAsset}
-                          onConnectAssetInNewTab={handleConnectAssetInNewTab}
-                          onOpenFileManager={handleOpenFileManager}
-                          onSelectAsset={handleSelectAsset}
-                          onOpenInfoTab={openInfoTab}
-                        />
-                      ) : (
-                        <SideTabList />
-                      )}
-                    </LeftPanel>
-                  )}
-                </>
-              ) : (
-                <>
-                  {!sidebarHidden && (
-                    <Sidebar
-                      activePage={activePage}
-                      onPageChange={handlePageChange}
-                      onHideSidebar={toggleSidebarHidden}
-                    />
-                  )}
-                  <div
-                    className="relative overflow-hidden shrink-0 transition-[width] duration-200"
-                    style={{ width: assetTreeCollapsed ? 0 : assetTreeWidth }}
-                  >
-                    <AssetTree
-                      collapsed={false}
-                      sidebarHidden={sidebarHidden}
-                      onShowSidebar={toggleSidebarHidden}
-                      onAddAsset={handleAddAsset}
-                      onAddGroup={() => {
-                        setEditingGroup(null);
-                        setGroupDialogOpen(true);
-                      }}
-                      onEditGroup={(group) => {
-                        setEditingGroup(group);
-                        setGroupDialogOpen(true);
-                      }}
-                      onGroupDetail={openGroupDetail}
-                      onEditAsset={handleEditAsset}
-                      onCopyAsset={handleCopyAsset}
-                      onConnectAsset={handleConnectAsset}
-                      onConnectAssetInNewTab={handleConnectAssetInNewTab}
-                      onOpenFileManager={handleOpenFileManager}
-                      onSelectAsset={handleSelectAsset}
-                      onOpenInfoTab={openInfoTab}
-                    />
-                    {/* Resize handle */}
-                    {!assetTreeCollapsed && (
-                      <div
-                        className="absolute right-0 top-0 bottom-0 w-1 cursor-col-resize z-10 hover:bg-primary/20 active:bg-primary/30 transition-colors"
-                        onMouseDown={handleAssetTreeResizeStart}
+              {!focusedWindow &&
+                (tabBarLayout === "left" ? (
+                  <>
+                    {!sidebarHidden && (
+                      <Sidebar
+                        activePage={activePage}
+                        onPageChange={handlePageChange}
+                        onHideSidebar={toggleSidebarHidden}
                       />
                     )}
-                  </div>
-                  {assetTreeResizing && <div className="fixed inset-0 z-50 cursor-col-resize" />}
-                </>
-              )}
+                    {leftPanelVisible && (
+                      <LeftPanel>
+                        {activeSidePanel === "assets" ? (
+                          <AssetTree
+                            collapsed={false}
+                            sidebarHidden={sidebarHidden}
+                            onShowSidebar={toggleSidebarHidden}
+                            onAddAsset={handleAddAsset}
+                            onAddGroup={() => {
+                              setEditingGroup(null);
+                              setGroupDialogOpen(true);
+                            }}
+                            onEditGroup={(group) => {
+                              setEditingGroup(group);
+                              setGroupDialogOpen(true);
+                            }}
+                            onGroupDetail={openGroupDetail}
+                            onEditAsset={handleEditAsset}
+                            onCopyAsset={handleCopyAsset}
+                            onConnectAsset={handleConnectAsset}
+                            onConnectAssetInNewTab={handleConnectAssetInNewTab}
+                            onOpenFileManager={handleOpenFileManager}
+                            onSelectAsset={handleSelectAsset}
+                            onOpenInfoTab={openInfoTab}
+                          />
+                        ) : (
+                          <SideTabList />
+                        )}
+                      </LeftPanel>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {!sidebarHidden && (
+                      <Sidebar
+                        activePage={activePage}
+                        onPageChange={handlePageChange}
+                        onHideSidebar={toggleSidebarHidden}
+                      />
+                    )}
+                    <div
+                      className="relative overflow-hidden shrink-0 transition-[width] duration-200"
+                      style={{ width: assetTreeCollapsed ? 0 : assetTreeWidth }}
+                    >
+                      <AssetTree
+                        collapsed={false}
+                        sidebarHidden={sidebarHidden}
+                        onShowSidebar={toggleSidebarHidden}
+                        onAddAsset={handleAddAsset}
+                        onAddGroup={() => {
+                          setEditingGroup(null);
+                          setGroupDialogOpen(true);
+                        }}
+                        onEditGroup={(group) => {
+                          setEditingGroup(group);
+                          setGroupDialogOpen(true);
+                        }}
+                        onGroupDetail={openGroupDetail}
+                        onEditAsset={handleEditAsset}
+                        onCopyAsset={handleCopyAsset}
+                        onConnectAsset={handleConnectAsset}
+                        onConnectAssetInNewTab={handleConnectAssetInNewTab}
+                        onOpenFileManager={handleOpenFileManager}
+                        onSelectAsset={handleSelectAsset}
+                        onOpenInfoTab={openInfoTab}
+                      />
+                      {/* Resize handle */}
+                      {!assetTreeCollapsed && (
+                        <div
+                          className="absolute right-0 top-0 bottom-0 w-1 cursor-col-resize z-10 hover:bg-primary/20 active:bg-primary/30 transition-colors"
+                          onMouseDown={handleAssetTreeResizeStart}
+                        />
+                      )}
+                    </div>
+                    {assetTreeResizing && <div className="fixed inset-0 z-50 cursor-col-resize" />}
+                  </>
+                ))}
               <MainPanel
                 onEditAsset={handleEditAsset}
                 onDeleteAsset={handleDeleteAsset}
                 onConnectAsset={handleConnectAsset}
-                topBarHidden={sidebarHidden}
+                topBarHidden={sidebarHidden && !focusedWindow}
+                tabBarMode={currentWindowPage() ? "hidden" : focusedWindow ? "top" : "auto"}
               />
-              <SideAssistantPanel collapsed={aiPanelCollapsed} onToggle={toggleAIPanel} />
+              {!focusedWindow && <SideAssistantPanel collapsed={aiPanelCollapsed} onToggle={toggleAIPanel} />}
             </div>
           </div>
 
@@ -502,10 +512,18 @@ function App() {
           <ExtensionInstallConfirmDialog />
           <TabCloseConfirmHost />
           <ActiveTasksQuitDialog
-            open={quitActivities !== null}
-            activities={quitActivities ?? []}
-            onOpenChange={(open) => !open && setQuitActivities(null)}
-            onConfirm={() => ConfirmQuit()}
+            open={quitActivities !== null || workspaceWindow.activities !== null}
+            activities={quitActivities ?? workspaceWindow.activities ?? []}
+            onOpenChange={(open) => {
+              if (!open) {
+                setQuitActivities(null);
+                workspaceWindow.cancel();
+              }
+            }}
+            onConfirm={() => {
+              if (workspaceWindow.activities) workspaceWindow.confirm();
+              else void ConfirmQuit();
+            }}
           />
           {snippetRunTarget && <SnippetAssetDrawer snippet={snippetRunTarget} onClose={clearSnippetHostPick} />}
           <Toaster richColors />

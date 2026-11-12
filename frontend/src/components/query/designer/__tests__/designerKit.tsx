@@ -5,8 +5,10 @@ import { TableDesigner } from "../TableDesigner";
 import { useQueryStore, type InnerTab } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
 import { useAssetStore } from "@/stores/assetStore";
-import { asset_entity, dbdriver, query_svc } from "../../../../../wailsjs/go/models";
-import { GetAlterTableModel, GetAlterTableStatements, GetTableMetadata } from "../../../../../wailsjs/go/query/Query";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
+import { GetAlterTableModel, GetAlterTableStatements, GetTableMetadata } from "@clients/query";
 import { BUILTIN_DRIVERS, provideDrivers } from "@/__tests__/dbDriverFixtures";
 
 // 设计表测试共用的夹具:资产与查询标签、MySQL 与旧扩展的改表模型、像驱动一样回答的语句生成,以及按
@@ -70,7 +72,7 @@ export function mysqlModel(): dbdriver.AlterTableModel {
         type: "bigint unsigned",
         nullable: false,
         defaultValue: "",
-        defaultKind: "none",
+        defaultKind: dbdriver.DefaultKind.DefaultKindNone,
         comment: "订单 ID",
         autoIncrement: true,
       },
@@ -79,14 +81,21 @@ export function mysqlModel(): dbdriver.AlterTableModel {
         type: "varchar(16)",
         nullable: false,
         defaultValue: "pending",
-        defaultKind: "value",
+        defaultKind: dbdriver.DefaultKind.DefaultKindValue,
         comment: "",
       },
-      { name: "note", type: "varchar(255)", nullable: true, defaultValue: "", defaultKind: "null", comment: "备注" },
+      {
+        name: "note",
+        type: "varchar(255)",
+        nullable: true,
+        defaultValue: "",
+        defaultKind: dbdriver.DefaultKind.DefaultKindNull,
+        comment: "备注",
+      },
     ],
     indexes: [
-      { name: "PRIMARY", type: "primary", columns: [{ name: "id" }] },
-      { name: "idx_note", type: "normal", columns: [{ name: "note" }] },
+      { name: "PRIMARY", type: dbdriver.IndexType.IndexTypePrimary, columns: [{ name: "id" }] },
+      { name: "idx_note", type: dbdriver.IndexType.IndexTypeNormal, columns: [{ name: "note" }] },
     ],
   });
 }

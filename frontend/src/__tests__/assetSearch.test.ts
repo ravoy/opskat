@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeAll, vi } from "vitest";
 import { buildGroupPathMap, filterAssets } from "@/lib/assetSearch";
 import { pinyinMatch } from "@/lib/pinyin";
-import type { asset_entity, group_entity } from "../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import type * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
 
 // The pinyin dictionary loads asynchronously at module load; wait until pinyin matching is live.
 beforeAll(() => vi.waitFor(() => expect(pinyinMatch("拼音", "py")).toBe(true)));

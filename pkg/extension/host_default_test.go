@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/proxychain"
+	"github.com/octays/opskat/internal/pkg/proxychain"
 	. "github.com/smartystreets/goconvey/convey"
 	"go.uber.org/zap"
 )

@@ -1,5 +1,5 @@
-import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
-import { WriteVNC } from "../../wailsjs/go/vnc/VNC";
+import { EventsOn, EventsOff } from "@/lib/desktop";
+import { WriteVNC } from "@clients/vnc";
 import { createOrderedQueue } from "@/lib/orderedQueue";
 import type { RfbCloseEvent } from "@novnc/novnc";
 

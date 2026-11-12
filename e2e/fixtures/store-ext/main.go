@@ -5,7 +5,7 @@
 // wasip1 by fixtures/ext-store-mock at startup.
 package main
 
-import opskat "github.com/opskat/opskat/pkg/extsdk"
+import opskat "github.com/octays/opskat/pkg/extsdk"
 
 func main() {}
 

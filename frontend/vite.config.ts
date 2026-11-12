@@ -1,6 +1,7 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import wails from "@wailsio/runtime/plugins/vite";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import { extensionsPassthrough } from "./vite-plugins/extensionsPassthrough";
@@ -16,14 +17,20 @@ import { extensionsPassthrough } from "./vite-plugins/extensionsPassthrough";
 const MIN_CHROME = 100;
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), extensionsPassthrough()],
+  cacheDir: path.resolve(__dirname, "node_modules/.vite", `wails-${process.env.WAILS_VITE_PORT || "default"}`),
+  plugins: [react(), wails("./bindings"), tailwindcss(), extensionsPassthrough()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@bindings": path.resolve(__dirname, "./bindings"),
+      "@clients": path.resolve(__dirname, "./clients"),
     },
   },
   // dev: 预热首屏关键路径，避免 Vite 按需 transform 在窗口出现后串行排队
   server: {
+    host: "127.0.0.1",
+    allowedHosts: ["wails"],
+    hmr: { host: "127.0.0.1", port: Number(process.env.WAILS_VITE_PORT) || undefined },
     warmup: {
       clientFiles: [
         "./src/main.tsx",

@@ -65,7 +65,7 @@ const caughtErrorRestrictions = caughtScopes.flatMap((scope) => [
   },
 ]);
 export default tseslint.config(
-  { ignores: ["dist", "wailsjs"] },
+  { ignores: ["dist", "wailsjs", "bindings", "clients"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -101,7 +101,7 @@ export default tseslint.config(
         {
           patterns: [
             {
-              group: ["**/wailsjs/runtime", "**/wailsjs/runtime/runtime"],
+              group: ["@/lib/desktop", "**/wailsjs/runtime", "**/wailsjs/runtime/runtime"],
               importNames: ["ClipboardGetText"],
               message:
                 "用 wailsjs/go/system/System 的 ReadClipboardText——Wails ClipboardGetText 在 Windows 上把空剪贴板报成错误（#367）。",

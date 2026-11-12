@@ -2,14 +2,15 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { TooltipProvider } from "@opskat/ui";
-import { ConnectSSHAsync } from "../../wailsjs/go/ssh/SSH";
-import { ListAssets, ListGroups } from "../../wailsjs/go/system/System";
+import { ConnectSSHAsync } from "@clients/ssh";
+import { ListAssets, ListGroups } from "@clients/system";
 import { AssetTree } from "@/components/layout/AssetTree";
 import { useAssetStore } from "../stores/assetStore";
 import { useTabStore } from "../stores/tabStore";
 import { useTerminalStore } from "../stores/terminalStore";
 import { useQueryStore } from "../stores/queryStore";
-import { asset_entity, group_entity } from "../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as group_entity from "@bindings/github.com/octays/opskat/internal/model/entity/group_entity/models";
 import { getAssetType } from "../lib/assetTypes";
 import React from "react";
 
@@ -139,7 +140,7 @@ describe("AssetTree double-click → connection flow", () => {
   });
 
   it("double-click SSH asset opens terminal tab", async () => {
-    vi.mocked(ConnectSSHAsync).mockResolvedValue("conn-1");
+    vi.mocked(ConnectSSHAsync).mockImplementation((req) => Promise.resolve(req.connectionId));
     const sshAsset = makeAsset(1, "ssh", "Web Server");
     const { handleConnectAsset } = makeHandleConnectAsset();
     const onSelect = vi.fn();
@@ -155,7 +156,7 @@ describe("AssetTree double-click → connection flow", () => {
 
     const tab = useTabStore.getState().tabs[0];
     expect(tab.type).toBe("terminal");
-    expect(tab.id).toBe("conn-1");
+    expect(tab.id).toBe(vi.mocked(ConnectSSHAsync).mock.calls[0]?.[0]?.connectionId);
     expect(onSelect).not.toHaveBeenCalled();
   });
 
@@ -304,7 +305,7 @@ describe("AssetTree double-click → connection flow", () => {
   });
 
   it("multiple different assets can each open their own tab", async () => {
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-1").mockResolvedValueOnce("conn-2");
+    vi.mocked(ConnectSSHAsync).mockImplementation((req) => Promise.resolve(req.connectionId));
     const ssh1 = makeAsset(1, "ssh", "Server 1");
     const ssh2 = makeAsset(2, "ssh", "Server 2");
     const db = makeAsset(3, "database", "MySQL");
@@ -366,7 +367,7 @@ describe("AssetTree double-click → connection flow", () => {
       },
     });
 
-    vi.mocked(ConnectSSHAsync).mockResolvedValue("conn-new");
+    vi.mocked(ConnectSSHAsync).mockImplementation((req) => Promise.resolve(req.connectionId));
 
     const sshAsset = makeAsset(1, "ssh", "Web Server");
     const { handleConnectAssetInNewTab } = makeHandleConnectAssetInNewTab();
@@ -380,7 +381,7 @@ describe("AssetTree double-click → connection flow", () => {
     expect(ConnectSSHAsync).toHaveBeenCalledTimes(1);
     const tabIds = useTabStore.getState().tabs.map((t) => t.id);
     expect(tabIds).toContain("session-abc");
-    expect(tabIds).toContain("conn-new");
+    expect(tabIds).toContain(vi.mocked(ConnectSSHAsync).mock.calls[0]?.[0]?.connectionId);
   });
 
   it("connect in new tab ignores non-SSH assets", async () => {

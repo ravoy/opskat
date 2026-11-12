@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/ai_provider_entity"
+	"github.com/octays/opskat/internal/model/entity/ai_provider_entity"
 )
 
 // sessionPlaceholder 在自定义请求头的值里展开为本次请求所属会话的标识。

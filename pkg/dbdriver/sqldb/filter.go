@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 结构化的筛选条件与排序项怎么变成 SQL：这一部分在各方言里相同，只有标识符的引号、空串是否

@@ -4,10 +4,12 @@ import userEvent from "@testing-library/user-event";
 import { TooltipProvider } from "@opskat/ui";
 import { AssetDetail } from "@/components/asset/AssetDetail";
 import { useCustomTypeStore } from "@/stores/customTypeStore";
-import { asset_entity, custom_type_entity, customtype } from "../../../../wailsjs/go/models";
-import { GetCustomType, GetGenericAssetView, ListCustomTypes } from "../../../../wailsjs/go/customtype/CustomType";
-import { GetDefaultPolicy, UpdateAsset } from "../../../../wailsjs/go/system/System";
-import { GetCommandReviewState } from "../../../../wailsjs/go/extension/Extension";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as custom_type_entity from "@bindings/github.com/octays/opskat/internal/model/entity/custom_type_entity/models";
+import * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
+import { GetCustomType, GetGenericAssetView, ListCustomTypes } from "@clients/customtype";
+import { GetDefaultPolicy, UpdateAsset } from "@clients/system";
+import { GetCommandReviewState } from "@clients/extension";
 
 const asset = new asset_entity.Asset({
   ID: 42,

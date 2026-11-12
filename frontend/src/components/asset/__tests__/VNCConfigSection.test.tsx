@@ -5,22 +5,16 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { VNCConfigSection } from "@/components/asset/VNCConfigSection";
 import type { AssetFormContext, AssetFormHandle } from "@/lib/assetTypes/formContract";
-import { asset_entity } from "../../../../wailsjs/go/models";
-import {
-  CheckVNCServerKey,
-  ConnectVNCTemporary,
-  DisconnectVNC,
-  StartVNCStream,
-  TrustVNCServerKey,
-} from "../../../../wailsjs/go/vnc/VNC";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import { CheckVNCServerKey, ConnectVNCTemporary, DisconnectVNC, StartVNCStream, TrustVNCServerKey } from "@clients/vnc";
 import { startVNCClient, type StartVNCClientOptions, type VNCNegotiatedSecurity } from "@/lib/vncClient";
 import { securityPolicyForVNCEncryption } from "@/lib/vncSecurity";
 
-vi.mock("../../../../wailsjs/go/system/System", () => ({
+vi.mock("@clients/system", () => ({
   ListCredentialsByType: () => Promise.resolve([]),
   GetAssetPassword: () => Promise.resolve(""),
 }));
-vi.mock("../../../../wailsjs/go/vnc/VNC", () => ({
+vi.mock("@clients/vnc", () => ({
   CheckVNCServerKey: vi.fn(),
   ConnectVNCTemporary: vi.fn(),
   DisconnectVNC: vi.fn(),

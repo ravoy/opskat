@@ -13,8 +13,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/opskat/opskat/internal/model/entity/policy"
-	"github.com/opskat/opskat/internal/pkg/authtmpl"
+	"github.com/octays/opskat/internal/model/entity/policy"
+	"github.com/octays/opskat/internal/pkg/authtmpl"
 )
 
 // 执行方式，二选一（Design decision 3）。

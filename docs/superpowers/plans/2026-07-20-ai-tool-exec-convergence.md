@@ -10,7 +10,7 @@
 
 ## Global Constraints
 
-- 模块路径：`github.com/opskat/opskat`。
+- 模块路径：`github.com/octays/opskat`。
 - **策略串格式一个字节都不许改。** kafka 的 `<action> <resource>` 双 token、mongo 的裸 operation token、etcd 的 `op [key] [value]`，都是 canonicalizer 的**输出**，不是模型的输入。改它等于让存量 grant 与内置组静默失配——`MatchKafkaRule` 在 `splitKafkaRule` 失败时返回 `false` 且不记日志（`internal/ai/policy/kafka_policy.go:50-56`），deny 规则失配 = fail-open。
 - **模型面文本一律英文，不走 i18n**：SKILL.md、解析错误、unsupported 文案全英文，与 Plan A 一致。前端 UI 文案仍需 en + zh-CN 双份且各语言地道表达。
 - 后端验证用 `golangci-lint run`，**不用 `go vet`**（见 `docs/DEVELOP.md`）。
@@ -382,7 +382,7 @@ func parseK8sCommandArgs(command string) ([]string, error) {
 }
 ```
 
-在 import 块加 `"github.com/opskat/opskat/internal/ai/cmdline"`；若 `syntax` 已无其他使用者则删除该 import。
+在 import 块加 `"github.com/octays/opskat/internal/ai/cmdline"`；若 `syntax` 已无其他使用者则删除该 import。
 
 注意错误文案从 `exec_k8s` 改成了 `exec`——旧工具在 Task 10 会被删掉，提前对齐；这是模型面文本，英文。
 
@@ -560,7 +560,7 @@ func FormatCommand(req *ExecRequest) string {
 }
 ```
 
-import 块加 `"github.com/opskat/opskat/internal/ai/cmdline"`（`strings` / `strconv` 已在）。
+import 块加 `"github.com/octays/opskat/internal/ai/cmdline"`（`strings` / `strconv` 已在）。
 
 - [ ] **Step 4: 补齐 ParseCommand 的缺口**
 
@@ -731,7 +731,7 @@ package helper
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // TestCanonicalizeEtcdCommand_NormalizesToPolicyForm 锁住 canonicalizer 的契约：
@@ -779,8 +779,8 @@ package helper
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/etcd_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/etcd_svc"
 )
 
 // ExecEtcdOnAsset 是不含权限检查的纯执行入口，供统一 exec 使用。
@@ -961,7 +961,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/cmdline"
 )
 
 // mongoOps 是支持的操作及其是否需要 collection。
@@ -1069,7 +1069,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/cmdline"
 )
 ```
 
@@ -1207,7 +1207,7 @@ package helper
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // TestCanonicalizeMongoCommand_YieldsBareOp 锁住 canonicalizer 输出 = 策略层认得的裸
@@ -1252,7 +1252,7 @@ package helper
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // ExecMongoOnAsset 是不含权限检查的纯执行入口，供统一 exec 使用。
@@ -1498,7 +1498,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/cmdline"
 )
 
 // KafkaCommand 是 kafka 富命令串的结构形式。
@@ -1658,7 +1658,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/internal/ai/cmdline"
+	"github.com/octays/opskat/internal/ai/cmdline"
 )
 ```
 
@@ -1714,7 +1714,7 @@ package helper
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 func TestCanonicalizeKafkaCommand(t *testing.T) {
@@ -1777,7 +1777,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // ExecKafkaOnAsset 是不含权限检查的纯执行入口，供统一 exec 使用。
@@ -1996,9 +1996,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // TestHandleExec_KafkaChecksTwoTokenPolicyString 端到端锁住：exec 对 kafka 资产做

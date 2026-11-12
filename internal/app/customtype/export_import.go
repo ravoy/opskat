@@ -5,11 +5,12 @@ import (
 	"fmt"
 	"os"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/octays/opskat/internal/desktop"
+	"github.com/wailsapp/wails/v3/pkg/application"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
 )
 
 // ImportPreview 是导入类型文件的预览结果（docs/specs/2026-09-28-generic-asset.md
@@ -36,9 +37,9 @@ func (c *CustomType) ExportCustomType(id int64) error {
 	if err != nil {
 		return err
 	}
-	filePath, err := wailsRuntime.SaveFileDialog(c.ctx, wailsRuntime.SaveDialogOptions{
-		DefaultFilename: custom_type_svc.ExportFileName(ct.Slug),
-		Filters:         []wailsRuntime.FileFilter{{DisplayName: "OpsKat Custom Type", Pattern: "*.opskat-type.json"}},
+	filePath, err := desktop.SaveFile(application.SaveFileDialogOptions{
+		Filename: custom_type_svc.ExportFileName(ct.Slug),
+		Filters:  []application.FileFilter{{DisplayName: "OpsKat Custom Type", Pattern: "*.opskat-type.json"}},
 	})
 	if err != nil {
 		return fmt.Errorf("%s: %w", i18n.Pick(c.lang.Lang(), "保存文件对话框失败", "save file dialog failed"), err)
@@ -53,9 +54,9 @@ func (c *CustomType) ExportCustomType(id int64) error {
 // nil, nil（不是错误）。
 func (c *CustomType) SelectImportTypeFile() (*ImportPreview, error) {
 	lang := c.lang.Lang()
-	filePath, err := wailsRuntime.OpenFileDialog(c.ctx, wailsRuntime.OpenDialogOptions{
+	filePath, err := desktop.OpenFile(application.OpenFileDialogOptions{
 		Title:   i18n.Pick(lang, "导入自定义类型", "Import custom type"),
-		Filters: []wailsRuntime.FileFilter{{DisplayName: "OpsKat Custom Type", Pattern: "*.opskat-type.json"}},
+		Filters: []application.FileFilter{{DisplayName: "OpsKat Custom Type", Pattern: "*.opskat-type.json"}},
 	})
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", i18n.Pick(lang, "打开文件对话框失败", "open file dialog failed"), err)

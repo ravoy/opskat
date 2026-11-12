@@ -19,11 +19,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/extreg"
-	"github.com/opskat/opskat/internal/service/command_review_svc"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/extreg"
+	"github.com/octays/opskat/internal/service/command_review_svc"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // HostToolCaller calls a running extension's host-only tool (extreg.CallHostTool).

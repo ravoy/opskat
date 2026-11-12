@@ -2,8 +2,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { GenericDetailInfoCard } from "@/components/asset/detail/GenericDetailInfoCard";
-import { asset_entity, customtype } from "../../../../../wailsjs/go/models";
-import { GetGenericAssetView, RevealGenericSecret } from "../../../../../wailsjs/go/customtype/CustomType";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
+import { GetGenericAssetView, RevealGenericSecret } from "@clients/customtype";
 import { MASKED_SECRET } from "../utils";
 
 const mocks = vi.hoisted(() => ({ notifyCopied: vi.fn() }));

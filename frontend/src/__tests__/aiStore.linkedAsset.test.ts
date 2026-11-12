@@ -5,8 +5,8 @@ vi.mock("../i18n", () => ({ default: { t: (k: string, f?: string) => f || k } })
 import { useAIStore } from "../stores/aiStore";
 import { useAssetStore } from "../stores/assetStore";
 import { useTabStore, type Tab } from "../stores/tabStore";
-import { SendAIMessage } from "../../wailsjs/go/ai/AI";
-import { asset_entity } from "../../wailsjs/go/models";
+import { SendAIMessage } from "@clients/ai";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { buildMentionXml } from "../lib/mentionXml";
 
 const terminalTab = (id: string, assetId: number, assetName: string): Tab => ({

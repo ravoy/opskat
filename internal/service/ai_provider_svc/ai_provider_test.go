@@ -5,8 +5,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/opskat/opskat/internal/repository/ai_provider_repo"
-	"github.com/opskat/opskat/internal/repository/ai_provider_repo/mock_ai_provider_repo"
+	"github.com/octays/opskat/internal/repository/ai_provider_repo"
+	"github.com/octays/opskat/internal/repository/ai_provider_repo/mock_ai_provider_repo"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 	"gorm.io/gorm"

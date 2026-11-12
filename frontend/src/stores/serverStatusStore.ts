@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { GetSSHServerStatus } from "../../wailsjs/go/ssh/SSH";
+import { GetSSHServerStatus } from "@clients/ssh";
 import { errorMessage } from "@/lib/errorMessage";
 
 export interface ServerStatusGPU {

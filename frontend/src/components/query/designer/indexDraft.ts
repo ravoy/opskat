@@ -1,4 +1,4 @@
-import type { dbdriver } from "../../../../wailsjs/go/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import type { DriverDescriptor } from "@/lib/dbDrivers";
 import type { DesignerIndex } from "./model";
 import type { ColumnStatus, DraftCounts, DraftIssue, TableDraft } from "./draft";
@@ -366,7 +366,7 @@ function definitionJson(
 ): Omit<dbdriver.IndexDefinition, "convertValues"> {
   const out: Omit<dbdriver.IndexDefinition, "convertValues"> = {
     name: definition.name,
-    type: definition.type,
+    type: dbdriver.IndexDefinition.createFrom({ type: definition.type }).type,
     columns: definition.columns,
   };
   if (definition.include.length > 0) out.include = definition.include;
@@ -508,7 +508,7 @@ export function validateIndexes(
 ): { errors: DraftIssue[]; warnings: DraftIssue[] } {
   const errors: DraftIssue[] = [];
   const warnings: DraftIssue[] = [];
-  const folding = descriptor?.nameFolding ?? "";
+  const folding = descriptor?.nameFolding ?? dbdriver.NameFolding.$zero;
   const live = draft.indexes
     .map((index, i) => ({ index, row: i + 1 }))
     .filter(({ index }) => !indexDeleted(draft, index));

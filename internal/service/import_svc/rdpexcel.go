@@ -9,9 +9,9 @@ import (
 
 	"github.com/xuri/excelize/v2"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/repository/group_repo"
-	"github.com/opskat/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/repository/group_repo"
+	"github.com/octays/opskat/internal/service/asset_svc"
 )
 
 // rdpExcelColumns RDP Excel 导入的列别名表（表头单元格 normalize 后精确匹配）。

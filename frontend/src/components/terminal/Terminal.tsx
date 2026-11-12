@@ -11,7 +11,7 @@ import {
 } from "react";
 import type { Terminal as XTerminal } from "@xterm/xterm";
 import type { FitAddon } from "@xterm/addon-fit";
-import { ClipboardSetText } from "../../../wailsjs/runtime/runtime";
+import { ClipboardSetText } from "@/lib/desktop";
 import { useShortcutStore, formatBinding } from "@/stores/shortcutStore";
 import { useTerminalStore, TRANSPORTS } from "@/stores/terminalStore";
 import { useTerminalThemeStore, toXtermTheme } from "@/stores/terminalThemeStore";

@@ -8,7 +8,7 @@ import (
 
 	"github.com/cago-frame/cago/configs"
 
-	"github.com/opskat/opskat/internal/buildinfo"
+	"github.com/octays/opskat/internal/buildinfo"
 )
 
 // Kind says how much a version number can be trusted to order releases.

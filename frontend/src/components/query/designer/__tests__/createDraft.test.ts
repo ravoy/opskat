@@ -1,3 +1,5 @@
+import * as nativeAlterAttribute from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as nativeCapability from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { describe, expect, it } from "vitest";
 import { BUILTIN_DRIVERS, fakeAlterDriver } from "@/__tests__/dbDriverFixtures";
 import { addColumn, autoIncrementEditable, updateColumn, validateDraft, type TableDraft } from "../draft";
@@ -107,8 +109,11 @@ describe("buildCreateRequest", () => {
 
   it("改表能写注释、但没声明建表注释的驱动(如已发布的 Oracle 扩展):注释不发送", () => {
     const oracleLike = fakeAlterDriver({
-      capabilities: ["create_table", "alter_table"],
-      alterTableAttributes: ["table_comment", "column_comment"],
+      capabilities: [nativeCapability.Capability.CapCreateTable, nativeCapability.Capability.CapAlterTable],
+      alterTableAttributes: [
+        nativeAlterAttribute.AlterAttribute.AlterTableComment,
+        nativeAlterAttribute.AlterAttribute.AlterColumnComment,
+      ],
     });
     let draft = setTableName(presetDraft(oracleLike), "users");
     draft = updateColumn({ ...draft, comment: "x" }, draft.columns[0].key, { comment: "y", type: "NUMBER" });

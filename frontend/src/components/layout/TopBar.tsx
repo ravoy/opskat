@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Search } from "lucide-react";
+import { openWorkspace } from "@/lib/openWorkspace";
+import { Search, AppWindow } from "lucide-react";
 import {
   IconLayoutSidebar,
   IconLayoutSidebarFilled,
@@ -12,9 +13,9 @@ import { CommandPalette } from "@/components/command/CommandPalette";
 import { usePaletteFocusReturn } from "@/components/command/usePaletteFocusReturn";
 import { useShallow } from "zustand/shallow";
 import { selectWaitingApprovalConversationIds, useAIStore } from "@/stores/aiStore";
-import { useFullscreen } from "@/hooks/useFullscreen";
+import { WindowTitleBar } from "./WindowTitleBar";
 import { usePlatform } from "@/hooks/usePlatform";
-import type { asset_entity } from "../../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 interface TopBarProps {
   commandOpen: boolean;
@@ -37,24 +38,12 @@ export function TopBar({
 }: TopBarProps) {
   const { t } = useTranslation();
   const approvalCount = useAIStore(useShallow(selectWaitingApprovalConversationIds)).length;
-  const isFullscreen = useFullscreen();
 
   const platform = usePlatform();
   const onPaletteCloseAutoFocus = usePaletteFocusReturn(commandOpen);
 
-  // macOS 红绿灯位（非全屏时预留 80px）；Windows 把 WindowControls 区域让出来
-  const leftReserve = platform === "darwin" && !isFullscreen ? "pl-20" : "pl-2";
-  const rightReserve = platform === "windows" ? "pr-[140px]" : "pr-2";
-
   return (
-    <div
-      className={cn(
-        "flex h-10 w-full shrink-0 items-center gap-2 border-b border-panel-divider bg-sidebar",
-        leftReserve,
-        rightReserve
-      )}
-      style={{ "--wails-draggable": "drag" } as React.CSSProperties}
-    >
+    <WindowTitleBar>
       {/* 左侧占位，让中间搜索框居中 */}
       <div className="flex-1" />
 
@@ -103,6 +92,20 @@ export function TopBar({
       {/* 右侧占位 + 控制按钮 */}
       <div className="flex flex-1 items-center justify-end gap-0.5">
         <div style={{ "--wails-draggable": "no-drag" } as React.CSSProperties} className="flex items-center gap-0.5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                data-testid="new-window-button"
+                aria-label={t("tab.newWindow")}
+                className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent/50 hover:text-foreground"
+                onClick={() => void openWorkspace()}
+              >
+                <AppWindow className="h-4 w-4" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>{t("tab.newWindow")}</TooltipContent>
+          </Tooltip>
           {/* 切换资产列表：实线 = 打开，虚线 = 隐藏 */}
           <Tooltip>
             <TooltipTrigger asChild>
@@ -164,6 +167,6 @@ export function TopBar({
           </Tooltip>
         </div>
       </div>
-    </div>
+    </WindowTitleBar>
   );
 }

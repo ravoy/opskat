@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("../../wailsjs/go/etcd/Etcd", () => ({
+vi.mock("@clients/etcd", () => ({
   EtcdExec: vi.fn().mockResolvedValue({ op: "get", count: 0, kvs: [], revision: 0 }),
   EtcdListPrefix: vi.fn().mockResolvedValue({ dirs: ["config"], leaves: [], truncated: false }),
   EtcdTestConnection: vi.fn().mockResolvedValue(undefined),
@@ -11,7 +11,7 @@ import { useEtcdStore } from "./etcdStore";
 
 describe("useEtcdStore", () => {
   beforeEach(async () => {
-    const mod = await import("../../wailsjs/go/etcd/Etcd");
+    const mod = await import("@clients/etcd");
     vi.mocked(mod.EtcdExec).mockClear();
     vi.mocked(mod.EtcdListPrefix).mockClear();
     vi.mocked(mod.EtcdTestConnection).mockClear();
@@ -25,7 +25,7 @@ describe("useEtcdStore", () => {
   });
 
   it("loadPrefix caches and skips on second call", async () => {
-    const { EtcdListPrefix } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdListPrefix } = await import("@clients/etcd");
     await useEtcdStore.getState().loadPrefix(1, "/");
     await useEtcdStore.getState().loadPrefix(1, "/");
     expect(EtcdListPrefix).toHaveBeenCalledTimes(1);
@@ -34,7 +34,7 @@ describe("useEtcdStore", () => {
   });
 
   it("loadPrefix scopes cache per assetId — same prefix on different assets must not collide", async () => {
-    const { EtcdListPrefix } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdListPrefix } = await import("@clients/etcd");
     vi.mocked(EtcdListPrefix)
       .mockResolvedValueOnce({ dirs: ["a"], leaves: [], truncated: false } as any)
       .mockResolvedValueOnce({ dirs: ["b"], leaves: [], truncated: true } as any);
@@ -52,14 +52,14 @@ describe("useEtcdStore", () => {
   });
 
   it("loadPrefix force reloads", async () => {
-    const { EtcdListPrefix } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdListPrefix } = await import("@clients/etcd");
     await useEtcdStore.getState().loadPrefix(1, "/");
     await useEtcdStore.getState().loadPrefix(1, "/", { force: true });
     expect(EtcdListPrefix).toHaveBeenCalledTimes(2);
   });
 
   it("loadPrefix builds nodes from dirs and leaves", async () => {
-    const { EtcdListPrefix } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdListPrefix } = await import("@clients/etcd");
     vi.mocked(EtcdListPrefix).mockResolvedValueOnce({
       dirs: ["svc", "app"],
       leaves: [{ key: "/root/version", value: "v1", modRevision: 0, createRevision: 0, version: 0, lease: 0 }],
@@ -130,7 +130,7 @@ describe("useEtcdStore", () => {
   });
 
   it("testConnection calls EtcdTestConnection with assetId", async () => {
-    const { EtcdTestConnection } = await import("../../wailsjs/go/etcd/Etcd");
+    const { EtcdTestConnection } = await import("@clients/etcd");
     await useEtcdStore.getState().testConnection(42);
     expect(EtcdTestConnection).toHaveBeenCalledWith(42);
   });

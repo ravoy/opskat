@@ -10,8 +10,8 @@ import { openGroupDetail } from "@/lib/infoTab";
 import { useAssetStore } from "@/stores/assetStore";
 import { useSettingsUiStore } from "@/stores/settingsUiStore";
 import { openSettingsTab } from "@/stores/tabStore";
-import { GetCommandReviewState } from "../../../wailsjs/go/extension/Extension";
-import type { command_review_svc } from "../../../wailsjs/go/models";
+import { GetCommandReviewState } from "@clients/extension";
+import type * as command_review_svc from "@bindings/github.com/octays/opskat/internal/service/command_review_svc/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 const MODES: PermissionMode[] = ["", "default", "assisted", "autopilot"];
@@ -157,7 +157,7 @@ export function PermissionModeCard({ value, subject, parentGroupId, onChange }: 
                 type="button"
                 onClick={() => {
                   useSettingsUiStore.getState().openExtensionDetail(notConfigured.name);
-                  openSettingsTab(t("nav.settings"));
+                  openSettingsTab(t("nav.settings"), "extensions");
                 }}
                 className="ml-1 font-medium underline-offset-2 hover:underline"
               >

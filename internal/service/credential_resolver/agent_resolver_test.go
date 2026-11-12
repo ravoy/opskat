@@ -11,11 +11,11 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/ssh_agent_source_entity"
-	"github.com/opskat/opskat/internal/repository/ssh_agent_source_repo"
-	"github.com/opskat/opskat/internal/service/ssh_agent_svc"
-	"github.com/opskat/opskat/internal/sshagent"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/ssh_agent_source_entity"
+	"github.com/octays/opskat/internal/repository/ssh_agent_source_repo"
+	"github.com/octays/opskat/internal/service/ssh_agent_svc"
+	"github.com/octays/opskat/internal/sshagent"
 )
 
 func setupAgentResolverTest(t *testing.T) context.Context {

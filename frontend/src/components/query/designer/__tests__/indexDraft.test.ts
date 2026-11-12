@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { dbdriver, query_svc } from "../../../../../wailsjs/go/models";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import { BUILTIN_DRIVERS, fakeAlterDriver } from "@/__tests__/dbDriverFixtures";
 import { structureFromAlterModel, structureFromMetadata, type TableStructure } from "../model";
 import {
@@ -50,10 +51,38 @@ function model(indexes: IndexInit[], takenIndexNames: string[] = []): dbdriver.A
     name: "orders",
     comment: "",
     columns: [
-      { name: "id", type: "bigint", nullable: false, defaultValue: "", defaultKind: "none", comment: "" },
-      { name: "status", type: "varchar(16)", nullable: false, defaultValue: "", defaultKind: "none", comment: "" },
-      { name: "region", type: "varchar(16)", nullable: true, defaultValue: "", defaultKind: "none", comment: "" },
-      { name: "note", type: "text", nullable: true, defaultValue: "", defaultKind: "none", comment: "" },
+      {
+        name: "id",
+        type: "bigint",
+        nullable: false,
+        defaultValue: "",
+        defaultKind: dbdriver.DefaultKind.DefaultKindNone,
+        comment: "",
+      },
+      {
+        name: "status",
+        type: "varchar(16)",
+        nullable: false,
+        defaultValue: "",
+        defaultKind: dbdriver.DefaultKind.DefaultKindNone,
+        comment: "",
+      },
+      {
+        name: "region",
+        type: "varchar(16)",
+        nullable: true,
+        defaultValue: "",
+        defaultKind: dbdriver.DefaultKind.DefaultKindNone,
+        comment: "",
+      },
+      {
+        name: "note",
+        type: "text",
+        nullable: true,
+        defaultValue: "",
+        defaultKind: dbdriver.DefaultKind.DefaultKindNone,
+        comment: "",
+      },
     ],
     indexes,
     takenIndexNames,
@@ -61,10 +90,20 @@ function model(indexes: IndexInit[], takenIndexNames: string[] = []): dbdriver.A
 }
 
 const MYSQL_INDEXES = [
-  { name: "PRIMARY", type: "primary", columns: [{ name: "id" }] },
-  { name: "idx_status", type: "normal", columns: [{ name: "status" }], options: { method: "BTREE" } },
-  { name: "idx_note", type: "fulltext", columns: [{ name: "note" }] },
-  { name: "idx_expr", type: "normal", columns: [{ name: "lower(note)", expression: true }], readOnlyReason: "表达式" },
+  { name: "PRIMARY", type: dbdriver.IndexType.IndexTypePrimary, columns: [{ name: "id" }] },
+  {
+    name: "idx_status",
+    type: dbdriver.IndexType.IndexTypeNormal,
+    columns: [{ name: "status" }],
+    options: { method: "BTREE" },
+  },
+  { name: "idx_note", type: dbdriver.IndexType.IndexTypeFullText, columns: [{ name: "note" }] },
+  {
+    name: "idx_expr",
+    type: dbdriver.IndexType.IndexTypeNormal,
+    columns: [{ name: "lower(note)", expression: true }],
+    readOnlyReason: "表达式",
+  },
 ] satisfies IndexInit[];
 
 function structure(indexes: IndexInit[] = MYSQL_INDEXES, taken: string[] = []): TableStructure {
@@ -144,7 +183,14 @@ describe("索引草稿:初始与改动标记", () => {
 
     const mssql = initDraft(
       structureFromAlterModel(
-        model([{ name: "ix", type: "normal", columns: [{ name: "status" }], options: { clustered: false } }]),
+        model([
+          {
+            name: "ix",
+            type: dbdriver.IndexType.IndexTypeNormal,
+            columns: [{ name: "status" }],
+            options: { clustered: false },
+          },
+        ]),
         EMPTY_METADATA
       )
     );
@@ -176,7 +222,9 @@ describe("索引草稿:初始与改动标记", () => {
   });
 
   it("读出的索引引用了列表里没有的列(如隐藏列):显示读出时的列名", () => {
-    const draft = initDraft(structure([{ name: "ix_hidden", type: "normal", columns: [{ name: "SYS_NC00005$" }] }]));
+    const draft = initDraft(
+      structure([{ name: "ix_hidden", type: dbdriver.IndexType.IndexTypeNormal, columns: [{ name: "SYS_NC00005$" }] }])
+    );
     expect(indexDefinition(draft, idx(draft, "ix_hidden")).columns.map((c) => c.name)).toEqual(["SYS_NC00005$"]);
   });
 });
@@ -185,7 +233,13 @@ describe("随列删除", () => {
   it("删除列时引用它的索引(键列或 INCLUDE)标记删除并给出列名;恢复列一起恢复", () => {
     const withInclude = [
       ...MYSQL_INDEXES,
-      { name: "ix_cover", type: "normal", columns: [{ name: "id" }], include: ["region"], readOnlyReason: "INCLUDE" },
+      {
+        name: "ix_cover",
+        type: dbdriver.IndexType.IndexTypeNormal,
+        columns: [{ name: "id" }],
+        include: ["region"],
+        readOnlyReason: "INCLUDE",
+      },
     ] satisfies IndexInit[];
     let draft = initDraft(structure(withInclude));
     draft = updateColumn(draft, colKey(draft, "note"), { deleted: true });
@@ -225,8 +279,8 @@ describe("随列删除", () => {
   it("没声明索引编辑的驱动(索引来自表元数据)同样得出随列删除的索引", () => {
     const metadata = new query_svc.TableMetadata({
       columns: [
-        { name: "ID", type: "NUMBER", nullable: false, primaryKey: true, comment: "" },
-        { name: "NOTE", type: "VARCHAR2(8)", nullable: true, primaryKey: false, comment: "" },
+        { name: "ID", type: "NUMBER", nullable: false, primaryKey: true, default: null, comment: "" },
+        { name: "NOTE", type: "VARCHAR2(8)", nullable: true, primaryKey: false, default: null, comment: "" },
       ],
       indexes: [{ name: "IX_NOTE", columns: ["NOTE"], unique: false }],
       foreignKeys: [],
@@ -240,15 +294,20 @@ describe("随列删除", () => {
 describe("锁定与可选项", () => {
   it("只读索引不能改、可以删;不可删除的索引两者都不行;驱动不能改主键时已有主键锁定", () => {
     const sqliteIndexes = [
-      { name: "pk", type: "primary", columns: [{ name: "id" }], undroppable: true },
-      { name: "sqlite_autoindex_orders_1", type: "unique", columns: [{ name: "status" }], undroppable: true },
+      { name: "pk", type: dbdriver.IndexType.IndexTypePrimary, columns: [{ name: "id" }], undroppable: true },
+      {
+        name: "sqlite_autoindex_orders_1",
+        type: dbdriver.IndexType.IndexTypeUnique,
+        columns: [{ name: "status" }],
+        undroppable: true,
+      },
       {
         name: "ix_lower",
-        type: "normal",
+        type: dbdriver.IndexType.IndexTypeNormal,
         columns: [{ name: "lower(note)", expression: true }],
         readOnlyReason: "表达式",
       },
-      { name: "ix_region", type: "normal", columns: [{ name: "region" }] },
+      { name: "ix_region", type: dbdriver.IndexType.IndexTypeNormal, columns: [{ name: "region" }] },
     ] satisfies IndexInit[];
     const draft = initDraft(structure(sqliteIndexes));
     const at = (name: string) => idx(draft, name);
@@ -318,8 +377,8 @@ describe("索引校验", () => {
 
   it("刚读出的索引没有问题(即便驱动不分大小写比较会撞名)", () => {
     const pg = [
-      { name: "Idx_a", type: "normal", columns: [{ name: "status" }] },
-      { name: "idx_a", type: "normal", columns: [{ name: "region" }] },
+      { name: "Idx_a", type: dbdriver.IndexType.IndexTypeNormal, columns: [{ name: "status" }] },
+      { name: "idx_a", type: dbdriver.IndexType.IndexTypeNormal, columns: [{ name: "region" }] },
     ] satisfies IndexInit[];
     expect(validateDraft(initDraft(structure(pg)), PG)).toEqual([]);
   });
@@ -359,7 +418,12 @@ describe("索引校验", () => {
 
   it("声明为独占的开关在两个索引上打开是错误", () => {
     const mssqlIndexes = [
-      { name: "ix_a", type: "normal", columns: [{ name: "status" }], options: { clustered: true } },
+      {
+        name: "ix_a",
+        type: dbdriver.IndexType.IndexTypeNormal,
+        columns: [{ name: "status" }],
+        options: { clustered: true },
+      },
     ] satisfies IndexInit[];
     const created = withNewIndex(initDraft(structure(mssqlIndexes)), MSSQL, ["region"]);
     const key = created.key;

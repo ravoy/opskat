@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { makeExtensionDetailInfoCard } from "@/components/asset/detail/ExtensionDetailInfoCard";
-import { asset_entity } from "../../../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { HOST_CONNECTION_CONFIG_KEY } from "@/extension/connectionConfig";
 
 const schema = { type: "object", properties: { endpoint: { type: "string", title: "Endpoint" } } } as const;

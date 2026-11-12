@@ -7,7 +7,7 @@ import (
 	"github.com/cago-frame/cago/pkg/logger"
 	"go.uber.org/zap"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // extensionSession 是扩展驱动交给共享代码的会话：每个操作原样转给扩展里的会话，但操作的 ctx

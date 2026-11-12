@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/bootstrap"
-	"github.com/opskat/opskat/internal/service/backup_svc"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/service/backup_svc"
+	"github.com/octays/opskat/internal/service/credential_svc"
 )
 
 var initBootstrapForSystemTestOnce sync.Once

@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { ExecuteSQL, ExecuteSQLPaged, GetTableDDL, OpenTable } from "../../wailsjs/go/query/Query";
+import { ExecuteSQL, ExecuteSQLPaged, GetTableDDL, OpenTable } from "@clients/query";
 import { FAKE_DRIVER, fakeDriverWith, provideDrivers } from "./dbDriverFixtures";
 
 vi.mock("@/components/CodeEditor", () => ({

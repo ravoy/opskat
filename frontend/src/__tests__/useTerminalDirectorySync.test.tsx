@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, renderHook } from "@testing-library/react";
-import { ChangeSSHDirectory } from "../../wailsjs/go/ssh/SSH";
-import { EnableSSHSync, GetSSHSyncState } from "../../wailsjs/go/ssh/SSH";
+import { ChangeSSHDirectory } from "@clients/ssh";
+import { EnableSSHSync, GetSSHSyncState } from "@clients/ssh";
 import { useTerminalDirectorySync } from "@/components/terminal/file-manager/useTerminalDirectorySync";
 import { useTerminalStore, type TerminalDirectorySyncState, type TerminalTabData } from "@/stores/terminalStore";
 

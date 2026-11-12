@@ -2,8 +2,8 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useExtensionStore } from "../extension/store";
 import { getAssetType } from "@/lib/assetTypes";
-import { ListInstalledExtensions } from "../../wailsjs/go/extension/Extension";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { ListInstalledExtensions } from "@clients/extension";
+import { EventsOn } from "@/lib/desktop";
 import { toast } from "sonner";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn(), warning: vi.fn(), info: vi.fn() } }));

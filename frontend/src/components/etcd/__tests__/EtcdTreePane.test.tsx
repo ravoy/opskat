@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { act, render, screen, fireEvent } from "@testing-library/react";
-import { EtcdListPrefix } from "../../../../wailsjs/go/etcd/Etcd";
+import { EtcdListPrefix } from "@clients/etcd";
 import { EtcdTreePane } from "../EtcdTreePane";
 import { useEtcdStore } from "@/stores/etcdStore";
 

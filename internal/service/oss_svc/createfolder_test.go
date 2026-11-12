@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"testing"
 
-	oss_svc "github.com/opskat/opskat/internal/service/oss_svc"
-	"github.com/opskat/opskat/internal/service/oss_svc/mock_ossclient"
+	oss_svc "github.com/octays/opskat/internal/service/oss_svc"
+	"github.com/octays/opskat/internal/service/oss_svc/mock_ossclient"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 )

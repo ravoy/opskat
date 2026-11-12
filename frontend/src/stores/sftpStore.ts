@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { SFTPUploadFile, SFTPDownload, SFTPDownloadDir, SFTPCancelTransfer } from "../../wailsjs/go/ssh/SSH";
-import { EventsOn, EventsOff } from "../../wailsjs/runtime/runtime";
+import { SFTPUploadFile, SFTPDownload, SFTPDownloadDir, SFTPCancelTransfer } from "@clients/ssh";
+import { EventsOn, EventsOff } from "@/lib/desktop";
 import { registerTabCloseHook, registerTabReplaceHook } from "./tabStore";
 
 export interface SFTPTransfer {

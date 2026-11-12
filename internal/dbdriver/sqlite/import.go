@@ -3,8 +3,8 @@ package sqlite
 import (
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/dbdriver/sqldb"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver/sqldb"
 )
 
 // 导入：追加/跳过用 INSERT OR IGNORE，追加/更新用 ON CONFLICT (键) DO UPDATE。SQLite 的列只有声明

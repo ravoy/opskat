@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/aictx"
 )
 
 // Question 是审核器声明的一道题。结果里只回 id，宿主按 Names（语言 → 名称）显示。

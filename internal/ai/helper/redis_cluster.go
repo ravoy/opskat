@@ -10,7 +10,7 @@ import (
 
 	"github.com/redis/go-redis/v9"
 
-	"github.com/opskat/opskat/internal/connpool"
+	"github.com/octays/opskat/internal/connpool"
 )
 
 // RedisNodeRequiredError 表示集群模式下一条不带 key 的命令没有指定有效节点：scope 缺省、

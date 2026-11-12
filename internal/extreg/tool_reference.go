@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/extwire"
+	"github.com/octays/opskat/pkg/extwire"
 )
 
 // toolReference renders the tools the guest reported through describe() as the

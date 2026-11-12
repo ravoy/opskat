@@ -12,15 +12,15 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/custom_type_entity"
-	"github.com/opskat/opskat/internal/model/entity/group_entity"
-	"github.com/opskat/opskat/internal/model/entity/policy_group_entity"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
-	"github.com/opskat/opskat/internal/sshagent"
-	"github.com/opskat/opskat/pkg/extension"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/custom_type_entity"
+	"github.com/octays/opskat/internal/model/entity/group_entity"
+	"github.com/octays/opskat/internal/model/entity/policy_group_entity"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/internal/sshagent"
+	"github.com/octays/opskat/pkg/extension"
 )
 
 // Import 导入备份数据

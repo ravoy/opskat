@@ -5,11 +5,11 @@
 // reads back what actually landed on disk, through a path the UI does not share.
 // A green screenshot is not evidence on its own; an `audit_logs` row is.
 //
-//   node e2e/oracle.mjs mark                    # baseline before you exercise a flow
+//   bun e2e/oracle.mjs mark                    # baseline before you exercise a flow
 //   …drive the app…
-//   node e2e/oracle.mjs audit --since=41        # only what that flow produced
-//   node e2e/oracle.mjs assets my-server
-//   node e2e/oracle.mjs logs --tail=50 --grep=ssh
+//   bun e2e/oracle.mjs audit --since=41        # only what that flow produced
+//   bun e2e/oracle.mjs assets my-server
+//   bun e2e/oracle.mjs logs --tail=50 --grep=ssh
 //
 // It resolves the sandbox's data dir from the session file that `sandbox.mjs` writes,
 // so it needs no arguments. Point it elsewhere with --data-dir=PATH.
@@ -27,7 +27,7 @@ const option = (name, fallback) => {
   return hit ? hit.slice(name.length + 3) : fallback;
 };
 
-const USAGE = `Usage: node e2e/oracle.mjs <command> [args] [--flags]
+const USAGE = `Usage: bun e2e/oracle.mjs <command> [args] [--flags]
 
   assets [name]             every asset, or one by name
   audit [--since=ID]        audit_logs rows  [--asset=NAME] [--tool=NAME]

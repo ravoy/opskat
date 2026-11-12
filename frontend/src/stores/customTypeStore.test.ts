@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-vi.mock("../../wailsjs/go/customtype/CustomType", () => ({
+vi.mock("@clients/customtype", () => ({
   ListCustomTypes: vi.fn().mockResolvedValue([]),
   GetCustomType: vi.fn(),
   GetCustomTypeUsage: vi.fn(),
@@ -17,7 +17,7 @@ import { useAssetStore } from "./assetStore";
 
 describe("useCustomTypeStore", () => {
   beforeEach(async () => {
-    const mod = await import("../../wailsjs/go/customtype/CustomType");
+    const mod = await import("@clients/customtype");
     vi.mocked(mod.ListCustomTypes).mockClear().mockResolvedValue([]);
     vi.mocked(mod.SaveCustomType).mockClear();
     vi.mocked(mod.DeleteCustomType).mockClear();
@@ -27,7 +27,7 @@ describe("useCustomTypeStore", () => {
   });
 
   it("load() populates the type list", async () => {
-    const { ListCustomTypes } = await import("../../wailsjs/go/customtype/CustomType");
+    const { ListCustomTypes } = await import("@clients/customtype");
     vi.mocked(ListCustomTypes).mockResolvedValue([
       { id: 1, slug: "grafana", name: "Grafana", icon: "", execMode: "http", assetCount: 2 },
     ]);
@@ -37,7 +37,7 @@ describe("useCustomTypeStore", () => {
   });
 
   it("save() refreshes the list on success but not when the backend returns validation issues", async () => {
-    const { SaveCustomType, ListCustomTypes } = await import("../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType, ListCustomTypes } = await import("@clients/customtype");
 
     // 失败:校验错误——不应刷新列表
     vi.mocked(SaveCustomType).mockResolvedValueOnce({ issues: [{ path: "name", code: "name_required" }] } as any);
@@ -53,7 +53,7 @@ describe("useCustomTypeStore", () => {
   // 更新类型时后端会改写该类型的资产(删除字段的值、密钥属性变了的值重存)。资产快照不跟着换,
   // 下一次保存资产(如在详情页加一条策略规则)就会把旧 Config 整行写回去。
   it("save() re-fetches assets on success, because the backend rewrites the type's assets", async () => {
-    const { SaveCustomType } = await import("../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType } = await import("@clients/customtype");
     const refresh = vi.fn().mockResolvedValue(undefined);
     useAssetStore.setState({ refresh });
 
@@ -68,7 +68,7 @@ describe("useCustomTypeStore", () => {
 
   // 类型已经存上了:之后刷新列表失败不是"保存失败",否则编辑器停在未保存状态,再点保存就是标识重名。
   it("save() still resolves with the saved type when the follow-up reload fails, and toasts the reload error", async () => {
-    const { SaveCustomType, ListCustomTypes } = await import("../../wailsjs/go/customtype/CustomType");
+    const { SaveCustomType, ListCustomTypes } = await import("@clients/customtype");
     useAssetStore.setState({ refresh: vi.fn().mockResolvedValue(undefined) });
     vi.mocked(SaveCustomType).mockResolvedValueOnce({ type: { id: 1, slug: "grafana" } } as any);
     vi.mocked(ListCustomTypes).mockRejectedValueOnce(new Error("list failed"));
@@ -80,7 +80,7 @@ describe("useCustomTypeStore", () => {
   });
 
   it("remove() refreshes the list only when the type was actually deleted", async () => {
-    const { DeleteCustomType, ListCustomTypes } = await import("../../wailsjs/go/customtype/CustomType");
+    const { DeleteCustomType, ListCustomTypes } = await import("@clients/customtype");
 
     // 占用拒绝——不应刷新列表
     vi.mocked(DeleteCustomType).mockResolvedValueOnce({ deleted: false, assets: ["grafana-prod"] });
@@ -112,7 +112,7 @@ describe("useCustomTypeStore", () => {
     });
 
     it("reloads the list and counts when assets change after the first load", async () => {
-      const { ListCustomTypes } = await import("../../wailsjs/go/customtype/CustomType");
+      const { ListCustomTypes } = await import("@clients/customtype");
       vi.mocked(ListCustomTypes).mockResolvedValueOnce([summary(1)]);
       await useCustomTypeStore.getState().load();
 
@@ -124,14 +124,14 @@ describe("useCustomTypeStore", () => {
     });
 
     it("does not load on asset changes before the list was ever loaded", async () => {
-      const { ListCustomTypes } = await import("../../wailsjs/go/customtype/CustomType");
+      const { ListCustomTypes } = await import("@clients/customtype");
       useAssetStore.setState({ assets: [{ ID: 9 } as never] });
       await Promise.resolve();
       expect(ListCustomTypes).not.toHaveBeenCalled();
     });
 
     it("surfaces a failed reload as an error toast", async () => {
-      const { ListCustomTypes } = await import("../../wailsjs/go/customtype/CustomType");
+      const { ListCustomTypes } = await import("@clients/customtype");
       await useCustomTypeStore.getState().load();
       vi.mocked(ListCustomTypes).mockRejectedValueOnce(new Error("boom"));
       useAssetStore.setState({ assets: [{ ID: 9 } as never] });

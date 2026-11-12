@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { ChevronRight, ChevronDown, Folder, Database } from "lucide-react";
 import { AsyncState } from "@/components/common/AsyncState";
-import type { oss_svc } from "../../../wailsjs/go/models";
+import type * as oss_svc from "@bindings/github.com/octays/opskat/internal/service/oss_svc/models";
 import type { OssPrefixRow } from "@/lib/ossPrefixTree";
 
 export interface OSSBucketTreeProps {

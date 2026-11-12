@@ -26,8 +26,8 @@ import {
   SFTPRename,
   SFTPSelectUploadDir,
   SFTPSelectUploadFile,
-} from "../../../wailsjs/go/ssh/SSH";
-import { sftp_svc } from "../../../wailsjs/go/models";
+} from "@clients/ssh";
+import * as sftp_svc from "@bindings/github.com/octays/opskat/internal/service/sftp_svc/models";
 import {
   builtInEditorID,
   getExternalEditSettings,

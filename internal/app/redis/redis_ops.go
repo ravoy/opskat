@@ -1,8 +1,8 @@
 package redis
 
 import (
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/service/redis_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/service/redis_svc"
 )
 
 func (r *Redis) RedisListDatabases(assetID int64) ([]redis_svc.RedisDatabase, error) {

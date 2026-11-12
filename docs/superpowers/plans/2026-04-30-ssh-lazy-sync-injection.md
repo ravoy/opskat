@@ -584,7 +584,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/opskat/opskat/internal/pkg/dirsync"
+	"github.com/octays/opskat/internal/pkg/dirsync"
 )
 
 func TestChangeSSHDirectoryFailsCleanlyWhenSessionMissing(t *testing.T) {

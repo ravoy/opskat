@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/sshpool"
 
 	"github.com/cago-frame/cago/pkg/logger"
 	"github.com/redis/go-redis/v9"

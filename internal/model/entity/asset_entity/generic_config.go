@@ -3,7 +3,7 @@ package asset_entity
 import (
 	"errors"
 
-	"github.com/opskat/opskat/internal/pkg/jsonfield"
+	"github.com/octays/opskat/internal/pkg/jsonfield"
 )
 
 // GenericConfig 是通用资产的每资产配置，序列化到 Asset.Config。

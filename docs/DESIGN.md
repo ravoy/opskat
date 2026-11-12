@@ -2,7 +2,7 @@
 
 > **A reuse-oriented design reference.** It consolidates the visual language that lives in [`frontend/src/styles/globals.css`](../frontend/src/styles/globals.css) and the `@opskat/ui` component layer into one place you can copy from: **color tokens (semantics here; full light/dark oklch value tables in [`references/design-tokens.md`](./references/design-tokens.md)), the theming mechanism, the component palette, the desktop pane shell, domain surfaces, motion, state patterns, accessibility, and an end-to-end new-surface recipe.** Read this before building any new tab, pane, dialog, or block so it stays visually and behaviorally consistent with the rest of the app.
 
-> **Stack in one line:** Wails v2 desktop · React 19 + shadcn/ui (Radix primitives, `new-york` style) + Tailwind CSS v4 + Zustand. Colors, fonts, and radius are defined as **oklch** tokens in the `:root` / `.dark` / `@theme inline` blocks of [`frontend/src/styles/globals.css`](../frontend/src/styles/globals.css). **There is no `tailwind.config.js`** (Tailwind v4); the Vite `@tailwindcss/vite` plugin compiles it; **class names have no prefix** (`bg-background`, not `tw-bg-background`). UI primitives live in the **`@opskat/ui` workspace package** ([`frontend/packages/ui/`](../frontend/packages/ui/)), not in app `src/`.
+> **Stack in one line:** Wails v3 desktop · React 19 + shadcn/ui (Radix primitives, `new-york` style) + Tailwind CSS v4 + Zustand. Colors, fonts, and radius are defined as **oklch** tokens in the `:root` / `.dark` / `@theme inline` blocks of [`frontend/src/styles/globals.css`](../frontend/src/styles/globals.css). **There is no `tailwind.config.js`** (Tailwind v4); the Vite `@tailwindcss/vite` plugin compiles it; **class names have no prefix** (`bg-background`, not `tw-bg-background`). UI primitives live in the **`@opskat/ui` workspace package** ([`frontend/packages/ui/`](../frontend/packages/ui/)), not in app `src/`.
 
 ---
 
@@ -249,6 +249,11 @@ import { notifyCopied, notifySuccess } from "@/lib/notify";
 notifyCopied("Copied");          // top-center, 1s flash — clipboard/copy confirms
 notifySuccess("Asset saved");    // top-center, default duration — other successes
 ```
+
+Top-center toasts must clear the window title bar **and** the top tab bar (they would
+otherwise sit on the tab strip and swallow clicks while switching tabs —
+`globals.css` pins `--offset-top` for top-positioned toasters to 84px; re-check it
+whenever the title bar (`h-10`) or `TopTabBar` height changes).
 
 Errors / warnings / info stay on the **raw sonner API at the default bottom-right** (`toast.error(...)`, `toast.warning(...)`) — long error copy needs room and dwell time, which top-center can't give. Success is top-center because terminal / AI / query views refresh **bottom-up**, so a bottom toast would occlude the freshest output (#135).
 

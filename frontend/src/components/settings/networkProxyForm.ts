@@ -1,4 +1,4 @@
-import type { system } from "../../../wailsjs/go/models";
+import type * as system from "@bindings/github.com/octays/opskat/internal/app/system/models";
 
 // 网络代理表单的值、校验与到后端入参的映射。校验规则与 internal/pkg/netproxy 的 Validate 保持一致：
 // 后端是最终裁决，这里只是让用户在保存前就在字段下方看到原因。

@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 表元数据按结构体转换复制：驱动加上索引的 INCLUDE 列与外键的 ON UPDATE / ON DELETE 之后，

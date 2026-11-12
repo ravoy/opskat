@@ -6,17 +6,20 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/asset_svc"
-	"github.com/opskat/opskat/internal/service/serial_svc"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/asset_svc"
+	"github.com/octays/opskat/internal/service/serial_svc"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
 // SerialConnectRequest 前端串口连接请求
 type SerialConnectRequest struct {
 	AssetID int64 `json:"assetId"`
+	// ConnectionID 由前端预生成（订阅进度事件必须先于连接调用），
+	// 见 SSHConnectRequest.ConnectionID；留空则由服务端生成。
+	ConnectionID string `json:"connectionId"`
 }
 
 // SerialConnectEvent 串口异步连接事件
@@ -49,7 +52,10 @@ func (s *Serial) ConnectSerialAsync(req SerialConnectRequest) (string, error) {
 	}
 
 	// 生成 connectionId
-	connectionID := s.nextConnectionID()
+	connectionID, err := s.resolveConnectionID(req.ConnectionID)
+	if err != nil {
+		return "", err
+	}
 
 	connCtx, cancel := context.WithCancel(s.ctx)
 	s.pendingConnections.Store(connectionID, cancel)
@@ -57,7 +63,7 @@ func (s *Serial) ConnectSerialAsync(req SerialConnectRequest) (string, error) {
 	eventName := "serial:connect:" + connectionID
 
 	emitEvent := func(event SerialConnectEvent) {
-		wailsRuntime.EventsEmit(s.ctx, eventName, event)
+		application.Get().Event.Emit(eventName, event)
 	}
 
 	go func() {
@@ -90,10 +96,10 @@ func (s *Serial) ConnectSerialAsync(req SerialConnectRequest) (string, error) {
 		s.manager.SetCallbacks(
 			sessionID,
 			func(data []byte) {
-				wailsRuntime.EventsEmit(s.ctx, "serial:data:"+sessionID, base64.StdEncoding.EncodeToString(data))
+				application.Get().Event.Emit("serial:data:"+sessionID, base64.StdEncoding.EncodeToString(data))
 			},
 			func(sid string) {
-				wailsRuntime.EventsEmit(s.ctx, "serial:closed:"+sid, nil)
+				application.Get().Event.Emit("serial:closed:"+sid, nil)
 			},
 		)
 

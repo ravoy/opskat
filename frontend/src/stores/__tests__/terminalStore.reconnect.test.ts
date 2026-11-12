@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { CancelSSHConnect, ConnectSSHAsync, SplitSSH } from "../../../wailsjs/go/ssh/SSH";
-import { EventsOn } from "../../../wailsjs/runtime/runtime";
-import { asset_entity } from "../../../wailsjs/go/models";
+import { CancelSSHConnect, ConnectSSHAsync, SplitSSH } from "@clients/ssh";
+import { EventsOn } from "@/lib/desktop";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { useTabStore, type Tab } from "../tabStore";
 import { useAssetStore } from "../assetStore";
 import { __resetTerminalSyncListenersForTest, useTerminalStore, type SplitNode } from "../terminalStore";
@@ -9,6 +9,9 @@ import { __resetTerminalSyncListenersForTest, useTerminalStore, type SplitNode }
 // 终端窗格的连接状态机:任何一次失败 / 取消之后,窗格里必须有一个可操作的连接条目
 // (失败原因 + 重新连接 + 关闭窗格)。分屏树里出现 connecting 节点却没有对应 connections
 // 条目,ConnectionProgress 就只能画一个无操作的转圈 —— 这正是本组测试要挡住的状态。
+//
+// 连接 id 由前端预生成、后端回显(订阅进度事件必须先于连接发起),因此 mock 一律
+// 回显请求里的 connectionId,事件与断言都用 store 里 connecting 节点的实际 id。
 
 const handlers = new Map<string, (event: unknown) => void>();
 
@@ -63,6 +66,18 @@ function onlyConnectingId(tabId: string): string {
   return ids[0];
 }
 
+/** 按当前 connecting 节点的实际 id 发进度事件。 */
+function emitConnecting(tabId: string, event: unknown) {
+  emit(`ssh:connect:${onlyConnectingId(tabId)}`, event);
+}
+
+/** 首次连接时 tab id 就是预生成的连接 id。 */
+function onlyTabId(): string {
+  const tabs = useTabStore.getState().tabs;
+  expect(tabs).toHaveLength(1);
+  return tabs[0].id;
+}
+
 /** 一个已连上的单窗格标签:tab id 是首个会话 id(connect 成功后 replaceTabId 的结果)。 */
 function seedConnectedTab(tabId = "s1") {
   useTabStore.setState({ tabs: [terminalTab(tabId)], activeTabId: tabId });
@@ -71,26 +86,25 @@ function seedConnectedTab(tabId = "s1") {
       [tabId]: {
         splitTree: { type: "terminal", sessionId: tabId },
         activePaneId: tabId,
-        panes: { [tabId]: { sessionId: tabId, transport: "ssh", connected: false, connectedAt: 1 } },
+        panes: { [tabId]: { sessionId: tabId, transport: "ssh", connected: true, connectedAt: 1 } },
         directoryFollowMode: "off",
       },
     },
   });
 }
 
-const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
+const flush = () => new Promise((r) => setTimeout(r, 0));
 
 beforeEach(() => {
-  __resetTerminalSyncListenersForTest();
   handlers.clear();
   vi.clearAllMocks();
-  vi.mocked(ConnectSSHAsync).mockReset();
-  vi.mocked(EventsOn).mockImplementation((eventName, handler) => {
-    handlers.set(eventName, handler as (event: unknown) => void);
+  vi.mocked(EventsOn).mockImplementation(((eventName: string, handler: (event: unknown) => void) => {
+    handlers.set(eventName, handler);
     return vi.fn();
-  });
-  vi.spyOn(useAssetStore.getState(), "getAssetPath").mockReturnValue("Server 1");
-  useAssetStore.setState({ assets: [sshAsset(1)] });
+  }) as never);
+  // 新契约:后端原样采纳前端预生成的 connectionId。
+  vi.mocked(ConnectSSHAsync).mockImplementation((req) => Promise.resolve(req.connectionId));
+  useAssetStore.setState({ assets: [sshAsset(1)], selectedAssetId: null, initialized: true });
   useTabStore.setState({ tabs: [], activeTabId: null });
   useTerminalStore.setState({ tabData: {}, sessionSync: {}, connections: {}, connectingAssetIds: new Set() });
 });
@@ -102,13 +116,12 @@ afterEach(() => {
 describe("重连失败后重新连接", () => {
   it("在原窗格内重试:新连接接管同一个窗格,不会留下没有连接条目的转圈节点", async () => {
     seedConnectedTab("s1");
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-2");
     useTerminalStore.getState().reconnect("s1");
     await flush();
-    emit("ssh:connect:conn-2", { type: "error", error: "dial tcp: i/o timeout" });
+    emitConnecting("s1", { type: "error", error: "dial tcp: i/o timeout" });
 
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-3");
-    useTerminalStore.getState().retryConnect("conn-2");
+    const failedId = onlyConnectingId("s1");
+    useTerminalStore.getState().retryConnect(failedId);
     await flush();
 
     expectNoOrphanConnectingNodes();
@@ -123,17 +136,16 @@ describe("重连失败后重新连接", () => {
   });
 
   it("首次连接失败后重试也在原标签内进行,连上后标签换成会话 id", async () => {
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-1");
     await useTerminalStore.getState().connect(sshAsset(1));
-    emit("ssh:connect:conn-1", { type: "error", error: "auth failed" });
+    const firstId = onlyTabId();
+    emit(`ssh:connect:${firstId}`, { type: "error", error: "auth failed" });
 
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-2");
-    useTerminalStore.getState().retryConnect("conn-1");
+    useTerminalStore.getState().retryConnect(firstId);
     await flush();
 
     expectNoOrphanConnectingNodes();
     expect(useTabStore.getState().tabs).toHaveLength(1);
-    emit("ssh:connect:conn-2", { type: "connected", sessionId: "s9" });
+    emitConnecting(onlyTabId(), { type: "connected", sessionId: "s9" });
 
     expect(useTabStore.getState().tabs.map((t) => t.id)).toEqual(["s9"]);
     expect(useTerminalStore.getState().tabData.s9.splitTree).toEqual({ type: "terminal", sessionId: "s9" });
@@ -142,13 +154,13 @@ describe("重连失败后重新连接", () => {
 
   it("重试本身被后端拒绝时,窗格停在失败态并显示原因", async () => {
     seedConnectedTab("s1");
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-2");
     useTerminalStore.getState().reconnect("s1");
     await flush();
-    emit("ssh:connect:conn-2", { type: "error", error: "timeout" });
+    emitConnecting("s1", { type: "error", error: "timeout" });
 
+    const failedId = onlyConnectingId("s1");
     vi.mocked(ConnectSSHAsync).mockRejectedValueOnce(new Error("资产不存在"));
-    useTerminalStore.getState().retryConnect("conn-2");
+    useTerminalStore.getState().retryConnect(failedId);
     await flush();
 
     expectNoOrphanConnectingNodes();
@@ -174,13 +186,13 @@ describe("重连发起即被拒绝", () => {
 describe("取消连接", () => {
   it("取消重连后窗格可重试、可关闭,不会停在转圈", async () => {
     seedConnectedTab("s1");
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-2");
     useTerminalStore.getState().reconnect("s1");
     await flush();
 
-    useTerminalStore.getState().cancelConnect("conn-2");
+    const connId = onlyConnectingId("s1");
+    useTerminalStore.getState().cancelConnect(connId);
 
-    expect(CancelSSHConnect).toHaveBeenCalledWith("conn-2");
+    expect(CancelSSHConnect).toHaveBeenCalledWith(connId);
     expectNoOrphanConnectingNodes();
     const id = onlyConnectingId("s1");
     expect(useTerminalStore.getState().connections[id].status).toBe("cancelled");
@@ -188,45 +200,45 @@ describe("取消连接", () => {
   });
 
   it("取消首次连接后标签仍在,可在原处重试", async () => {
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-1");
     await useTerminalStore.getState().connect(sshAsset(1));
+    const connId = onlyTabId();
 
-    useTerminalStore.getState().cancelConnect("conn-1");
+    useTerminalStore.getState().cancelConnect(connId);
 
-    expect(useTabStore.getState().tabs.map((t) => t.id)).toEqual(["conn-1"]);
-    expect(useTerminalStore.getState().connections["conn-1"].status).toBe("cancelled");
+    expect(useTabStore.getState().tabs.map((t) => t.id)).toEqual([connId]);
+    expect(useTerminalStore.getState().connections[connId].status).toBe("cancelled");
     expect(useTerminalStore.getState().connectingAssetIds.has(1)).toBe(false);
   });
 
   it("重试发起期间取消,迟到的新连接被取消且不接管窗格", async () => {
     seedConnectedTab("s1");
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-2");
     useTerminalStore.getState().reconnect("s1");
     await flush();
-    emit("ssh:connect:conn-2", { type: "error", error: "timeout" });
+    emitConnecting("s1", { type: "error", error: "timeout" });
 
-    let resolveRetry: (id: string) => void = () => {};
-    vi.mocked(ConnectSSHAsync).mockReturnValueOnce(new Promise<string>((r) => (resolveRetry = r)));
-    useTerminalStore.getState().retryConnect("conn-2");
-    useTerminalStore.getState().cancelConnect("conn-2");
-    resolveRetry("conn-3");
+    const failedId = onlyConnectingId("s1");
+    vi.mocked(ConnectSSHAsync).mockImplementationOnce(
+      (req) => new Promise<string>((r) => setTimeout(() => r(req.connectionId), 50))
+    );
+    useTerminalStore.getState().retryConnect(failedId);
+    const retryId = onlyConnectingId("s1");
+    useTerminalStore.getState().cancelConnect(retryId);
     await flush();
 
-    expect(CancelSSHConnect).toHaveBeenCalledWith("conn-3");
-    expect(onlyConnectingId("s1")).toBe("conn-2");
-    expect(useTerminalStore.getState().connections["conn-2"].status).toBe("cancelled");
+    expect(CancelSSHConnect).toHaveBeenCalledWith(retryId);
+    expect(onlyConnectingId("s1")).toBe(retryId);
+    expect(useTerminalStore.getState().connections[retryId].status).toBe("cancelled");
   });
 });
 
 describe("关闭连接中的窗格", () => {
   it("唯一窗格:关闭即关闭标签", async () => {
     seedConnectedTab("s1");
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-2");
     useTerminalStore.getState().reconnect("s1");
     await flush();
-    emit("ssh:connect:conn-2", { type: "error", error: "timeout" });
+    emitConnecting("s1", { type: "error", error: "timeout" });
 
-    useTerminalStore.getState().closeConnectionPane("conn-2");
+    useTerminalStore.getState().closeConnectionPane(onlyConnectingId("s1"));
 
     expect(useTabStore.getState().tabs).toEqual([]);
     expect(useTerminalStore.getState().tabData).toEqual({});
@@ -254,12 +266,11 @@ describe("关闭连接中的窗格", () => {
         },
       },
     });
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-2");
     useTerminalStore.getState().reconnect("s1");
     await flush();
-    emit("ssh:connect:conn-2", { type: "error", error: "timeout" });
+    emitConnecting("s1", { type: "error", error: "timeout" });
 
-    useTerminalStore.getState().closeConnectionPane("conn-2");
+    useTerminalStore.getState().closeConnectionPane(onlyConnectingId("s1"));
 
     const data = useTerminalStore.getState().tabData.s1;
     expect(data.splitTree).toEqual({ type: "terminal", sessionId: "s1" });
@@ -289,27 +300,27 @@ describe("关闭连接中的窗格", () => {
         },
       },
     });
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-2");
     useTerminalStore.getState().reconnect("s1");
     await flush();
-    emit("ssh:connect:conn-2", { type: "error", error: "timeout" });
+    emitConnecting("s1", { type: "error", error: "timeout" });
+    const failedId = onlyConnectingId("s1");
 
     useTerminalStore.getState().closePane("s1", "s1");
 
     expect(useTabStore.getState().tabs.map((t) => t.id)).toEqual(["s1"]);
     const data = useTerminalStore.getState().tabData.s1;
-    expect(data.splitTree).toEqual({ type: "connecting", connectionId: "conn-2" });
-    expect(data.activePaneId).toBe("conn-2");
+    expect(data.splitTree).toEqual({ type: "connecting", connectionId: failedId });
+    expect(data.activePaneId).toBe(failedId);
     expectNoOrphanConnectingNodes();
   });
 
   it("关闭仍在连接中的窗格会取消后端连接", async () => {
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-1");
     await useTerminalStore.getState().connect(sshAsset(1));
+    const connId = onlyTabId();
 
-    useTerminalStore.getState().closeConnectionPane("conn-1");
+    useTerminalStore.getState().closeConnectionPane(connId);
 
-    expect(CancelSSHConnect).toHaveBeenCalledWith("conn-1");
+    expect(CancelSSHConnect).toHaveBeenCalledWith(connId);
     expect(useTabStore.getState().tabs).toEqual([]);
   });
 });
@@ -336,19 +347,19 @@ describe("分屏里按会话重连", () => {
         },
       },
     });
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-2");
 
     useTerminalStore.getState().reconnectBySession("s2");
     await flush();
 
+    const retryId = onlyConnectingId("s1");
     const tree = useTerminalStore.getState().tabData.s1.splitTree;
     expect(tree).toMatchObject({
       first: { type: "terminal", sessionId: "s1" },
-      second: { type: "connecting", connectionId: "conn-2" },
+      second: { type: "connecting", connectionId: retryId },
     });
 
     // 后台窗格连上后不抢走用户正在用的窗格的焦点。
-    emit("ssh:connect:conn-2", { type: "connected", sessionId: "s3" });
+    emit(`ssh:connect:${retryId}`, { type: "connected", sessionId: "s3" });
     expect(useTerminalStore.getState().tabData.s1.activePaneId).toBe("s1");
   });
 });
@@ -356,13 +367,13 @@ describe("分屏里按会话重连", () => {
 describe("关闭正在重连的标签", () => {
   it("取消标签内所有在途连接并清掉条目", async () => {
     seedConnectedTab("s1");
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-2");
     useTerminalStore.getState().reconnect("s1");
     await flush();
 
+    const connId = onlyConnectingId("s1");
     useTabStore.getState().closeTab("s1");
 
-    expect(CancelSSHConnect).toHaveBeenCalledWith("conn-2");
+    expect(CancelSSHConnect).toHaveBeenCalledWith(connId);
     expect(useTerminalStore.getState().connections).toEqual({});
   });
 });
@@ -391,10 +402,9 @@ describe("分屏失败", () => {
     expect(conn.error).toContain("administratively prohibited");
     expectNoOrphanConnectingNodes();
 
-    vi.mocked(ConnectSSHAsync).mockResolvedValueOnce("conn-9");
     useTerminalStore.getState().retryConnect(failedId);
     await flush();
-    emit("ssh:connect:conn-9", { type: "connected", sessionId: "s2" });
+    emitConnecting("s1", { type: "connected", sessionId: "s2" });
 
     const data = useTerminalStore.getState().tabData.s1;
     expect(data.splitTree).toMatchObject({

@@ -6,10 +6,19 @@ OpsKat's development handbook: common commands, code conventions, logging rules 
 
 ## Common Commands
 
+JavaScript tooling runs on Bun, pinned in `.bun-version`. Dependency resolution
+continues to use `pnpm-lock.yaml` through `bun x --bun pnpm@10.11.0`.
+
+Install the pinned CLI with `go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0`.
+The Go module, CLI and `@wailsio/runtime` must use the same release. `Taskfile.yml`
+and `build/config.yml` drive v3 development; `scripts/desktop.mjs` owns the build,
+version flags, binding generation and desktop packaging.
+
+
 ```bash
 # Install / dev / run
 make install                             # Install frontend deps (pnpm)
-make dev                                 # Wails hot-reload
+make dev                                 # Wails v3 hot-reload
 make run                                 # Run embedded production build
 make clean                               # Remove build artifacts / caches
 
@@ -24,13 +33,13 @@ make test                                # Go tests (internal/, cmd/opsctl, pkg/
 go test ./internal/ai/...                # Package scope
 go test ./internal/ai/ -run TestName     # Single Go test
 make test-cover                          # Coverage HTML
-cd frontend && pnpm test                 # Frontend (vitest)
-cd frontend && pnpm test:watch
+cd frontend && bun --bun run test                 # Frontend (vitest)
+cd frontend && bun --bun run test:watch
 make test-e2e                            # GUI e2e: Playwright drives the real Wails app
 
 # Lint
 make lint / make lint-fix                # golangci-lint
-cd frontend && pnpm lint / pnpm lint:fix
+cd frontend && bun --bun run lint / bun --bun run lint:fix
 
 # Extensions / plugin
 opsctl ext dev <dir>                     # Install a local extension build into the running app
@@ -99,10 +108,15 @@ Diagnosing production issues relies on logs. Log every cross-boundary / cross-pr
 
 | Path | Producer | Regenerate |
 |------|----------|------------|
-| `frontend/wailsjs/go/<domain>/*.{d.ts,js}`, `models.ts` | Wails (from the per-domain `internal/app/<domain>` binders + Go structs) | `make dev` / `wails build` |
-| `frontend/wailsjs/runtime/*` | Wails runtime shim | ships with Wails CLI |
+| `frontend/bindings/**` | Wails v3 (from `internal/app/<domain>` services + Go structs) | `bun scripts/desktop.mjs bindings` / `make dev` / `make build` |
+| `frontend/clients/*.ts` | Domain IPC clients; ordinary promises and explicit nullable-operation contracts | `frontend/scripts/generate-clients.mjs` (run by the desktop build) |
+| `build/darwin/icons.icns`, `build/bin/**`, `wails_windows_*.syso` | Native build resources and packaging | `scripts/desktop.mjs build` |
 | `internal/**/mock_*/` | `mockgen` | `go generate ./...` |
 | `internal/embedded/opsctl_bin` | `make build-cli-embed` | `make build-embed` |
+
+`frontend/tsconfig.json` keeps `useDefineForClassFields: false` so generated model
+instances omit optional fields until assigned. Their `createFrom` functions expect
+JSON-style absence rather than own properties containing `undefined`.
 
 Lockfiles (`go.sum`, `frontend/pnpm-lock.yaml`) — never hand-edit; use `go mod tidy` / `pnpm add|remove|install`.
 

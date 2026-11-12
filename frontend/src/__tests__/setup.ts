@@ -7,7 +7,7 @@ import { cleanup } from "@testing-library/react";
 afterEach(() => cleanup());
 
 // Mock Wails runtime
-vi.mock("../../wailsjs/runtime/runtime", () => ({
+vi.mock("@/lib/desktop", () => ({
   EventsOn: vi.fn(),
   EventsOff: vi.fn(),
   EventsEmit: vi.fn(),
@@ -15,6 +15,8 @@ vi.mock("../../wailsjs/runtime/runtime", () => ({
   OnFileDropOff: vi.fn(),
   BrowserOpenURL: vi.fn(),
   Quit: vi.fn(),
+  CloseWindow: vi.fn(),
+  WindowSetTitle: vi.fn(),
   WindowIsFullscreen: vi.fn().mockResolvedValue(false),
   Environment: vi.fn().mockResolvedValue({ platform: "other", buildType: "test", arch: "amd64" }),
   ClipboardGetText: vi.fn().mockResolvedValue(""),
@@ -32,24 +34,22 @@ async function mockBinderModule(modulePath: string) {
   }
   return mocked;
 }
-vi.mock("../../wailsjs/go/system/System", () => mockBinderModule("../../wailsjs/go/system/System"));
-vi.mock("../../wailsjs/go/customtype/CustomType", () => mockBinderModule("../../wailsjs/go/customtype/CustomType"));
-vi.mock("../../wailsjs/go/ssh/SSH", () => mockBinderModule("../../wailsjs/go/ssh/SSH"));
-vi.mock("../../wailsjs/go/query/Query", () => mockBinderModule("../../wailsjs/go/query/Query"));
-vi.mock("../../wailsjs/go/redis/Redis", () => mockBinderModule("../../wailsjs/go/redis/Redis"));
-vi.mock("../../wailsjs/go/kafka/Kafka", () => mockBinderModule("../../wailsjs/go/kafka/Kafka"));
-vi.mock("../../wailsjs/go/etcd/Etcd", () => mockBinderModule("../../wailsjs/go/etcd/Etcd"));
-vi.mock("../../wailsjs/go/oss/OSS", () => mockBinderModule("../../wailsjs/go/oss/OSS"));
-vi.mock("../../wailsjs/go/k8s/K8s", () => mockBinderModule("../../wailsjs/go/k8s/K8s"));
-vi.mock("../../wailsjs/go/serial/Serial", () => mockBinderModule("../../wailsjs/go/serial/Serial"));
-vi.mock("../../wailsjs/go/local/Local", () => mockBinderModule("../../wailsjs/go/local/Local"));
-vi.mock("../../wailsjs/go/vnc/VNC", () => mockBinderModule("../../wailsjs/go/vnc/VNC"));
-vi.mock("../../wailsjs/go/ai/AI", () => mockBinderModule("../../wailsjs/go/ai/AI"));
-vi.mock("../../wailsjs/go/opsctl/Opsctl", () => mockBinderModule("../../wailsjs/go/opsctl/Opsctl"));
-vi.mock("../../wailsjs/go/extension/Extension", () => mockBinderModule("../../wailsjs/go/extension/Extension"));
-vi.mock("../../wailsjs/go/external_edit/ExternalEdit", () =>
-  mockBinderModule("../../wailsjs/go/external_edit/ExternalEdit")
-);
+vi.mock("@clients/system", () => mockBinderModule("@clients/system"));
+vi.mock("@clients/customtype", () => mockBinderModule("@clients/customtype"));
+vi.mock("@clients/ssh", () => mockBinderModule("@clients/ssh"));
+vi.mock("@clients/query", () => mockBinderModule("@clients/query"));
+vi.mock("@clients/redis", () => mockBinderModule("@clients/redis"));
+vi.mock("@clients/kafka", () => mockBinderModule("@clients/kafka"));
+vi.mock("@clients/etcd", () => mockBinderModule("@clients/etcd"));
+vi.mock("@clients/oss", () => mockBinderModule("@clients/oss"));
+vi.mock("@clients/k8s", () => mockBinderModule("@clients/k8s"));
+vi.mock("@clients/serial", () => mockBinderModule("@clients/serial"));
+vi.mock("@clients/local", () => mockBinderModule("@clients/local"));
+vi.mock("@clients/vnc", () => mockBinderModule("@clients/vnc"));
+vi.mock("@clients/ai", () => mockBinderModule("@clients/ai"));
+vi.mock("@clients/opsctl", () => mockBinderModule("@clients/opsctl"));
+vi.mock("@clients/extension", () => mockBinderModule("@clients/extension"));
+vi.mock("@clients/external_edit", () => mockBinderModule("@clients/external_edit"));
 
 // Mock react-i18next
 // `t` / `i18n` 必须是稳定引用（真实 react-i18next 在渲染间也保持 t 稳定）：

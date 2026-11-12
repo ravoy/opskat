@@ -13,9 +13,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/credential_entity"
-	"github.com/opskat/opskat/internal/repository/credential_repo"
-	"github.com/opskat/opskat/internal/service/credential_svc"
+	"github.com/octays/opskat/internal/model/entity/credential_entity"
+	"github.com/octays/opskat/internal/repository/credential_repo"
+	"github.com/octays/opskat/internal/service/credential_svc"
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/assert"
 	gossh "golang.org/x/crypto/ssh"

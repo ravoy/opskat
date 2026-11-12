@@ -6,7 +6,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // AuthMethodKerberos 是 DatabaseConfig.AuthMethod 选 Kerberos 的取值；空表示口令。

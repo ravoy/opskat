@@ -7,7 +7,7 @@ import (
 	"github.com/cago-frame/cago/database/db"
 	"gorm.io/gorm/clause"
 
-	"github.com/opskat/opskat/internal/model/entity/extension_settings_entity"
+	"github.com/octays/opskat/internal/model/entity/extension_settings_entity"
 )
 
 //go:generate mockgen -source=extension_settings.go -destination=mock_extension_settings_repo/extension_settings.go -package=mock_extension_settings_repo

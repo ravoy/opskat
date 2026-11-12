@@ -12,8 +12,8 @@ import {
   Input,
   Label,
 } from "@opskat/ui";
-import { ExecuteSQL, GetCreateDatabaseStatements } from "../../../wailsjs/go/query/Query";
-import { dbdriver } from "../../../wailsjs/go/models";
+import { ExecuteSQL, GetCreateDatabaseStatements } from "@clients/query";
+import * as dbdriver from "@bindings/github.com/octays/opskat/pkg/dbdriver/models";
 import { toast } from "sonner";
 import { notifySuccess } from "@/lib/notify";
 import { SqlPreviewDialog } from "./SqlPreviewDialog";

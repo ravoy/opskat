@@ -4,9 +4,9 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/opskat/opskat/internal/pkg/appversion"
-	"github.com/opskat/opskat/pkg/extmanifest"
-	"github.com/opskat/opskat/pkg/extstore"
+	"github.com/octays/opskat/internal/pkg/appversion"
+	"github.com/octays/opskat/pkg/extmanifest"
+	"github.com/octays/opskat/pkg/extstore"
 )
 
 // fallbackLang is the index language shown when the app language has no text.

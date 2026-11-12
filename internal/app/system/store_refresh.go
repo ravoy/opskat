@@ -5,9 +5,9 @@ import (
 	"os"
 	"time"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 
-	"github.com/opskat/opskat/internal/bootstrap"
+	"github.com/octays/opskat/internal/bootstrap"
 )
 
 // extensionStoreRefreshedEvent tells the frontend the extension store index was
@@ -16,6 +16,8 @@ const extensionStoreRefreshedEvent = "ext:store-refreshed"
 
 // SetExtensionStoreRefresher wires the extension store's index refresh into the
 // daily online checks. main.go calls it once, before Startup.
+//
+//wails:ignore
 func (s *System) SetExtensionStoreRefresher(refresh func(context.Context) error) {
 	s.storeRefresh = refresh
 }
@@ -53,5 +55,5 @@ func (s *System) emitEvent(event string, data ...any) {
 		s.emit(event, data...)
 		return
 	}
-	wailsRuntime.EventsEmit(s.ctx, event, data...)
+	application.Get().Event.Emit(event, data...)
 }

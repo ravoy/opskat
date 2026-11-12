@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/cago-frame/agents/agent"
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/permission"
 	"github.com/stretchr/testify/assert"
 )
 

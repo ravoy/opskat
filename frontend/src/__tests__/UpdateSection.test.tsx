@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { UpdateSection } from "@/components/settings/UpdateSection";
-import { CheckForUpdate } from "../../wailsjs/go/system/System";
+import { CheckForUpdate } from "@clients/system";
 import {
   DownloadAndInstallUpdate,
   GetAppVersion,
@@ -11,11 +11,11 @@ import {
   GetDownloadMirror,
   GetUpdateChannel,
   RestartApp,
-} from "../../wailsjs/go/system/System";
-import { BrowserOpenURL, EventsOn, Quit } from "../../wailsjs/runtime/runtime";
+} from "@clients/system";
+import { BrowserOpenURL, EventsOn, Quit } from "@/lib/desktop";
 
 describe("UpdateSection", () => {
-  const repositoryURL = "https://github.com/opskat/opskat";
+  const repositoryURL = "https://github.com/octays/opskat";
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -65,7 +65,7 @@ describe("UpdateSection", () => {
       currentVersion: "v1.0.0",
       latestVersion: "v1.0.1",
       releaseNotes: "",
-      releaseURL: "https://github.com/opskat/opskat/releases/tag/v1.0.1",
+      releaseURL: "https://github.com/octays/opskat/releases/tag/v1.0.1",
       publishedAt: "2026-05-14T00:00:00Z",
     });
 
@@ -85,7 +85,7 @@ describe("UpdateSection", () => {
       currentVersion: "v1.0.0",
       latestVersion: "v1.0.1",
       releaseNotes: "Fix connection diagnostics",
-      releaseURL: "https://github.com/opskat/opskat/releases/tag/v1.0.1",
+      releaseURL: "https://github.com/octays/opskat/releases/tag/v1.0.1",
       publishedAt: "2026-05-14T00:00:00Z",
     });
     render(<UpdateSection />);

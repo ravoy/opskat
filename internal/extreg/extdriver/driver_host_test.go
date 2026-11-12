@@ -18,10 +18,10 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zaptest/observer"
 
-	"github.com/opskat/opskat/internal/extreg/extdriver"
-	"github.com/opskat/opskat/pkg/dbdriver"
-	"github.com/opskat/opskat/pkg/extension"
-	"github.com/opskat/opskat/pkg/extension/extensiontest"
+	"github.com/octays/opskat/internal/extreg/extdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/extension"
+	"github.com/octays/opskat/pkg/extension/extensiontest"
 )
 
 // hostSpy is every host capability a driver call must not reach, counting the

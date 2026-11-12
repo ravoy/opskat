@@ -4,8 +4,9 @@ import { DatabaseTree } from "@/components/query/DatabaseTree";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
 import { useAssetStore } from "@/stores/assetStore";
-import { ListDatabaseObjects } from "../../wailsjs/go/query/Query";
-import { asset_entity, query_svc } from "../../wailsjs/go/models";
+import { ListDatabaseObjects } from "@clients/query";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import { BUILTIN_DRIVERS, fakeDriverWith, provideDrivers } from "./dbDriverFixtures";
 
 // 带插值参数的文案要能看出参数(全局 mock 只回键名)。

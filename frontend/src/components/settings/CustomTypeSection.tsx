@@ -8,8 +8,8 @@ import { getIconComponent } from "@/components/asset/IconPicker";
 import { CustomTypeEditorDialog } from "@/components/settings/CustomTypeEditorDialog";
 import { ImportCustomTypeDialog } from "@/components/settings/ImportCustomTypeDialog";
 import { useCustomTypeList, useCustomTypeStore } from "@/stores/customTypeStore";
-import { ExportCustomType, SelectImportTypeFile } from "../../../wailsjs/go/customtype/CustomType";
-import type { customtype } from "../../../wailsjs/go/models";
+import { ExportCustomType, SelectImportTypeFile } from "@clients/customtype";
+import type * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 /** 设置 → 自定义类型:列表(执行方式 + 在用资产数)+ 新建 / 编辑 / 删除。 */

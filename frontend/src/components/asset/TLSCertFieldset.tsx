@@ -4,7 +4,7 @@ import { ClipboardPaste, FolderOpen } from "lucide-react";
 import { Button, Input, Textarea } from "@opskat/ui";
 import { Field, FieldLabel, Segmented } from "@/components/asset/fields";
 import type { TLSCertFormFields, TLSCertSource } from "@/components/asset/tlsCertConfig";
-import { SelectTLSCertFile } from "../../../wailsjs/go/system/System";
+import { SelectTLSCertFile } from "@clients/system";
 import { errorMessage } from "@/lib/errorMessage";
 
 interface TLSCertFieldsetProps {

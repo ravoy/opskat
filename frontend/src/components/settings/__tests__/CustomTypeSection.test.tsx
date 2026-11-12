@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { CustomTypeSection } from "@/components/settings/CustomTypeSection";
 import { useCustomTypeStore } from "@/stores/customTypeStore";
 import { useAssetStore } from "@/stores/assetStore";
-import { customtype } from "../../../../wailsjs/go/models";
+import * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
 
 const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
 vi.mock("sonner", () => ({ toast: { error: toastError, success: vi.fn() } }));
@@ -22,7 +22,7 @@ vi.mock("react-i18next", () => {
 describe("CustomTypeSection", () => {
   beforeEach(async () => {
     toastError.mockClear();
-    const mod = await import("../../../../wailsjs/go/customtype/CustomType");
+    const mod = await import("@clients/customtype");
     vi.mocked(mod.ListCustomTypes).mockReset();
     vi.mocked(mod.DeleteCustomType).mockReset();
     vi.mocked(mod.GetCustomTypeUsage).mockReset();
@@ -32,7 +32,7 @@ describe("CustomTypeSection", () => {
   });
 
   it("exports a type via the per-row export button", async () => {
-    const { ListCustomTypes, ExportCustomType } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { ListCustomTypes, ExportCustomType } = await import("@clients/customtype");
     vi.mocked(ListCustomTypes).mockResolvedValue([
       { id: 1, slug: "grafana", name: "Grafana", icon: "", execMode: "http", assetCount: 0 },
     ]);
@@ -47,7 +47,7 @@ describe("CustomTypeSection", () => {
   });
 
   it("opens the import preview dialog after selecting a file", async () => {
-    const { ListCustomTypes, SelectImportTypeFile } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { ListCustomTypes, SelectImportTypeFile } = await import("@clients/customtype");
     vi.mocked(ListCustomTypes).mockResolvedValue([]);
     vi.mocked(SelectImportTypeFile).mockResolvedValue(
       new customtype.ImportPreview({
@@ -60,6 +60,7 @@ describe("CustomTypeSection", () => {
           fields: [{ name: "host", label: "Host", secret: false, required: true }],
           http: { base_url: "https://{{host}}", auth: [] },
           usage: "",
+          defaultPolicy: null,
           createtime: 0,
           updatetime: 0,
         },
@@ -76,7 +77,7 @@ describe("CustomTypeSection", () => {
   });
 
   it("lists each type's execution mode and asset count", async () => {
-    const { ListCustomTypes } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { ListCustomTypes } = await import("@clients/customtype");
     vi.mocked(ListCustomTypes).mockResolvedValue([
       { id: 1, slug: "grafana", name: "Grafana", icon: "", execMode: "http", assetCount: 3 },
       { id: 2, slug: "aws-cli", name: "AWS CLI", icon: "", execMode: "command", assetCount: 0 },
@@ -91,7 +92,7 @@ describe("CustomTypeSection", () => {
   });
 
   it("refreshes the asset counts when assets change", async () => {
-    const { ListCustomTypes } = await import("../../../../wailsjs/go/customtype/CustomType");
+    const { ListCustomTypes } = await import("@clients/customtype");
     vi.mocked(ListCustomTypes).mockResolvedValueOnce([
       { id: 1, slug: "grafana", name: "Grafana", icon: "", execMode: "http", assetCount: 1 },
     ]);
@@ -107,8 +108,7 @@ describe("CustomTypeSection", () => {
   });
 
   it("reports an in-use type's assets directly without a confirm dialog or a delete call", async () => {
-    const { ListCustomTypes, DeleteCustomType, GetCustomTypeUsage } =
-      await import("../../../../wailsjs/go/customtype/CustomType");
+    const { ListCustomTypes, DeleteCustomType, GetCustomTypeUsage } = await import("@clients/customtype");
     vi.mocked(ListCustomTypes).mockResolvedValue([
       { id: 1, slug: "grafana", name: "Grafana", icon: "", execMode: "http", assetCount: 2 },
     ]);
@@ -132,8 +132,7 @@ describe("CustomTypeSection", () => {
   });
 
   it("opens the confirm dialog for an unused type and deletes it on confirm", async () => {
-    const { ListCustomTypes, DeleteCustomType, GetCustomTypeUsage } =
-      await import("../../../../wailsjs/go/customtype/CustomType");
+    const { ListCustomTypes, DeleteCustomType, GetCustomTypeUsage } = await import("@clients/customtype");
     vi.mocked(ListCustomTypes).mockResolvedValue([
       { id: 1, slug: "grafana", name: "Grafana", icon: "", execMode: "http", assetCount: 0 },
     ]);
@@ -155,8 +154,7 @@ describe("CustomTypeSection", () => {
   });
 
   it("still reports the assets when the backend refuses a delete after the pre-check (race)", async () => {
-    const { ListCustomTypes, DeleteCustomType, GetCustomTypeUsage } =
-      await import("../../../../wailsjs/go/customtype/CustomType");
+    const { ListCustomTypes, DeleteCustomType, GetCustomTypeUsage } = await import("@clients/customtype");
     vi.mocked(ListCustomTypes).mockResolvedValue([
       { id: 1, slug: "grafana", name: "Grafana", icon: "", execMode: "http", assetCount: 0 },
     ]);

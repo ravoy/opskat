@@ -3,7 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SnippetAssetDrawer } from "../SnippetAssetDrawer";
 
-vi.mock("../../../../wailsjs/go/extension/Extension", () => ({
+vi.mock("@clients/extension", () => ({
   GetSnippetLastAssets: vi.fn().mockResolvedValue([1]),
   SetSnippetLastAssets: vi.fn().mockResolvedValue(undefined),
   RecordSnippetUse: vi.fn().mockResolvedValue(undefined),

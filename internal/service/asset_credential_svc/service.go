@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/opskat/opskat/internal/assettype"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/service/credential_mgr_svc"
+	"github.com/octays/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/service/credential_mgr_svc"
 )
 
 // Service owns credential-related asset projections used by the IPC layer.

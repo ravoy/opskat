@@ -3,7 +3,7 @@ package command
 import (
 	"testing"
 
-	"github.com/opskat/opskat/internal/assettype"
+	"github.com/octays/opskat/internal/assettype"
 	"github.com/stretchr/testify/require"
 )
 

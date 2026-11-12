@@ -1,11 +1,11 @@
+import { OpenPageWindow } from "@clients/system";
 import { beforeEach, describe, it, expect, vi } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AssetTypePicker } from "@/components/asset/AssetTypePicker";
 import { useCustomTypeStore } from "@/stores/customTypeStore";
-import { useSettingsUiStore } from "@/stores/settingsUiStore";
 import { useTabStore } from "@/stores/tabStore";
-import { customtype } from "../../wailsjs/go/models";
+import * as customtype from "@bindings/github.com/octays/opskat/internal/app/customtype/models";
 
 // 编辑器本身由设置页的测试覆盖;这里只模拟"保存了一个新类型"——store.save 会先重新加载列表再回调 onSaved。
 vi.mock("@/components/settings/CustomTypeEditorDialog", () => ({
@@ -108,15 +108,15 @@ describe("AssetTypePicker custom types", () => {
     expect(screen.getByRole("combobox")).toHaveTextContent("AWS CLI");
   });
 
-  it("manage opens the custom types settings tab and leaves the form", async () => {
+  it("manage opens the custom types settings window and leaves the form", async () => {
     const user = userEvent.setup();
     const onLeave = vi.fn((proceed: () => void) => proceed());
     render(<AssetTypePicker value="ssh" onChange={() => {}} onLeave={onLeave} />);
     await user.click(screen.getByRole("combobox"));
     await user.click(screen.getByTestId("asset-type-manage-custom"));
 
-    expect(useSettingsUiStore.getState().activeTab).toBe("custom-types");
-    expect(useTabStore.getState().tabs.some((tab) => tab.id === "settings")).toBe(true);
+    expect(OpenPageWindow).toHaveBeenCalledWith(expect.objectContaining({ page: "settings", section: "custom-types" }));
+    expect(useTabStore.getState().tabs.some((tab) => tab.id === "settings")).toBe(false);
     expect(onLeave).toHaveBeenCalled();
   });
 

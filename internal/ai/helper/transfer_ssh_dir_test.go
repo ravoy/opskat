@@ -11,8 +11,8 @@ import (
 
 	"github.com/pkg/sftp"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/pkg/sftpio/sftpiotest"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/pkg/sftpio/sftpiotest"
 )
 
 // preparedSFTP 返回一个注入了单资产 SFTP cache 的 ctx：PrepareTransferDirs 与 Write 走的是

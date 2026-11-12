@@ -8,7 +8,7 @@ import (
 
 	"golang.org/x/sys/windows"
 
-	"github.com/opskat/opskat/internal/pkg/winclip"
+	"github.com/octays/opskat/internal/pkg/winclip"
 )
 
 // Win32 file clipboard via CF_HDROP, replacing a powershell.exe subprocess so the

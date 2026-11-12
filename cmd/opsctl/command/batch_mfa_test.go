@@ -25,12 +25,12 @@ import (
 	"golang.org/x/crypto/ssh"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/model/entity/host_key_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/host_key_repo"
-	"github.com/opskat/opskat/internal/service/credential_resolver"
+	"github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/host_key_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/host_key_repo"
+	"github.com/octays/opskat/internal/service/credential_resolver"
 )
 
 // otpExecServer 是一台「公钥部分成功后要求单提示 OTP」的 SSH 服务器，能执行 exec

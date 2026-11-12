@@ -3,8 +3,8 @@ package helper
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/service/etcd_svc"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/service/etcd_svc"
 )
 
 // ExecEtcdOnAsset is the permission-check-free execution entry point used by the

@@ -7,7 +7,7 @@ import { Button } from "@opskat/ui";
 import { Copy, History, Loader2, Pencil, Save, Trash2, X } from "lucide-react";
 import { useEtcdStore } from "@/stores/etcdStore";
 import { CodeEditor, type CodeEditorLanguage } from "@/components/CodeEditor";
-import type { etcd_svc } from "../../../wailsjs/go/models";
+import type * as etcd_svc from "@bindings/github.com/octays/opskat/internal/service/etcd_svc/models";
 import { errorMessage } from "@/lib/errorMessage";
 import { AsyncState } from "@/components/common/AsyncState";
 

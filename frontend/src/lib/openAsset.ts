@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import type { asset_entity } from "../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { useTabStore } from "@/stores/tabStore";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTerminalStore } from "@/stores/terminalStore";

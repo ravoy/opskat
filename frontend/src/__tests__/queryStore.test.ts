@@ -2,7 +2,8 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useTabStore } from "../stores/tabStore";
 import { useQueryStore } from "../stores/queryStore";
 import { useAssetStore } from "../stores/assetStore";
-import { asset_entity, query_svc } from "../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as query_svc from "@bindings/github.com/octays/opskat/internal/service/query_svc/models";
 import {
   ExecuteSQL,
   ListDatabaseObjects,
@@ -10,10 +11,10 @@ import {
   ListMongoCollections,
   ListMongoDatabases,
   ListTables,
-} from "../../wailsjs/go/query/Query";
+} from "@clients/query";
 import { BUILTIN_DRIVERS, FAKE_DRIVER, provideDrivers } from "./dbDriverFixtures";
-import { RedisGetKeyDetail } from "../../wailsjs/go/redis/Redis";
-import { RedisListDatabases, RedisScanKeys } from "../../wailsjs/go/redis/Redis";
+import { RedisGetKeyDetail } from "@clients/redis";
+import { RedisListDatabases, RedisScanKeys } from "@clients/redis";
 
 function makeDatabaseAsset(id: number, name = `DB ${id}`): asset_entity.Asset {
   return {

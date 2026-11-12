@@ -16,7 +16,7 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 
-	"github.com/opskat/opskat/internal/model/entity/extension_state_entity"
+	"github.com/octays/opskat/internal/model/entity/extension_state_entity"
 )
 
 // Where an installed package came from, as recorded in extension_state.source.

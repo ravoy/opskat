@@ -9,9 +9,9 @@ import (
 	"strings"
 	"sync"
 
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 
-	"github.com/opskat/opskat/internal/sshpool"
+	"github.com/octays/opskat/internal/sshpool"
 )
 
 // SkillContent 内嵌的 skill/plugin 文件内容（由 main.go 通过 go:embed 注入）
@@ -47,10 +47,13 @@ type System struct {
 	emit func(event string, data ...any)
 }
 
+//wails:ignore
 func (s *System) SetConfirmQuitHandler(handler func()) { s.confirmQuit = handler }
 
 // WaitQuitConfirmShown 暴露给 main.go 的 OnBeforeClose：前端接手退出确认框后回执。
 // 拿不到回执说明前端已经弹不出对话框，此时必须放行，否则窗口永远关不掉。
+//
+//wails:ignore
 func (s *System) WaitQuitConfirmShown() <-chan struct{} { return s.quitShownAckCh }
 
 // DrainQuitConfirmShown 在 emit app:quit-confirm 之前清掉上一次残留的回执。
@@ -64,7 +67,7 @@ func (s *System) DrainQuitConfirmShown() {
 // subscribeQuitConfirmShown 在 Startup 中注册：前端显示退出确认框后
 // EventsEmit("app:quit-confirm-shown")。
 func (s *System) subscribeQuitConfirmShown(ctx context.Context) {
-	wailsRuntime.EventsOn(ctx, "app:quit-confirm-shown", func(_ ...any) {
+	application.Get().Event.On("app:quit-confirm-shown", func(_ *application.CustomEvent) {
 		select {
 		case s.quitShownAckCh <- struct{}{}:
 		default:
@@ -78,7 +81,7 @@ func (s *System) ConfirmQuit() {
 		s.confirmQuit()
 	}
 	if s.ctx != nil {
-		wailsRuntime.Quit(s.ctx)
+		application.Get().Quit()
 	}
 }
 
@@ -90,10 +93,16 @@ type windowRuntimeOps struct {
 }
 
 var windowOps = windowRuntimeOps{
-	IsMinimised:    wailsRuntime.WindowIsMinimised,
-	Unminimise:     wailsRuntime.WindowUnminimise,
-	Show:           wailsRuntime.WindowShow,
-	SetAlwaysOnTop: wailsRuntime.WindowSetAlwaysOnTop,
+	IsMinimised: func(_ context.Context) bool {
+		w, _ := application.Get().Window.GetByName("main")
+		return w.IsMinimised()
+	},
+	Unminimise: func(_ context.Context) { w, _ := application.Get().Window.GetByName("main"); w.UnMinimise() },
+	Show:       func(_ context.Context) { w, _ := application.Get().Window.GetByName("main"); w.Show() },
+	SetAlwaysOnTop: func(_ context.Context, value bool) {
+		w, _ := application.Get().Window.GetByName("main")
+		w.SetAlwaysOnTop(value)
+	},
 }
 
 // New 构造 System binder。appCtx 来自 main.go 的根 context（cancel 后所有 binder 退出）。

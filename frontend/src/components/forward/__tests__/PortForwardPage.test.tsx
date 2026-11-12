@@ -8,7 +8,7 @@ import {
   UpdateForwardConfig,
   StartForwardConfig,
   DeleteForwardConfig,
-} from "../../../../wailsjs/go/ssh/SSH";
+} from "@clients/ssh";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn(), warning: vi.fn(), info: vi.fn() } }));
 vi.mock("@/components/asset/AssetSelect", () => ({

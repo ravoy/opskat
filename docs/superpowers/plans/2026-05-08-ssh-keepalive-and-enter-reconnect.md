@@ -265,7 +265,7 @@ func newSharedClient(client *ssh.Client, closers []io.Closer) *sharedClient {
 并在文件顶部 import 块（3-19 行）末尾加：
 
 ```go
-"github.com/opskat/opskat/internal/pkg/sshkeepalive"
+"github.com/octays/opskat/internal/pkg/sshkeepalive"
 ```
 
 > Tip: 让 goimports / golangci-lint --fix 帮你排序 import。
@@ -376,7 +376,7 @@ entry = &poolEntry{
 并在 import 块（3-13 行）加：
 
 ```go
-"github.com/opskat/opskat/internal/pkg/sshkeepalive"
+"github.com/octays/opskat/internal/pkg/sshkeepalive"
 ```
 
 > 注意：`Pool.Get` 里有"拨号期间另一个 goroutine 已建好连接"的去重分支（145-165 行），那条分支会 close 我们刚 dial 出的 client。但我们还没把 entry 装进 map，stopKeepalive 也没启动 —— 那条分支不需要改。**关键**：只有真正放进 `p.entries[assetID] = entry`（166 行）的 entry 才有 stopKeepalive，确保了对称。

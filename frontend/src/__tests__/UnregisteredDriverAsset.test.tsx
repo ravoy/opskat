@@ -6,9 +6,9 @@ import { toast } from "sonner";
 import { AssetDetail } from "@/components/asset/AssetDetail";
 import { AssetForm } from "@/components/asset/AssetForm";
 import { notifySuccess } from "@/lib/notify";
-import { asset_entity } from "../../wailsjs/go/models";
-import { TestAssetConnection, UpdateAsset } from "../../wailsjs/go/system/System";
-import { GetCommandReviewState } from "../../wailsjs/go/extension/Extension";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import { TestAssetConnection, UpdateAsset } from "@clients/system";
+import { GetCommandReviewState } from "@clients/extension";
 import { BUILTIN_DRIVERS, provideDrivers } from "./dbDriverFixtures";
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn() } }));

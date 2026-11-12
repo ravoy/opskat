@@ -1,5 +1,5 @@
 import type { ComponentType, Ref } from "react";
-import type { asset_entity } from "../../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 
 /** 父壳交给每个 section 的共享横切助手；按类型需要逐步扩充(YAGNI)。 */
 export interface AssetFormContext {

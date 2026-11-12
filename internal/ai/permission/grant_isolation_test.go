@@ -3,13 +3,14 @@ package permission
 import (
 	"context"
 	"testing"
+	"time"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/policy"
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
-	"github.com/opskat/opskat/internal/repository/asset_repo"
-	"github.com/opskat/opskat/internal/repository/asset_repo/mock_asset_repo"
-	"github.com/opskat/opskat/internal/repository/grant_repo"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/repository/asset_repo"
+	"github.com/octays/opskat/internal/repository/asset_repo/mock_asset_repo"
+	"github.com/octays/opskat/internal/repository/grant_repo"
 
 	. "github.com/smartystreets/goconvey/convey"
 	"go.uber.org/mock/gomock"
@@ -77,6 +78,55 @@ func TestGrantIsolation(t *testing.T) {
 
 			got := matchGrantPatternsWith(ctx, 1, nil, []string{"redis-cli get foo"}, "redis", policy.MatchCommandRule)
 			So(got, ShouldEqual, "redis-cli get *")
+		})
+	})
+}
+
+// 限时全量授权落的 item 形状与效力：`*` 挂命令面（cp 触发也归一），AllAssets 时
+// AssetID 归 0，到期时间随时长写入；随后同范围命令在 grant 匹配里直接通过。
+func TestTimedAllowGrantShapeAndEffect(t *testing.T) {
+	Convey("限时全量授权", t, func() {
+		Convey("本资产 30 分钟", func() {
+			ctx := withStubGrant(t)
+			stub := grant_repo.Grant().(*stubGrantRepo)
+			SaveTimedAllowGrant(ctx, "sess-cp", 1, "web-01", "exec", 30, false)
+
+			items := stub.items["sess-cp"]
+			So(len(items), ShouldEqual, 1)
+			item := items[0]
+			So(item.Command, ShouldEqual, "*")
+			So(item.AssetID, ShouldEqual, 1)
+			So(item.ToolName, ShouldEqual, "exec")
+			So(item.Expiretime, ShouldBeBetween, time.Now().Add(29*time.Minute).Unix(), time.Now().Add(31*time.Minute).Unix())
+
+			Convey("同资产的命令直接通过", func() {
+				got := matchGrantPatternsWith(ctx, 1, nil, []string{"systemctl restart nginx"}, "exec", policy.MatchCommandRule)
+				So(got, ShouldEqual, "*")
+			})
+		})
+
+		Convey("全部资产：AssetID 归 0，其它资产也放行", func() {
+			ctx := withStubGrant(t)
+			stub := grant_repo.Grant().(*stubGrantRepo)
+			SaveTimedAllowGrant(ctx, "sess-cp", 1, "web-01", "exec", 120, true)
+
+			item := stub.items["sess-cp"][0]
+			So(item.AssetID, ShouldEqual, 0)
+
+			// assetID=9 未在 mock asset repo 注册——全部资产的 0/0 匹配在解析组链之前，
+			// 不需要资产存在。
+			got := matchGrantPatternsWith(ctx, 9, nil, []string{"rm -rf /tmp/x"}, "exec", policy.MatchCommandRule)
+			So(got, ShouldEqual, "*")
+		})
+
+		Convey("cp 触发的限时授权归一到命令面，跨面覆盖文件传输", func() {
+			ctx := withStubGrant(t)
+			stub := grant_repo.Grant().(*stubGrantRepo)
+			SaveTimedAllowGrant(ctx, "sess-cp", 1, "web-01", GrantToolCp, 60, false)
+
+			So(stub.items["sess-cp"][0].ToolName, ShouldEqual, "exec")
+			got := matchGrantPatternsWith(ctx, 1, nil, []string{"/etc/cron.d/backup"}, GrantToolCp, policy.MatchPathRule)
+			So(got, ShouldEqual, "*")
 		})
 	})
 }

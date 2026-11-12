@@ -276,7 +276,7 @@ session 的对外入口一并退役：`--session <id>` 全局 flag、`OPSKAT_SES
 
 ## Relevant links
 
-- Issue [#288](https://github.com/opskat/opskat/issues/288) — 独立 opsctl
+- Issue [#288](https://github.com/octays/opskat/issues/288) — 独立 opsctl
 - `docs/ARCHITECTURE.md` §8 — opsctl 与多进程流程
 - `docs/VERIFICATION.md` — 验证顺序与沙箱
 - `plugin/opsctl/skills/opsctl/SKILL.md` — 面向 AI 的 opsctl 技能文档

@@ -3,10 +3,10 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DatabaseConfigSection } from "@/components/asset/DatabaseConfigSection";
 import { refreshDatabaseDrivers } from "@/lib/dbDrivers";
-import { ListDatabaseDrivers } from "../../wailsjs/go/query/Query";
+import { ListDatabaseDrivers } from "@clients/query";
 import { BUILTIN_DRIVERS, FAKE_DRIVER } from "./dbDriverFixtures";
 
-vi.mock("../../wailsjs/go/system/System", () => ({
+vi.mock("@clients/system", () => ({
   ListCredentialsByType: () => Promise.resolve([]),
   GetAssetPassword: () => Promise.resolve(""),
   SelectSQLiteFile: () => Promise.resolve(""),
@@ -90,7 +90,7 @@ describe("DatabaseConfigSection 跟随后端驱动描述", () => {
 
   it("编辑态的驱动不在注册表里:显示未知驱动错误,配置原样保留,仍可保存与测试", async () => {
     vi.mocked(ListDatabaseDrivers).mockResolvedValue(BUILTIN_DRIVERS);
-    const { asset_entity } = await import("../../wailsjs/go/models");
+    const asset_entity = await import("@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models");
     const editAsset = new asset_entity.Asset({ Type: "database", Config: '{"driver":"gone","host":"h","port":1}' });
     const onValidityChange = vi.fn();
     render(<DatabaseConfigSection ctx={ctx} editAsset={editAsset} onValidityChange={onValidityChange} />);

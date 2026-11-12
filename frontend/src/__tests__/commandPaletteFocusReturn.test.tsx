@@ -1,7 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useState } from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { asset_entity, snippet_entity, snippet_svc } from "../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
+import * as snippet_entity from "@bindings/github.com/octays/opskat/internal/model/entity/snippet_entity/models";
+import * as snippet_svc from "@bindings/github.com/octays/opskat/internal/service/snippet_svc/models";
 import { useTabStore } from "../stores/tabStore";
 import { useAssetStore } from "../stores/assetStore";
 import { useRecentAssetStore } from "../stores/recentAssetStore";
@@ -9,7 +11,7 @@ import { useSnippetStore } from "../stores/snippetStore";
 import { TooltipProvider } from "@opskat/ui";
 import { TopBar } from "../components/layout/TopBar";
 import { CommandPaletteDialog } from "../components/command/CommandPaletteDialog";
-import { ListSnippets, ListSnippetCategories } from "../../wailsjs/go/extension/Extension";
+import { ListSnippets, ListSnippetCategories } from "@clients/extension";
 import { runSnippetOnAsset } from "../components/snippet/snippetRun";
 
 vi.mock("../components/snippet/snippetRun", async (importOriginal) => {

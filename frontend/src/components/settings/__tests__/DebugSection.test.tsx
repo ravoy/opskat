@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import { toast } from "sonner";
 import { DebugSection } from "../DebugSection";
-import { GetDebugMode } from "../../../../wailsjs/go/system/System";
+import { GetDebugMode } from "@clients/system";
 
 describe("DebugSection", () => {
   it("reports a failed read of the debug mode and does not offer a switch it cannot trust", async () => {

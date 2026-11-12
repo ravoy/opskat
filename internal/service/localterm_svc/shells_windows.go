@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/opskat/opskat/internal/pkg/executil"
+	"github.com/octays/opskat/internal/pkg/executil"
 )
 
 // DetectShells 探测本机:pwsh/powershell/cmd + Git Bash + WSL 发行版。

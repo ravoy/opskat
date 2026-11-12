@@ -16,7 +16,7 @@ import {
   cn,
 } from "@opskat/ui";
 import { useSnippetStore } from "@/stores/snippetStore";
-import { snippet_entity } from "../../../wailsjs/go/models";
+import * as snippet_entity from "@bindings/github.com/octays/opskat/internal/model/entity/snippet_entity/models";
 import { SnippetFormDialog } from "./SnippetFormDialog";
 import { SnippetAssetDrawer } from "./SnippetAssetDrawer";
 import { isRunnableCategoryId } from "./snippetRun";

@@ -28,7 +28,7 @@ import { ConfigTabs, type ConfigGroup } from "@/components/asset/ConfigTabs";
 import { Field, Segmented } from "@/components/asset/fields";
 import { useCustomTypeStore } from "@/stores/customTypeStore";
 import { issueText } from "./customTypeIssue";
-import { custom_type_entity } from "../../../wailsjs/go/models";
+import * as custom_type_entity from "@bindings/github.com/octays/opskat/internal/model/entity/custom_type_entity/models";
 import { errorMessage } from "@/lib/errorMessage";
 
 // 认证类型的值个数 / 是否带名称,与 internal/pkg/authtmpl.builtinAuthTypes 一一对应

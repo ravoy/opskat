@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/opskat/opskat/internal/pkg/socksdial/socksdialtest"
+	"github.com/octays/opskat/internal/pkg/socksdial/socksdialtest"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/ssh"
 )

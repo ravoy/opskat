@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/internal/ai/policy"
+	"github.com/octays/opskat/internal/ai/policy"
 )
 
 func TestParseKafkaCommand(t *testing.T) {

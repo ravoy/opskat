@@ -2,9 +2,9 @@ import { useImperativeHandle, useState, type Ref } from "react";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { StartK8sPodLogs } from "../../wailsjs/go/k8s/K8s";
-import { StopK8sPodLogs } from "../../wailsjs/go/k8s/K8s";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
+import { StartK8sPodLogs } from "@clients/k8s";
+import { StopK8sPodLogs } from "@clients/k8s";
+import { EventsOn } from "@/lib/desktop";
 import { K8sLogsPanel } from "@/components/k8s/K8sLogsPanel";
 import type { LogTabState, LogTabStateUpdate } from "@/components/k8s/k8sLogState";
 

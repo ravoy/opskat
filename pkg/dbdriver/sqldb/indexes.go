@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/opskat/opskat/pkg/dbdriver"
+	"github.com/octays/opskat/pkg/dbdriver"
 )
 
 // 表设计器里的索引编辑。方言实现 TableIndexer 即开启，驱动描述的 IndexEditing 用 IndexEditing(dialect)

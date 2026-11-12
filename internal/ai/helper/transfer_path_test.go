@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 // stubResolver 替代注入的 ResolveAssetFunc。解析策略属于各自的入口（opsctl 的 resolveAsset

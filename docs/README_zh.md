@@ -15,7 +15,7 @@ SSH 与 RDP、数据库、对象存储、Redis、Kafka、Kubernetes…… 运维
 <p align="center">
 <a href="https://opskat.dev/">官网</a> ·
 <a href="https://opskat.dev/docs/getting-started/installation">文档</a> ·
-<a href="https://github.com/opskat/opskat/releases">下载</a>
+<a href="https://github.com/octays/opskat/releases">下载</a>
 </p>
 
 <p align="center">
@@ -50,7 +50,7 @@ SSH 与 RDP、数据库、对象存储、Redis、Kafka、Kubernetes…… 运维
 
 ### 下载
 
-到 [Releases 页面](https://github.com/opskat/opskat/releases) 下载对应平台（**macOS / Windows / Linux**）的安装包，下载即用，无需 Go/Node 等开发环境。详细步骤见 [安装文档](https://opskat.dev/docs/getting-started/installation)。
+到 [Releases 页面](https://github.com/octays/opskat/releases) 下载对应平台（**macOS / Windows / Linux**）的安装包，下载即用，无需 Go/Node 等开发环境。详细步骤见 [安装文档](https://opskat.dev/docs/getting-started/installation)。
 
 ### 首次使用
 
@@ -156,7 +156,7 @@ opsctl ssh web-01
 
 | | |
 |---------|------------|
-| 桌面端 | [Wails v2](https://wails.io/) (Go + Web) |
+| 桌面端 | [Wails v3](https://wails.io/) (Go + Web) |
 | 前端 | React 19 + TypeScript + Tailwind CSS |
 | 后端 | Go 1.26、SQLite |
 
@@ -164,7 +164,7 @@ opsctl ssh web-01
 
 > 面向贡献者；只想使用的话看上面的 **安装** 即可。
 
-**前置依赖：** [Go 1.26+](https://go.dev/)、[Node.js 22+](https://nodejs.org/) + [pnpm](https://pnpm.io/)、[Wails v2 CLI](https://wails.io/docs/gettingstarted/installation)
+**前置依赖：** [Go 1.26+](https://go.dev/)、[Bun](https://bun.sh/)（版本见 `.bun-version`）、[Wails v3 CLI](https://wails.io/getting-started/installation/)
 
 ```bash
 make install        # 安装前端依赖

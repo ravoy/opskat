@@ -10,23 +10,23 @@ import (
 	"sync"
 	"time"
 
-	"github.com/opskat/opskat/internal/ai/aictx"
-	"github.com/opskat/opskat/internal/ai/helper"
-	"github.com/opskat/opskat/internal/ai/permission"
-	"github.com/opskat/opskat/internal/ai/runner"
-	"github.com/opskat/opskat/internal/ai/skills"
-	"github.com/opskat/opskat/internal/ai/tool"
-	"github.com/opskat/opskat/internal/app/i18n"
-	"github.com/opskat/opskat/internal/model/entity/ai_provider_entity"
-	"github.com/opskat/opskat/internal/model/entity/conversation_entity"
-	"github.com/opskat/opskat/internal/service/ai_provider_svc"
-	"github.com/opskat/opskat/internal/service/conversation_svc"
-	"github.com/opskat/opskat/internal/service/custom_type_svc"
+	"github.com/octays/opskat/internal/ai/aictx"
+	"github.com/octays/opskat/internal/ai/helper"
+	"github.com/octays/opskat/internal/ai/permission"
+	"github.com/octays/opskat/internal/ai/runner"
+	"github.com/octays/opskat/internal/ai/skills"
+	"github.com/octays/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/app/i18n"
+	"github.com/octays/opskat/internal/model/entity/ai_provider_entity"
+	"github.com/octays/opskat/internal/model/entity/conversation_entity"
+	"github.com/octays/opskat/internal/service/ai_provider_svc"
+	"github.com/octays/opskat/internal/service/conversation_svc"
+	"github.com/octays/opskat/internal/service/custom_type_svc"
 
 	"github.com/cago-frame/agents/agent"
 	"github.com/cago-frame/agents/app/coding"
 	"github.com/cago-frame/cago/pkg/logger"
-	wailsRuntime "github.com/wailsapp/wails/v2/pkg/runtime"
+	"github.com/wailsapp/wails/v3/pkg/application"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -431,12 +431,15 @@ func (a *AI) DeleteConversation(id int64) error {
 }
 
 // SendAIMessage 发送 AI 消息，通过 Wails Events 流式返回
-func (a *AI) SendAIMessage(convID int64, messages []runner.Message, aiCtx runner.AIContext) error {
+func (a *AI) SendAIMessage(callCtx context.Context, convID int64, messages []runner.Message, aiCtx runner.AIContext) error {
 	if a.systemCfg == nil {
 		return fmt.Errorf("请先配置 AI Provider")
 	}
 
 	ctx := i18n.Ctx(a.ctx, a.lang.Lang())
+	if window, ok := callCtx.Value(application.WindowKey).(application.Window); ok {
+		ctx = context.WithValue(ctx, application.WindowKey, window)
+	}
 
 	// 自动创建会话（首次发消息时）
 	if convID == 0 {
@@ -521,7 +524,7 @@ func (a *AI) SendAIMessage(convID int64, messages []runner.Message, aiCtx runner
 	}
 
 	onEvent := func(event runner.StreamEvent) {
-		wailsRuntime.EventsEmit(a.ctx, eventName, event)
+		application.Get().Event.Emit(eventName, event)
 
 		// done/stopped 时更新会话时间
 		if event.Type == "done" || event.Type == "stopped" {
@@ -696,16 +699,6 @@ func (a *AI) SaveConversationMessages(convID int64, from int, tail []Conversatio
 // GetCurrentConversationID 获取当前会话ID
 func (a *AI) GetCurrentConversationID() int64 {
 	return a.currentConversationID
-}
-
-// subscribeAIFlushAck 在 Startup 中注册：前端完成会话落盘后会 EventsEmit("ai:flush-done")。
-func (a *AI) subscribeAIFlushAck() {
-	wailsRuntime.EventsOn(a.ctx, "ai:flush-done", func(_ ...any) {
-		select {
-		case a.flushAckCh <- struct{}{}:
-		default:
-		}
-	})
 }
 
 // RespondPermission 前端响应权限确认请求

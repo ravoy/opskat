@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { renderHook, act, render, screen } from "@testing-library/react";
-import { asset_entity } from "../../wailsjs/go/models";
+import * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { useAssetTypes, useAssetTypeDef, getAssetType, isKnownAssetType } from "@/lib/assetTypes";
 import { registerExtensionAssetTypes, unregisterExtensionAssetTypes } from "@/extension/assetTypes";
 import type { ExtManifest } from "@/extension/types";

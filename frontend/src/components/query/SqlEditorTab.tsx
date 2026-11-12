@@ -23,7 +23,7 @@ import {
 } from "@opskat/ui";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore, type QueryTabMeta } from "@/stores/tabStore";
-import { ExecuteSQLPaged } from "../../../wailsjs/go/query/Query";
+import { ExecuteSQLPaged } from "@clients/query";
 import { TableDataStatusBar } from "./TableEditorToolbar";
 import { QueryResultTable } from "./QueryResultTable";
 import { QueryErrorPanel } from "./QueryErrorPanel";

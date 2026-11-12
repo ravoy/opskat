@@ -1,4 +1,4 @@
-import type { asset_entity } from "../../wailsjs/go/models";
+import type * as asset_entity from "@bindings/github.com/octays/opskat/internal/model/entity/asset_entity/models";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore, type TerminalTabMeta } from "@/stores/tabStore";
 import { TRANSPORTS, useTerminalStore, type TerminalTabData, type TerminalTransport } from "@/stores/terminalStore";

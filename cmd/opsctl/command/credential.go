@@ -3,7 +3,7 @@ package command
 import (
 	"context"
 
-	"github.com/opskat/opskat/internal/ai/tool"
+	"github.com/octays/opskat/internal/ai/tool"
 )
 
 func cmdListCredentials(ctx context.Context, handlers map[string]tool.ToolHandlerFunc, credentialType string) int {

@@ -5,7 +5,7 @@ import { fireEvent } from "@testing-library/react";
 import { TableDataTab } from "@/components/query/TableDataTab";
 import { useQueryStore } from "@/stores/queryStore";
 import { useTabStore } from "@/stores/tabStore";
-import { CountTableRows, ExecuteSQL, OpenTable, QueryTableRows } from "../../wailsjs/go/query/Query";
+import { CountTableRows, ExecuteSQL, OpenTable, QueryTableRows } from "@clients/query";
 import { BUILTIN_DRIVERS, mockGridEditStatements, provideDrivers } from "./dbDriverFixtures";
 
 function openTablePayload(rows: Record<string, unknown>[]) {

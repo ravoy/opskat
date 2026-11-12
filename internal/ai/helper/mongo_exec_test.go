@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/opskat/opskat/internal/model/entity/asset_entity"
+	"github.com/octays/opskat/internal/model/entity/asset_entity"
 )
 
 func mongoAsset(t *testing.T, defaultDB string) *asset_entity.Asset {
