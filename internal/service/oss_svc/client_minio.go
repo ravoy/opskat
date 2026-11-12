@@ -72,7 +72,7 @@ func (a *minioAdapter) ListObjects(
 	}
 	defer func() { _ = resp.Body.Close() }()
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("list objects: unexpected HTTP status %s", resp.Status)
+		return nil, fmt.Errorf("list objects: unexpected HTTP status %s: %s", resp.Status, describeS3Error(resp.Body))
 	}
 	var result minio.ListBucketV2Result
 	if err := xml.NewDecoder(resp.Body).Decode(&result); err != nil {
@@ -215,4 +215,25 @@ func toObjectItem(o minio.ObjectInfo) ObjectItem {
 		item.IsPrefix = true
 	}
 	return item
+}
+
+// describeS3Error 读取 S3 风格的错误响应体（各家的 <Error><Code>/<Message>），
+// 给出可诊断的摘要。读失败或不是该形状时退回通用占位——错误增强不能反过来把
+// 原始错误吃掉。
+func describeS3Error(body io.Reader) string {
+	data, err := io.ReadAll(io.LimitReader(body, 4096))
+	if err != nil || len(data) == 0 {
+		return "no error body"
+	}
+	var e struct {
+		Code    string `xml:"Code"`
+		Message string `xml:"Message"`
+	}
+	if xml.Unmarshal(data, &e) != nil || e.Code == "" {
+		return strings.TrimSpace(string(data))
+	}
+	if e.Message == "" {
+		return e.Code
+	}
+	return e.Code + ": " + e.Message
 }

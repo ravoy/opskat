@@ -173,3 +173,29 @@ func TestMinioAdapterDecodesURLEncodedListing(t *testing.T) {
 		require.Equal(t, "100%25.txt", res.Objects[0].Key)
 	})
 }
+
+// 列目录被拒时，错误必须携带服务端错误体的 Code/Message（阿里云/RAM 的 403 只有
+// 靠它才能区分 AccessDenied / SignatureDoesNotMatch / InvalidAccessKeyId）。
+func TestMinioAdapterListObjectsSurfacesTheErrorBody(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusForbidden)
+		_, _ = w.Write([]byte(`<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>AccessDenied</Code><Message>The bucket you are accessing does not belong to you.</Message></Error>`))
+	}))
+	defer server.Close()
+
+	endpoint, err := url.Parse(server.URL)
+	require.NoError(t, err)
+	mc, err := minio.New(endpoint.Host, &minio.Options{
+		Creds:  credentials.NewStaticV4("access", "secret", ""),
+		Secure: false,
+		Region: "us-east-1",
+	})
+	require.NoError(t, err)
+
+	_, err = newMinioAdapter(mc).ListObjects(context.Background(), "bucket", "", 100, "")
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "403")
+	require.Contains(t, err.Error(), "AccessDenied")
+	require.Contains(t, err.Error(), "does not belong to you")
+}
