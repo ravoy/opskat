@@ -74,3 +74,4 @@ frontend/clients/
 # Generated native build resources
 build/darwin/icons.icns
 /wails_windows_*.syso
+.DS_Store
