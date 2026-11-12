@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - "v*"
+  # 手动入口：fork 默认不响应 push 事件（tag 推送同样不触发），在 release tag 上
+  # dispatch 本工作流即可走完全相同的构建与发布路径（ref_name 取 tag 名）。
+  workflow_dispatch:
 
 jobs:
   build-desktop:
