@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"runtime"
 	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 
@@ -57,12 +58,25 @@ func (s *System) OpenPageWindow(request desktop.PageWindowRequest) (string, erro
 	return spec.Name, nil
 }
 
+// windowSizeFor picks the default geometry per window kind: a tool page
+// (settings/sshkeys/audit/forward/snippets/ai) is a form-and-list surface that
+// fits 1080×720, while an asset workspace hosts terminals and file panels that
+// want the same room as the main window. Both open centered.
+func windowSizeFor(name string) (width, height, minWidth, minHeight int) {
+	if strings.HasPrefix(name, "page-") {
+		return 1080, 720, 860, 600
+	}
+	return 1440, 900, 1000, 640
+}
+
 func (s *System) openNativeWindow(name string, query url.Values) {
 	app := application.Get()
+	width, height, minWidth, minHeight := windowSizeFor(name)
 	window := app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Name: name, Title: "OpsKat", Width: 1440, Height: 900, MinWidth: 1000, MinHeight: 640,
-		URL:       desktop.WindowURL(query),
-		Frameless: runtime.GOOS == "windows", EnableFileDrop: true, ZoomControlEnabled: true,
+		Name: name, Title: "OpsKat", Width: width, Height: height, MinWidth: minWidth, MinHeight: minHeight,
+		InitialPosition: application.WindowCentered,
+		URL:             desktop.WindowURL(query),
+		Frameless:       runtime.GOOS == "windows", EnableFileDrop: true, ZoomControlEnabled: true,
 		Mac: application.MacWindow{TitleBar: application.MacTitleBarHiddenInset, Backdrop: application.MacBackdropTransparent},
 	})
 	var approved atomic.Bool

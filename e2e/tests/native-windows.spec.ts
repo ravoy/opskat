@@ -32,3 +32,29 @@ test("native workspaces render and close independently", async ({ page, request 
   }
   await expect(page.getByTestId("app-root")).toBeVisible();
 });
+
+// A tool page window (settings) is a form/list surface: it opens smaller than an
+// asset workspace and never below its minimum (windowSizeFor in windows.go).
+test("settings window opens at the tool-page size", async ({ page, request }) => {
+  await page.goto("/");
+  await expect(page.getByTestId("app-root")).toBeVisible();
+
+  await page.getByTestId("nav-settings").click();
+  await expect.poll(async () => (await request.get("/wails/verification-windows")).json()).toContain("page-settings");
+
+  const size = await nativeTool(request, "js_eval", {
+    window: "page-settings",
+    js: "return {w: innerWidth, h: innerHeight, page: new URLSearchParams(location.search).get('page')};",
+  });
+  expect(size.page).toBe("settings");
+  // 1080×720 native, minus the macOS title bar inset the webview reports as innerHeight.
+  expect(size.w).toBe(1080);
+  expect(size.h).toBeGreaterThan(640);
+  expect(size.h).toBeLessThanOrEqual(720);
+
+  await nativeTool(request, "js_eval", {
+    window: "page-settings",
+    js: "const {CloseWindow} = await import('/src/lib/desktop.ts'); setTimeout(() => CloseWindow(), 100); return true;",
+  });
+  await expect.poll(async () => (await request.get("/wails/verification-windows")).json()).not.toContain("page-settings");
+});

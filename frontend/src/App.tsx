@@ -342,8 +342,10 @@ function App() {
   const handlePageChange = useCallback((page: string) => {
     const tabStore = useTabStore.getState();
     if (page === "home") {
-      const homeTab = tabStore.tabs.find((t) => t.type === "terminal" || t.type === "info" || t.type === "query");
-      tabStore.activateTab(homeTab?.id || tabStore.tabs[0]?.id || "");
+      // 首页 = 欢迎页：取消激活当前 tab（activeTabId 置空即回到欢迎屏，与无 tab 时
+      // 同一渲染路径）。已打开的工作 tab 留在标签栏，点标签即可回去——此前"激活第一个
+      // 工作 tab"在首个 tab 已激活时点上去毫无反应。
+      tabStore.activateTab("");
       return;
     }
     openPageTab(page);
