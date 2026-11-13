@@ -503,7 +503,10 @@ export interface SavedTabStore {
 
 export function applyStartupPreference(data: SavedTabStore): SavedTabStore {
   if (localStorage.getItem(STARTUP_TAB_KEY) === "home") {
-    return { tabs: [], activeTabId: null };
+    // 「打开首页」= 落在欢迎屏（activeTabId 置空），tab 原样保留在标签栏——与
+    // 点侧栏「首页」同一语义。此前清空 tabs 会连带迁移路径删掉 v2 旧 key 后把
+    // 空会话永久写回，用户视角就是"tab 栏不见了且再也回不来"。
+    return { tabs: data.tabs, activeTabId: null };
   }
   return data;
 }

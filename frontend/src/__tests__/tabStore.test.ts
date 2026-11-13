@@ -203,11 +203,14 @@ describe("tabStore", () => {
       });
     });
 
-    it("skips restored tabs when startup_tab is home", () => {
+    it("keeps restored tabs but lands on the welcome screen when startup_tab is home", () => {
+      // v2 的「打开首页」是首页视图、tab 栏保留；清空会话让 tab 栏整个消失，
+      // 且迁移路径随即删除 v2 旧 key 并把空态永久写入——单向数据销毁。
       localStorage.setItem("startup_tab", "home");
+      const tab = makeTerminalTab("t1", 1);
 
-      expect(applyStartupPreference({ tabs: [makeTerminalTab("t1", 1)], activeTabId: "t1" })).toEqual({
-        tabs: [],
+      expect(applyStartupPreference({ tabs: [tab], activeTabId: "t1" })).toEqual({
+        tabs: [tab],
         activeTabId: null,
       });
     });
