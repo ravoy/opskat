@@ -75,7 +75,7 @@ function TabItem({
     <ContextMenu>
       <Tooltip>
         <TooltipTrigger asChild>
-          <ContextMenuTrigger className="contents">
+          <ContextMenuTrigger asChild>
             <div
               className={cn(
                 "relative flex items-center py-2 text-sm cursor-pointer select-none transition-colors duration-150",
