@@ -195,3 +195,52 @@ func TestManagerSplitFromSpawnsRealWorkingShell(t *testing.T) {
 type readerFunc func([]byte) (int, error)
 
 func (f readerFunc) Read(p []byte) (int, error) { return f(p) }
+
+// 无自定义参数时默认以登录 shell 启动：.zprofile/.bash_profile 里的环境变量
+// （nvm、pyenv、PATH 改写）必须生效；用户填了参数则原样使用。非登录型或未知
+// shell 不强加 -l（例如 csh 家族的 -l 语义不同）。
+func TestLoginDefaultArgs(t *testing.T) {
+	require.Equal(t, []string{"-l"}, loginDefaultArgs("/bin/zsh", nil))
+	require.Equal(t, []string{"-l"}, loginDefaultArgs("/opt/homebrew/bin/bash", nil))
+	require.Equal(t, []string{"-l"}, loginDefaultArgs("/usr/bin/fish", nil))
+	require.Equal(t, []string{"-c", "echo hi"}, loginDefaultArgs("/bin/zsh", []string{"-c", "echo hi"}))
+	require.Nil(t, loginDefaultArgs("/bin/csh", nil))
+	require.Nil(t, loginDefaultArgs("/usr/local/bin/tcsh", nil))
+}
+
+// 登录 shell 启动后 .zprofile/.profile 一类的登录配置要被读取：直接观测 PATH
+// 里出现 /usr/local/bin 之外由登录配置注入的内容不可移植，这里用环境变量
+// 标记法——通过用户级 zprofile 无法在 CI 保证，改为观测 shell 自己报告的
+// 登录位（zsh 的 $login / bash 的 shopt login_shell）。
+func TestStartPTYRunsLoginShell(t *testing.T) {
+	if _, err := os.Stat("/bin/bash"); err != nil {
+		t.Skip("no bash on this host")
+	}
+	proc, err := startPTY(ptySpec{Shell: "/bin/bash", Cols: 80, Rows: 24})
+	require.NoError(t, err)
+	defer func() { _ = proc.Close() }()
+
+	_, err = proc.Write([]byte("shopt -q login_shell && echo LOGIN-YES || echo LOGIN-NO\n"))
+	require.NoError(t, err)
+
+	out := make(chan string, 2)
+	go func() {
+		r := bufio.NewReader(readerFunc(proc.Read))
+		for {
+			line, err := r.ReadString('\n')
+			if err != nil {
+				return
+			}
+			if strings.Contains(line, "LOGIN-YES") || strings.Contains(line, "LOGIN-NO") {
+				out <- strings.TrimSpace(line)
+				return
+			}
+		}
+	}()
+	select {
+	case got := <-out:
+		require.Contains(t, got, "LOGIN-YES")
+	case <-time.After(5 * time.Second):
+		t.Fatal("login shell probe timed out")
+	}
+}

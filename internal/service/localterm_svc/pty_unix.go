@@ -5,6 +5,7 @@ package localterm_svc
 import (
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"syscall"
 	"time"
@@ -28,7 +29,7 @@ func startPTY(spec ptySpec) (ptyProcess, error) {
 	if err != nil {
 		return nil, err
 	}
-	cmd := exec.Command(shell, spec.Args...) //nolint:gosec // G204: 启动用户在本地终端资产里选择的 shell 是本功能的核心意图
+	cmd := exec.Command(shell, loginDefaultArgs(shell, spec.Args)...) //nolint:gosec // G204: 启动用户在本地终端资产里选择的 shell 是本功能的核心意图
 	cmd.Dir = cwd
 	// COLORTERM=truecolor：TERM=xterm-256color 的能力位只到 256 色，部分 TUI 会据此
 	// 关掉 24-bit 输出。补这个变量让"看 COLORTERM 才发真彩 SGR"的程序也能出真彩；
@@ -76,4 +77,21 @@ func (p *unixPTY) Close() error {
 		}
 	}()
 	return err
+}
+
+// loginDefaultArgs 无自定义参数时给登录型 shell 默认加 -l：PTY 让 shell 交互
+// （读 .zshrc/.bashrc），但不登录——.zprofile/.bash_profile 里写的 nvm、pyenv、
+// PATH 改写等就全丢了。macOS Terminal.app 默认也是登录 shell。用户自定义了
+// 参数则原样使用（想非登录就自己传空串以外的参数）。
+func loginDefaultArgs(shell string, args []string) []string {
+	if len(args) > 0 {
+		return args
+	}
+	base := filepath.Base(shell)
+	switch base {
+	case "zsh", "bash", "sh", "dash", "fish":
+		return []string{"-l"}
+	default:
+		return nil
+	}
 }
