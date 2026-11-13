@@ -276,7 +276,10 @@ func main() {
 	appOptions := application.Options{
 		Transport: verificationTransport,
 		Name:      "OpsKat",
-		Assets:    application.AssetOptions{Handler: opsctl.NewExtensionAssetHandler(filepath.Join(dataDir, "extensions"), application.AssetFileServerFS(assets))},
+		Assets: application.AssetOptions{
+			Handler:    opsctl.NewExtensionAssetHandler(filepath.Join(dataDir, "extensions"), application.AssetFileServerFS(assets)),
+			Middleware: desktop.NoCacheAssets,
+		},
 		Services: []application.Service{
 			application.NewService(sys),
 			application.NewService(sshB),
