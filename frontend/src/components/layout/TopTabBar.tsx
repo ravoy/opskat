@@ -72,9 +72,9 @@ function TabItem({
   const total = tabs.length;
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <ContextMenu>
+    <ContextMenu>
+      <Tooltip>
+        <TooltipTrigger asChild>
           <ContextMenuTrigger className="contents">
             <div
               className={cn(
@@ -108,49 +108,48 @@ function TabItem({
               )}
             </div>
           </ContextMenuTrigger>
-          <ContextMenuContent>
-            <ContextMenuItem onClick={onClose}>{t("tab.close")}</ContextMenuItem>
-            <ContextMenuItem onClick={() => void openTabWindow(tabKey)} disabled={!canOpenTabWindow(tabKey)}>
-              {t("tab.openInNewWindow")}
-            </ContextMenuItem>
-            <ContextMenuItem onClick={() => useTabStore.getState().closeOtherTabs(tabKey)} disabled={total <= 1}>
-              {t("tab.closeOthers")}
-            </ContextMenuItem>
+        </TooltipTrigger>
+        <TooltipContent side="bottom">
+          <TabHoverCard tab={tab} />
+        </TooltipContent>
+      </Tooltip>
+      <ContextMenuContent>
+        <ContextMenuItem onClick={onClose}>{t("tab.close")}</ContextMenuItem>
+        <ContextMenuItem onClick={() => void openTabWindow(tabKey)} disabled={!canOpenTabWindow(tabKey)}>
+          {t("tab.openInNewWindow")}
+        </ContextMenuItem>
+        <ContextMenuItem onClick={() => useTabStore.getState().closeOtherTabs(tabKey)} disabled={total <= 1}>
+          {t("tab.closeOthers")}
+        </ContextMenuItem>
+        <ContextMenuSeparator />
+        <ContextMenuItem onClick={() => useTabStore.getState().closeLeftTabs(tabKey)} disabled={globalIndex <= 0}>
+          {t("tab.closeLeft")}
+        </ContextMenuItem>
+        <ContextMenuItem
+          onClick={() => useTabStore.getState().closeRightTabs(tabKey)}
+          disabled={globalIndex >= total - 1}
+        >
+          {t("tab.closeRight")}
+        </ContextMenuItem>
+        {total > 1 && (
+          <>
             <ContextMenuSeparator />
-            <ContextMenuItem onClick={() => useTabStore.getState().closeLeftTabs(tabKey)} disabled={globalIndex <= 0}>
-              {t("tab.closeLeft")}
+            <ContextMenuItem onClick={() => moveTo(tabKey, globalIndex - 1)} disabled={globalIndex <= 0}>
+              {t("tab.moveLeft")}
             </ContextMenuItem>
-            <ContextMenuItem
-              onClick={() => useTabStore.getState().closeRightTabs(tabKey)}
-              disabled={globalIndex >= total - 1}
-            >
-              {t("tab.closeRight")}
+            <ContextMenuItem onClick={() => moveTo(tabKey, globalIndex + 1)} disabled={globalIndex >= total - 1}>
+              {t("tab.moveRight")}
             </ContextMenuItem>
-            {total > 1 && (
-              <>
-                <ContextMenuSeparator />
-                <ContextMenuItem onClick={() => moveTo(tabKey, globalIndex - 1)} disabled={globalIndex <= 0}>
-                  {t("tab.moveLeft")}
-                </ContextMenuItem>
-                <ContextMenuItem onClick={() => moveTo(tabKey, globalIndex + 1)} disabled={globalIndex >= total - 1}>
-                  {t("tab.moveRight")}
-                </ContextMenuItem>
-                <ContextMenuItem onClick={() => moveTo(tabKey, 0)} disabled={globalIndex <= 0}>
-                  {t("tab.moveToStart")}
-                </ContextMenuItem>
-                <ContextMenuItem onClick={() => moveTo(tabKey, total - 1)} disabled={globalIndex >= total - 1}>
-                  {t("tab.moveToEnd")}
-                </ContextMenuItem>
-              </>
-            )}
-          </ContextMenuContent>
-        </ContextMenu>
-      </TooltipTrigger>
-      {/* forceMount：内容常挂（关闭态由 Radix 隐藏），悬停零延迟且可测。 */}
-      <TooltipContent side="bottom" forceMount>
-        <TabHoverCard tab={tab} />
-      </TooltipContent>
-    </Tooltip>
+            <ContextMenuItem onClick={() => moveTo(tabKey, 0)} disabled={globalIndex <= 0}>
+              {t("tab.moveToStart")}
+            </ContextMenuItem>
+            <ContextMenuItem onClick={() => moveTo(tabKey, total - 1)} disabled={globalIndex >= total - 1}>
+              {t("tab.moveToEnd")}
+            </ContextMenuItem>
+          </>
+        )}
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }
 
