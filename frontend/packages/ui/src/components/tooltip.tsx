@@ -21,10 +21,13 @@ function TooltipContent({
   className,
   sideOffset = 0,
   children,
+  forceMount,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
   return (
-    <TooltipPrimitive.Portal>
+    // forceMount 透传到 Portal：只挂 Content 不挂 Portal 时不生效——tab 悬停卡
+    // 用它做零延迟常挂（关闭态仍由 Radix 隐藏）。
+    <TooltipPrimitive.Portal forceMount={forceMount}>
       <TooltipPrimitive.Content
         data-slot="tooltip-content"
         sideOffset={sideOffset}

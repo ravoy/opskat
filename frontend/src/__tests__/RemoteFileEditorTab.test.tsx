@@ -384,9 +384,9 @@ describe("RemoteFileEditorTab", () => {
     const label = await screen.findByText("nginx.conf");
     expect(label).toBeVisible();
     // 同名文件可能来自不同资产：tab 上必须同时看得出资产与完整远程路径。
-    const item = label.closest("[title]") as HTMLElement;
-    expect(item.title).toContain("prod-web-1");
-    expect(item.title).toContain("/etc/nginx/nginx.conf");
+    const hover = await screen.findByTestId("tab-hover-card");
+    expect(hover).toHaveTextContent("prod-web-1");
+    expect(hover).toHaveTextContent("/etc/nginx/nginx.conf");
   });
 
   it("marks an editor tab with unsaved changes in the top tab bar", () => {

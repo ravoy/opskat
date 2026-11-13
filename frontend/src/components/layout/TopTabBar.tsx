@@ -3,7 +3,7 @@ import { createContext, use, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { X } from "lucide-react";
 import { useTabDragAndDrop } from "@/hooks/useTabDragAndDrop";
-import { useTabStore, type EditorTabMeta, type Tab } from "@/stores/tabStore";
+import { useTabStore, type Tab } from "@/stores/tabStore";
 import { useTerminalStore } from "@/stores/terminalStore";
 import {
   cn,
@@ -12,7 +12,12 @@ import {
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@opskat/ui";
+import { TabHoverCard } from "./TabHoverCard";
 import { TabPanelMenu } from "./TabPanelMenu";
 import { TabFilterPopover } from "./TabFilterPopover";
 import { useLayoutStore } from "@/stores/layoutStore";
@@ -36,10 +41,10 @@ const TabBarContext = createContext<TabBarContextValue>({
 
 interface TabItemProps {
   tabKey: string;
+  tab: Tab;
   icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
   iconStyle?: React.CSSProperties;
   label: string;
-  title?: string;
   isActive: boolean;
   onClick: () => void;
   onClose: () => void;
@@ -48,11 +53,11 @@ interface TabItemProps {
 }
 
 function TabItem({
+  tab,
   tabKey,
   icon: Icon,
   iconStyle,
   label,
-  title,
   isActive,
   onClick,
   onClose,
@@ -67,78 +72,85 @@ function TabItem({
   const total = tabs.length;
 
   return (
-    <ContextMenu>
-      <ContextMenuTrigger className="contents">
-        <div
-          className={cn(
-            "relative flex items-center py-2 text-sm cursor-pointer select-none transition-colors duration-150",
-            "min-w-0 max-w-[200px] gap-1.5 px-3",
-            isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-          )}
-          style={noTabStyle}
-          title={title ?? label}
-          onClick={onClick}
-          {...dragProps}
-        >
-          <Icon className="h-3.5 w-3.5 shrink-0" style={iconStyle} />
-          <span className="truncate min-w-0">{label}</span>
-          {extra}
-          <button
-            type="button"
-            aria-label={t("tab.close")}
-            className="ml-auto shrink-0 rounded-sm p-0.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-150"
-            onClick={(e) => {
-              e.stopPropagation();
-              onClose();
-            }}
-          >
-            <X className="h-3 w-3" />
-          </button>
-          {(isActive || indicatorColor) && (
-            <span
-              className={cn("absolute bottom-0 left-1 right-1 h-0.5 rounded-full", !indicatorColor && "bg-primary")}
-              style={indicatorColor ? { backgroundColor: indicatorColor } : undefined}
-            />
-          )}
-        </div>
-      </ContextMenuTrigger>
-      <ContextMenuContent>
-        <ContextMenuItem onClick={onClose}>{t("tab.close")}</ContextMenuItem>
-        <ContextMenuItem onClick={() => void openTabWindow(tabKey)} disabled={!canOpenTabWindow(tabKey)}>
-          {t("tab.openInNewWindow")}
-        </ContextMenuItem>
-        <ContextMenuItem onClick={() => useTabStore.getState().closeOtherTabs(tabKey)} disabled={total <= 1}>
-          {t("tab.closeOthers")}
-        </ContextMenuItem>
-        <ContextMenuSeparator />
-        <ContextMenuItem onClick={() => useTabStore.getState().closeLeftTabs(tabKey)} disabled={globalIndex <= 0}>
-          {t("tab.closeLeft")}
-        </ContextMenuItem>
-        <ContextMenuItem
-          onClick={() => useTabStore.getState().closeRightTabs(tabKey)}
-          disabled={globalIndex >= total - 1}
-        >
-          {t("tab.closeRight")}
-        </ContextMenuItem>
-        {total > 1 && (
-          <>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <ContextMenu>
+          <ContextMenuTrigger className="contents">
+            <div
+              className={cn(
+                "relative flex items-center py-2 text-sm cursor-pointer select-none transition-colors duration-150",
+                "min-w-0 max-w-[200px] gap-1.5 px-3",
+                isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              )}
+              style={noTabStyle}
+              onClick={onClick}
+              {...dragProps}
+            >
+              <Icon className="h-3.5 w-3.5 shrink-0" style={iconStyle} />
+              <span className="truncate min-w-0">{label}</span>
+              {extra}
+              <button
+                type="button"
+                aria-label={t("tab.close")}
+                className="ml-auto shrink-0 rounded-sm p-0.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors duration-150"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose();
+                }}
+              >
+                <X className="h-3 w-3" />
+              </button>
+              {(isActive || indicatorColor) && (
+                <span
+                  className={cn("absolute bottom-0 left-1 right-1 h-0.5 rounded-full", !indicatorColor && "bg-primary")}
+                  style={indicatorColor ? { backgroundColor: indicatorColor } : undefined}
+                />
+              )}
+            </div>
+          </ContextMenuTrigger>
+          <ContextMenuContent>
+            <ContextMenuItem onClick={onClose}>{t("tab.close")}</ContextMenuItem>
+            <ContextMenuItem onClick={() => void openTabWindow(tabKey)} disabled={!canOpenTabWindow(tabKey)}>
+              {t("tab.openInNewWindow")}
+            </ContextMenuItem>
+            <ContextMenuItem onClick={() => useTabStore.getState().closeOtherTabs(tabKey)} disabled={total <= 1}>
+              {t("tab.closeOthers")}
+            </ContextMenuItem>
             <ContextMenuSeparator />
-            <ContextMenuItem onClick={() => moveTo(tabKey, globalIndex - 1)} disabled={globalIndex <= 0}>
-              {t("tab.moveLeft")}
+            <ContextMenuItem onClick={() => useTabStore.getState().closeLeftTabs(tabKey)} disabled={globalIndex <= 0}>
+              {t("tab.closeLeft")}
             </ContextMenuItem>
-            <ContextMenuItem onClick={() => moveTo(tabKey, globalIndex + 1)} disabled={globalIndex >= total - 1}>
-              {t("tab.moveRight")}
+            <ContextMenuItem
+              onClick={() => useTabStore.getState().closeRightTabs(tabKey)}
+              disabled={globalIndex >= total - 1}
+            >
+              {t("tab.closeRight")}
             </ContextMenuItem>
-            <ContextMenuItem onClick={() => moveTo(tabKey, 0)} disabled={globalIndex <= 0}>
-              {t("tab.moveToStart")}
-            </ContextMenuItem>
-            <ContextMenuItem onClick={() => moveTo(tabKey, total - 1)} disabled={globalIndex >= total - 1}>
-              {t("tab.moveToEnd")}
-            </ContextMenuItem>
-          </>
-        )}
-      </ContextMenuContent>
-    </ContextMenu>
+            {total > 1 && (
+              <>
+                <ContextMenuSeparator />
+                <ContextMenuItem onClick={() => moveTo(tabKey, globalIndex - 1)} disabled={globalIndex <= 0}>
+                  {t("tab.moveLeft")}
+                </ContextMenuItem>
+                <ContextMenuItem onClick={() => moveTo(tabKey, globalIndex + 1)} disabled={globalIndex >= total - 1}>
+                  {t("tab.moveRight")}
+                </ContextMenuItem>
+                <ContextMenuItem onClick={() => moveTo(tabKey, 0)} disabled={globalIndex <= 0}>
+                  {t("tab.moveToStart")}
+                </ContextMenuItem>
+                <ContextMenuItem onClick={() => moveTo(tabKey, total - 1)} disabled={globalIndex >= total - 1}>
+                  {t("tab.moveToEnd")}
+                </ContextMenuItem>
+              </>
+            )}
+          </ContextMenuContent>
+        </ContextMenu>
+      </TooltipTrigger>
+      {/* forceMount：内容常挂（关闭态由 Radix 隐藏），悬停零延迟且可测。 */}
+      <TooltipContent side="bottom" forceMount>
+        <TabHoverCard tab={tab} />
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
@@ -178,6 +190,7 @@ export function TopTabBar({ topmost = false }: TopTabBarProps) {
     const visual = resolveTabVisual(tab);
     const commonProps = {
       key: tab.id,
+      tab,
       tabKey: tab.id,
       icon: visual.Icon,
       iconStyle: visual.iconStyle,
@@ -222,14 +235,12 @@ export function TopTabBar({ topmost = false }: TopTabBarProps) {
       }
 
       case "editor": {
-        // 标题只有文件名，资产与完整远程路径放在 title 里：
+        // 标题只有文件名；悬停卡显示资产与完整远程路径（TabHoverCard）：
         // 同一路径在两个资产上打开时，光靠文件名和路径都分不出是哪一台。
-        const editorMeta = tab.meta as EditorTabMeta;
         return (
           <TabItem
             {...commonProps}
             label={tab.label}
-            title={`${editorMeta.assetName} · ${editorMeta.remotePath}`}
             extra={
               unsavedTabIds.includes(tab.id) ? (
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-warning" data-testid="tab-unsaved-marker" />
@@ -245,25 +256,27 @@ export function TopTabBar({ topmost = false }: TopTabBarProps) {
   }
 
   return (
-    <TabBarContext value={tabBarCtx}>
-      <div
-        data-top-tabbar
-        className={cn(
-          "flex items-center border-b overflow-hidden bg-background",
-          topmost && platform === "windows" && "pr-[140px]"
-        )}
-        style={{ "--wails-draggable": "drag" } as React.CSSProperties}
-      >
-        <div className="flex items-center min-w-0 flex-1">{tabs.map((tab) => renderTabItem(tab))}</div>
-        <TabFilterPopover open={filterOpen} onOpenChange={setFilterOpen} tabs={tabs}>
-          <div
-            className="flex items-center shrink-0 px-1"
-            style={{ "--wails-draggable": "no-drag" } as React.CSSProperties}
-          >
-            <TabPanelMenu mode="top" onOpenFilter={requestOpenFilter} />
-          </div>
-        </TabFilterPopover>
-      </div>
-    </TabBarContext>
+    <TooltipProvider>
+      <TabBarContext value={tabBarCtx}>
+        <div
+          data-top-tabbar
+          className={cn(
+            "flex items-center border-b overflow-hidden bg-background",
+            topmost && platform === "windows" && "pr-[140px]"
+          )}
+          style={{ "--wails-draggable": "drag" } as React.CSSProperties}
+        >
+          <div className="flex items-center min-w-0 flex-1">{tabs.map((tab) => renderTabItem(tab))}</div>
+          <TabFilterPopover open={filterOpen} onOpenChange={setFilterOpen} tabs={tabs}>
+            <div
+              className="flex items-center shrink-0 px-1"
+              style={{ "--wails-draggable": "no-drag" } as React.CSSProperties}
+            >
+              <TabPanelMenu mode="top" onOpenFilter={requestOpenFilter} />
+            </div>
+          </TabFilterPopover>
+        </div>
+      </TabBarContext>
+    </TooltipProvider>
   );
 }

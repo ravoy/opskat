@@ -17,6 +17,7 @@ import { useTabStore, type Tab } from "@/stores/tabStore";
 import { useTabDragAndDrop } from "@/hooks/useTabDragAndDrop";
 import type { HighlightSegment } from "@/lib/highlightMatch";
 import { SideTabDragContext } from "./SideTabDragContext";
+import { TabHoverCard } from "./TabHoverCard";
 
 interface SideTabItemProps {
   tab: Tab;
@@ -49,7 +50,6 @@ export function SideTabItem({
   const dragProps = useTabDragAndDrop(tab.id, ctx);
   const globalIndex = ctx.tabs.findIndex((x) => x.id === tab.id);
   const total = ctx.tabs.length;
-  const plainLabel = tab.label;
 
   const row = (
     <div
@@ -58,7 +58,6 @@ export function SideTabItem({
         collapsed ? "justify-center px-1.5" : "px-2",
         isActive ? "bg-primary/10 text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
       )}
-      title={collapsed ? plainLabel : undefined}
       onClick={onActivate}
       {...dragProps}
     >
@@ -101,13 +100,30 @@ export function SideTabItem({
     </div>
   );
 
+  if (!collapsed) {
+    return (
+      <ContextMenu>
+        <ContextMenuTrigger>
+          <Tooltip delayDuration={300}>
+            <TooltipTrigger asChild>{row}</TooltipTrigger>
+            <TooltipContent side="right">
+              <TabHoverCard tab={tab} />
+            </TooltipContent>
+          </Tooltip>
+        </ContextMenuTrigger>
+        <SideTabContextMenu tabKey={tab.id} globalIndex={globalIndex} total={total} onClose={onClose} />
+      </ContextMenu>
+    );
+  }
   if (collapsed) {
     return (
       <ContextMenu>
         <ContextMenuTrigger>
           <Tooltip delayDuration={300}>
             <TooltipTrigger asChild>{row}</TooltipTrigger>
-            <TooltipContent side="right">{plainLabel}</TooltipContent>
+            <TooltipContent side="right">
+              <TabHoverCard tab={tab} />
+            </TooltipContent>
           </Tooltip>
         </ContextMenuTrigger>
         <SideTabContextMenu tabKey={tab.id} globalIndex={globalIndex} total={total} onClose={onClose} />

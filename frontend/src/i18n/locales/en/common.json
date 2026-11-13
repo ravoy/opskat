@@ -334,7 +334,20 @@
     "closeConfirmDescBoth": "This will disconnect {{sessions}} session(s) and interrupt {{transfers}} transfer(s) in progress.",
     "closeConfirmDescSessions": "This will disconnect {{sessions}} session(s).",
     "closeConfirmDescTransfers": "This will interrupt {{transfers}} transfer(s) in progress.",
-    "closeConfirmTitle": "Close tabs?"
+    "closeConfirmTitle": "Close tabs?",
+    "hover": {
+      "asset": "Asset",
+      "address": "Address",
+      "status": "Status",
+      "status_connected": "Connected",
+      "status_connecting": "Connecting",
+      "status_disconnected": "Disconnected",
+      "localChannel": "Local / serial channel",
+      "assetType": "Type",
+      "driver": "Driver",
+      "database": "Database",
+      "remotePath": "Remote path"
+    }
   },
   "theme": {
     "label": "Theme",

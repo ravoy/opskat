@@ -334,7 +334,20 @@
     "closeConfirmDescBoth": "将断开 {{sessions}} 个会话，并中断 {{transfers}} 个进行中的传输。",
     "closeConfirmDescSessions": "将断开 {{sessions}} 个会话。",
     "closeConfirmDescTransfers": "将中断 {{transfers}} 个进行中的传输。",
-    "closeConfirmTitle": "关闭标签页？"
+    "closeConfirmTitle": "关闭标签页？",
+    "hover": {
+      "asset": "资产",
+      "address": "地址",
+      "status": "状态",
+      "status_connected": "已连接",
+      "status_connecting": "连接中",
+      "status_disconnected": "已断开",
+      "localChannel": "本地 / 串口通道",
+      "assetType": "类型",
+      "driver": "驱动",
+      "database": "数据库",
+      "remotePath": "远程路径"
+    }
   },
   "theme": {
     "label": "主题",
