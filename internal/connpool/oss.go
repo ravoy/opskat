@@ -152,9 +152,25 @@ func DialOSSEndpoint(ctx context.Context, cfg *asset_entity.OSSConfig, secret, e
 			redirected.Endpoint = u.Scheme + "://" + endpoint
 		}
 	}
+	redirected.Region = redirectRegion(endpoint)
 	endpoint, opts, err := buildMinioOptions(ctx, &redirected, secret)
 	if err != nil {
 		return nil, err
 	}
 	return minio.New(endpoint, opts)
+}
+
+// redirectRegion 从重定向 endpoint 推导 V4 签名区域：oss-cn-beijing.aliyuncs.com →
+// cn-beijing。带着原区域（如 cn-hangzhou）签新 endpoint 会被拒签。非 aliyuncs
+// 形态返回空串，交给 minio 自行解析桶区域。
+func redirectRegion(endpoint string) string {
+	host := strings.TrimPrefix(strings.TrimPrefix(endpoint, "https://"), "http://")
+	if !strings.HasSuffix(host, ".aliyuncs.com") {
+		return ""
+	}
+	prefix, _, ok := strings.Cut(strings.TrimSuffix(host, ".aliyuncs.com"), ".")
+	if !ok || !strings.HasPrefix(prefix, "oss-") {
+		return ""
+	}
+	return strings.TrimPrefix(prefix, "oss-")
 }
