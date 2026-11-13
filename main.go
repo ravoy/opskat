@@ -396,6 +396,15 @@ func main() {
 			b.Startup(wctx)
 		}
 
+		// 原生应用菜单（macOS 顶部菜单栏）：文案跟随应用语言，切换语言时重建。
+		if rebuildMenu, ok := desktop.InstallAppMenu("OpsKat", sys.Lang, func(section string) {
+			if _, err := sys.OpenPageWindow(desktop.PageWindowRequest{Page: "settings", Section: section}); err != nil {
+				logger.Ctx(wctx).Warn("menu open settings failed", zap.Error(err))
+			}
+		}); ok {
+			sys.SetLanguageChangeCallback(rebuildMenu)
+		}
+
 		// AI provider 之后才能注入 extension service：extension 异步 init 完成后会调用回调
 		initExtensionSystem(wctx, appCtx, dataDir, pool, extB, aiB, opsctlB)
 	})

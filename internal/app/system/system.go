@@ -43,6 +43,9 @@ type System struct {
 
 	// storeRefresh refreshes the extension store index (SetExtensionStoreRefresher).
 	storeRefresh func(context.Context) error
+
+	// onLanguageChange 在语言切换后回调（main.go 用它重建原生应用菜单的文案）。
+	onLanguageChange func()
 	// emit replaces the Wails event emit in tests.
 	emit func(event string, data ...any)
 }
@@ -140,6 +143,17 @@ func (s *System) Lang() string {
 func (s *System) SetLanguage(lang string) {
 	s.mu.Lock()
 	s.lang = strings.ToLower(lang)
+	onChange := s.onLanguageChange
+	s.mu.Unlock()
+	if onChange != nil {
+		onChange()
+	}
+}
+
+// SetLanguageChangeCallback 注册语言切换回调（main.go：重建原生应用菜单）。
+func (s *System) SetLanguageChangeCallback(fn func()) {
+	s.mu.Lock()
+	s.onLanguageChange = fn
 	s.mu.Unlock()
 }
 
