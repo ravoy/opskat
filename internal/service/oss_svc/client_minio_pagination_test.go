@@ -199,3 +199,56 @@ func TestMinioAdapterListObjectsSurfacesTheErrorBody(t *testing.T) {
 	require.Contains(t, err.Error(), "AccessDenied")
 	require.Contains(t, err.Error(), "does not belong to you")
 }
+
+// 桶在另一区域（阿里云 PermanentRedirect）：主 endpoint 403 并在错误体里给出
+// 真实 endpoint，列表必须自动重签重试到该 endpoint，且首个请求解析出的 endpoint
+// 被缓存（第二次列表不再打主 endpoint）。
+func TestMinioAdapterListObjectsFollowsPermanentRedirect(t *testing.T) {
+	primary := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusForbidden)
+		_, _ = w.Write([]byte(`<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>PermanentRedirect</Code><Message>The bucket you are attempting to access must be addressed using the specified endpoint.</Message><Endpoint>redirect.internal</Endpoint></Error>`))
+	}))
+	defer primary.Close()
+
+	redirectHits := 0
+	redirected := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		redirectHits++
+		w.Header().Set("Content-Type", "application/xml")
+		_, _ = w.Write([]byte(`<?xml version="1.0" encoding="UTF-8"?>
+<ListBucketResult><Name>b</Name><IsTruncated>false</IsTruncated><Contents><Key>a.txt</Key></Contents></ListBucketResult>`))
+	}))
+	defer redirected.Close()
+
+	primaryURL, err := url.Parse(primary.URL)
+	require.NoError(t, err)
+	redirectURL, err := url.Parse(redirected.URL)
+	require.NoError(t, err)
+
+	mc, err := minio.New(primaryURL.Host, &minio.Options{
+		Creds:  credentials.NewStaticV4("access", "secret", ""),
+		Secure: false,
+		Region: "us-east-1",
+	})
+	require.NoError(t, err)
+
+	adapter := newMinioAdapter(mc).withRedirectDial(func(endpoint string) (*minio.Client, error) {
+		require.Equal(t, "redirect.internal", endpoint)
+		c, err := minio.New(redirectURL.Host, &minio.Options{
+			Creds:  credentials.NewStaticV4("access", "secret", ""),
+			Secure: false,
+			Region: "us-east-1",
+		})
+		return c, err
+	})
+
+	page, err := adapter.ListObjects(context.Background(), "bucket", "", 100, "")
+	require.NoError(t, err)
+	require.Len(t, page.Items, 1)
+	require.Equal(t, "a.txt", page.Items[0].Key)
+
+	// 第二次列表走缓存的重定向客户端：不再触发主 endpoint 的 403。
+	_, err = adapter.ListObjects(context.Background(), "bucket", "", 100, "")
+	require.NoError(t, err)
+	require.Equal(t, 2, redirectHits)
+}

@@ -3,6 +3,7 @@ package oss_svc
 import (
 	"context"
 	"fmt"
+	"github.com/minio/minio-go/v7"
 	"io"
 	"net/http"
 	"time"
@@ -52,7 +53,12 @@ func (s *Service) connectWithConfig(ctx context.Context, assetID int64) (Client,
 	if err != nil {
 		return nil, nil, err
 	}
-	return newMinioAdapterWithHTTP(mc, &http.Client{Transport: transport}, cfg.PartSizeMB), cfg, nil
+	adapter := newMinioAdapterWithHTTP(mc, &http.Client{Transport: transport}, cfg.PartSizeMB)
+	adapterCfg, adapterSecret := cfg, secret
+	adapter.withRedirectDial(func(endpoint string) (*minio.Client, error) {
+		return connpool.DialOSSEndpoint(context.Background(), adapterCfg, adapterSecret, endpoint)
+	})
+	return adapter, cfg, nil
 }
 
 // ListBuckets 返回资产可见的桶:配了默认桶时只有它,否则是账号下的全部桶。

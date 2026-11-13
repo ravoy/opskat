@@ -3,12 +3,14 @@ package oss_svc
 import (
 	"context"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/minio/minio-go/v7"
@@ -19,18 +21,44 @@ type minioAdapter struct {
 	mc         *minio.Client
 	httpClient *http.Client
 	partSizeMB int
+
+	// redirectDial 在桶实际位于另一区域（阿里云 PermanentRedirect）时按响应
+	// 给出的真实 endpoint 另拨客户端；nil 则不跟随（测试默认不设）。
+	redirectDial func(endpoint string) (*minio.Client, error)
+	redirectMu   sync.Mutex
+	redirected   map[string]*minio.Client
 }
 
-func newMinioAdapter(mc *minio.Client, partSizeMB ...int) Client {
+func newMinioAdapter(mc *minio.Client, partSizeMB ...int) *minioAdapter {
 	return newMinioAdapterWithHTTP(mc, http.DefaultClient, partSizeMB...)
 }
 
-func newMinioAdapterWithHTTP(mc *minio.Client, httpClient *http.Client, partSizeMB ...int) Client {
-	a := &minioAdapter{mc: mc, httpClient: httpClient}
+func newMinioAdapterWithHTTP(mc *minio.Client, httpClient *http.Client, partSizeMB ...int) *minioAdapter {
+	a := &minioAdapter{mc: mc, httpClient: httpClient, redirected: map[string]*minio.Client{}}
 	if len(partSizeMB) > 0 {
 		a.partSizeMB = partSizeMB[0]
 	}
 	return a
+}
+
+func (a *minioAdapter) withRedirectDial(fn func(endpoint string) (*minio.Client, error)) *minioAdapter {
+	a.redirectDial = fn
+	return a
+}
+
+// clientForEndpoint 取重定向 endpoint 的客户端（首个桶区域解析结果复用）。
+func (a *minioAdapter) clientForEndpoint(endpoint string) (*minio.Client, error) {
+	a.redirectMu.Lock()
+	defer a.redirectMu.Unlock()
+	if c, ok := a.redirected[endpoint]; ok {
+		return c, nil
+	}
+	c, err := a.redirectDial(endpoint)
+	if err != nil {
+		return nil, err
+	}
+	a.redirected[endpoint] = c
+	return c, nil
 }
 
 func (a *minioAdapter) ListBuckets(ctx context.Context) ([]BucketItem, error) {
@@ -51,6 +79,27 @@ func (a *minioAdapter) ListObjects(
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
+	page, err := a.listOnce(ctx, a.mc, bucket, prefix, maxKeys, continuationToken)
+	if endpoint, redirect := permanentRedirectEndpoint(err); redirect {
+		// 桶在另一区域（资产 endpoint 与桶实际区域不一致）。minio 客户端的常规
+		// 操作自行解析桶区域，这条 Presign+裸 HTTP 的路径不会——按响应给出的
+		// 真实 endpoint 重签重试一次；解析结果按 endpoint 缓存，翻页直达。
+		if a.redirectDial == nil {
+			return nil, err
+		}
+		c, dialErr := a.clientForEndpoint(endpoint)
+		if dialErr != nil {
+			return nil, dialErr
+		}
+		return a.listOnce(ctx, c, bucket, prefix, maxKeys, continuationToken)
+	}
+	return page, err
+}
+
+// listOnce 用指定客户端签名并取一页列表。
+func (a *minioAdapter) listOnce(
+	ctx context.Context, mc *minio.Client, bucket, prefix string, maxKeys int, continuationToken string,
+) (*ListObjectsPage, error) {
 	params := url.Values{"list-type": {"2"}, "encoding-type": {"url"}, "delimiter": {"/"}, "prefix": {prefix}}
 	if continuationToken != "" {
 		params.Set("continuation-token", continuationToken)
@@ -58,7 +107,7 @@ func (a *minioAdapter) ListObjects(
 	if maxKeys > 0 {
 		params.Set("max-keys", strconv.Itoa(maxKeys))
 	}
-	u, err := a.mc.Presign(ctx, http.MethodGet, bucket, "", time.Minute, params)
+	u, err := mc.Presign(ctx, http.MethodGet, bucket, "", time.Minute, params)
 	if err != nil {
 		return nil, err
 	}
@@ -71,11 +120,15 @@ func (a *minioAdapter) ListObjects(
 		return nil, err
 	}
 	defer func() { _ = resp.Body.Close() }()
+	raw, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+	if err != nil {
+		return nil, err
+	}
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("list objects: unexpected HTTP status %s: %s", resp.Status, describeS3Error(resp.Body))
+		return nil, newS3StatusError("list objects", resp, raw)
 	}
 	var result minio.ListBucketV2Result
-	if err := xml.NewDecoder(resp.Body).Decode(&result); err != nil {
+	if err := xml.Unmarshal(raw, &result); err != nil {
 		return nil, err
 	}
 	if result.IsTruncated && result.NextContinuationToken == "" {
@@ -217,12 +270,52 @@ func toObjectItem(o minio.ObjectInfo) ObjectItem {
 	return item
 }
 
-// describeS3Error 读取 S3 风格的错误响应体（各家的 <Error><Code>/<Message>），
-// 给出可诊断的摘要。读失败或不是该形状时退回通用占位——错误增强不能反过来把
-// 原始错误吃掉。
+// s3StatusError 保留非 200 响应的状态码、错误体摘要，以及（阿里云
+// PermanentRedirect 时）桶实际所在区域的 endpoint——文本形式给用户看，
+// 结构字段给重试逻辑用。
+type s3StatusError struct {
+	what     string
+	status   string
+	summary  string
+	endpoint string
+}
+
+func newS3StatusError(what string, resp *http.Response, body []byte) error {
+	e := &s3StatusError{what: what, status: resp.Status, summary: describeS3ErrorBytes(body)}
+	var payload struct {
+		Code     string `xml:"Code"`
+		Endpoint string `xml:"Endpoint"`
+	}
+	_ = xml.Unmarshal(body, &payload)
+	if payload.Code == "PermanentRedirect" && payload.Endpoint != "" {
+		e.endpoint = payload.Endpoint
+	}
+	return e
+}
+
+func (e *s3StatusError) Error() string {
+	return fmt.Sprintf("%s: unexpected HTTP status %s: %s", e.what, e.status, e.summary)
+}
+
+// permanentRedirectEndpoint 报告错误是否为「桶在另一区域」并给出真实 endpoint。
+func permanentRedirectEndpoint(err error) (endpoint string, ok bool) {
+	var e *s3StatusError
+	if errors.As(err, &e) {
+		return e.endpoint, e.endpoint != ""
+	}
+	return "", false
+}
+
 func describeS3Error(body io.Reader) string {
 	data, err := io.ReadAll(io.LimitReader(body, 4096))
-	if err != nil || len(data) == 0 {
+	if err != nil {
+		return "no error body"
+	}
+	return describeS3ErrorBytes(data)
+}
+
+func describeS3ErrorBytes(data []byte) string {
+	if len(data) == 0 {
 		return "no error body"
 	}
 	var e struct {

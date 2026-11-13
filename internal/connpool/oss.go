@@ -138,3 +138,23 @@ func InvalidateOSS(assetID int64) {
 	globalOSSPool.mu.Unlock()
 	logger.Default().Info("oss connection close end", zap.Int64("assetId", assetID))
 }
+
+// DialOSSEndpoint 以同一份凭据与传输配置拨一个「指定 endpoint」的 minio 客户端。
+// 供 oss_svc 在收到阿里云 PermanentRedirect（桶在另一区域）时按响应里给出的
+// 真实 endpoint 重签重试；endpoint 形如 oss-cn-beijing.aliyuncs.com（无 scheme，
+// 沿用 cfg 的 TLS 选择），带 scheme 时以 scheme 为准。
+func DialOSSEndpoint(ctx context.Context, cfg *asset_entity.OSSConfig, secret, endpoint string) (*minio.Client, error) {
+	redirected := *cfg
+	redirected.Endpoint = endpoint
+	// scheme 在 buildMinioOptions 里决定 secure；无 scheme 的重定向目标沿用原配置。
+	if !strings.Contains(endpoint, "://") && strings.Contains(cfg.Endpoint, "://") {
+		if u, err := url.Parse(cfg.Endpoint); err == nil {
+			redirected.Endpoint = u.Scheme + "://" + endpoint
+		}
+	}
+	endpoint, opts, err := buildMinioOptions(ctx, &redirected, secret)
+	if err != nil {
+		return nil, err
+	}
+	return minio.New(endpoint, opts)
+}
