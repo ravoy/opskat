@@ -273,6 +273,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("验证传输初始化失败: %v", err)
 	}
+	// 二进制更新后的首次启动自动清 WebView 的 HTTP 缓存（在窗口创建之前，
+	// 此时 WebView 进程尚未启动）。此后用户原地替换 App 不需要手动清缓存。
+	desktop.BustWebviewCacheOnUpgrade()
+
 	// 终端里长按字母键应当按键重复；macOS 默认弹变音符号选择器（长按 d 往终端
 	// 里塞 ď/ð 一类字符），在应用域禁用。
 	desktop.DisablePressAndHold()
