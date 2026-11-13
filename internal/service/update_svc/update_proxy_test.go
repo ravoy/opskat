@@ -34,7 +34,7 @@ func fakeGitHub(t *testing.T, proxy *netproxytest.Proxy) {
 	t.Helper()
 	platform := runtime.GOOS + "-" + runtime.GOARCH
 	mux := http.NewServeMux()
-	mux.HandleFunc("/repos/opskat/opskat/releases/latest", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/repos/"+githubRepo+"/releases/latest", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprintf(w, `{"tag_name":"v9.9.9","assets":[`+
 			`{"name":"opskat-%s.zip","browser_download_url":"http://%s/opskat.zip","size":1},`+
 			`{"name":"SHA256SUMS.txt","browser_download_url":"http://%s/SHA256SUMS.txt","size":1}]}`,

@@ -1,7 +1,12 @@
 package update_svc
 
 import (
+	"io"
+	"net/http"
+	"strconv"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/assert"
@@ -85,12 +90,12 @@ func TestReleaseInfoDownloadURL(t *testing.T) {
 	convey.Convey("release-info.json URL 构造", t, func() {
 		convey.Convey("stable 通道", func() {
 			url := releaseInfoURL(ChannelStable)
-			assert.Equal(t, "https://github.com/octays/opskat/releases/latest/download/release-info.json", url)
+			assert.Equal(t, "https://github.com/"+githubRepo+"/releases/latest/download/release-info.json", url)
 		})
 
 		convey.Convey("nightly 通道", func() {
 			url := releaseInfoURL(ChannelNightly)
-			assert.Equal(t, "https://github.com/octays/opskat/releases/download/nightly/release-info.json", url)
+			assert.Equal(t, "https://github.com/"+githubRepo+"/releases/download/nightly/release-info.json", url)
 		})
 
 		convey.Convey("beta 通道返回空（不支持镜像回退）", func() {
@@ -137,6 +142,47 @@ func TestParseChecksums(t *testing.T) {
 			input := "abc123 *file1.tar.gz\n"
 			result := parseChecksums(input)
 			assert.Equal(t, "abc123", result["file1.tar.gz"])
+		})
+	})
+}
+
+// describeAPIError 必须把 GitHub 的官方原因带出来：国内出口 IP 未认证限流（403）
+// 是自动更新最常见的失败，只报状态码用户无法区分限流/仓库问题/网络问题。
+func TestDescribeAPIErrorCarriesGitHubReason(t *testing.T) {
+	convey.Convey("GitHub API 错误描述", t, func() {
+		makeResp := func(status int, body string, reset string, remaining string) *http.Response {
+			resp := &http.Response{
+				StatusCode: status,
+				Header:     http.Header{},
+				Body:       io.NopCloser(strings.NewReader(body)),
+			}
+			if reset != "" {
+				resp.Header.Set("X-RateLimit-Reset", reset)
+				resp.Header.Set("X-RateLimit-Remaining", remaining)
+			}
+			return resp
+		}
+
+		convey.Convey("限流响应带 message 与重置提示", func() {
+			reset := strconv.FormatInt(time.Now().Add(40*time.Minute).Unix(), 10)
+			err := describeAPIError(makeResp(http.StatusForbidden,
+				`{"message":"API rate limit exceeded for 1.2.3.4."}`, reset, "0"))
+			assert.ErrorContains(t, err, "status 403")
+			assert.ErrorContains(t, err, "API rate limit exceeded")
+			assert.ErrorContains(t, err, "rate limit resets in")
+		})
+
+		convey.Convey("非限流错误只带 message", func() {
+			err := describeAPIError(makeResp(http.StatusNotFound,
+				`{"message":"Not Found"}`, "", ""))
+			assert.ErrorContains(t, err, "status 404")
+			assert.ErrorContains(t, err, "Not Found")
+			assert.NotContains(t, err.Error(), "rate limit resets")
+		})
+
+		convey.Convey("无 JSON 体的响应退回纯状态码", func() {
+			err := describeAPIError(makeResp(http.StatusBadGateway, "upstream down", "", ""))
+			assert.ErrorContains(t, err, "status 502")
 		})
 	})
 }

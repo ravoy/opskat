@@ -14,6 +14,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 	"time"
 
@@ -25,7 +26,8 @@ import (
 	"github.com/octays/opskat/internal/pkg/netproxy"
 )
 
-const githubRepo = "opskat/opskat"
+// githubRepo 是发布 release 的仓库（更新检查与资产下载都指向它）。
+const githubRepo = "ravoy/opskat"
 
 // apiBaseURL 是 GitHub release API 的地址；测试中可覆盖。
 var apiBaseURL = "https://api.github.com/repos/" + githubRepo
@@ -106,7 +108,7 @@ func fetchReleaseFromURL(url string) (*ReleaseInfo, error) {
 	}()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("GitHub API returned status %d", resp.StatusCode)
+		return nil, describeAPIError(resp)
 	}
 
 	var release ReleaseInfo
@@ -114,6 +116,29 @@ func fetchReleaseFromURL(url string) (*ReleaseInfo, error) {
 		return nil, fmt.Errorf("decode response failed: %w", err)
 	}
 	return &release, nil
+}
+
+// describeAPIError 把 GitHub API 的非 200 响应转成可定位的错误：响应体里的
+// message（限流/仓库不存在/认证问题的官方原因）与 X-RateLimit-Reset 的等待提示。
+// 未认证 API 在国内出口 IP 上被限流（403）非常常见，只报状态码无法区分。
+func describeAPIError(resp *http.Response) error {
+	body, _ := io.ReadAll(io.LimitReader(resp.Body, 2048))
+	var payload struct {
+		Message string `json:"message"`
+	}
+	_ = json.Unmarshal(body, &payload)
+	err := fmt.Errorf("GitHub API returned status %d", resp.StatusCode)
+	if payload.Message != "" {
+		err = fmt.Errorf("%w: %s", err, payload.Message)
+	}
+	if reset := resp.Header.Get("X-RateLimit-Reset"); reset != "" && resp.Header.Get("X-RateLimit-Remaining") == "0" {
+		if secs, parseErr := strconv.ParseInt(reset, 10, 64); parseErr == nil {
+			if wait := time.Until(time.Unix(secs, 0)); wait > 0 && wait < 24*time.Hour {
+				err = fmt.Errorf("%w (%s)", err, fmt.Sprintf("rate limit resets in %s", wait.Truncate(time.Minute)))
+			}
+		}
+	}
+	return err
 }
 
 // fetchLatestBetaRelease 获取最新的 beta 或 stable release（排除 nightly）
@@ -137,7 +162,7 @@ func fetchLatestBetaRelease() (*ReleaseInfo, error) {
 	}()
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("GitHub API returned status %d", resp.StatusCode)
+		return nil, describeAPIError(resp)
 	}
 
 	var releases []ReleaseInfo
