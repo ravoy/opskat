@@ -3646,7 +3646,8 @@
       "labelName": "名称",
       "labelDescription": "描述",
       "labelContent": "内容",
-      "duplicateNameHint": "同分类下已有同名片段。"
+      "duplicateNameHint": "同分类下已有同名片段。",
+      "variablesHint": "插入时可用 {{变量}} / {{变量=默认值}} 占位：选中片段后先填变量再插入"
     },
     "actions": {
       "run": "运行",
@@ -3692,6 +3693,14 @@
       "noMatch": "无匹配的片段",
       "empty": "还没有 prompt 片段",
       "openManager": "到代码片段页创建"
+    },
+    "variables": {
+      "title": "填写片段变量",
+      "description": "为片段中的变量填值；留空的变量用默认值，无默认值则保留占位符。",
+      "placeholder": "必填",
+      "clearMemory": "清除记住的值",
+      "insertVerbatim": "原样插入",
+      "confirm": "填好插入"
     }
   },
   "oss": {

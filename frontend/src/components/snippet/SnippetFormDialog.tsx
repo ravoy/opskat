@@ -185,6 +185,7 @@ function SnippetFormDialogContent({
           <div className="h-80 border rounded-md overflow-hidden">
             <CodeEditor value={content} onChange={setContent} language={contentLanguage} fontSize={12} />
           </div>
+          <p className="text-xs text-muted-foreground">{t("snippet.form.variablesHint")}</p>
         </div>
       </div>
 

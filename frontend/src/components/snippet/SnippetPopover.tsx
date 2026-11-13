@@ -5,6 +5,7 @@ import { Button, Input, Popover, PopoverContent, PopoverTrigger, cn } from "@ops
 import { AsyncState, type AsyncStatus } from "@/components/common/AsyncState";
 import { errorMessage } from "@/lib/errorMessage";
 import { useSnippetStore } from "@/stores/snippetStore";
+import { resolveSnippetContent } from "@/stores/snippetVariableStore";
 import { useTabStore } from "@/stores/tabStore";
 import { ListSnippets } from "@clients/extension";
 import type * as snippet_entity from "@bindings/github.com/octays/opskat/internal/model/entity/snippet_entity/models";
@@ -122,8 +123,11 @@ export function SnippetPopover({
   const filtered = useMemo(() => items.filter((s) => matchesKeyword(s, keyword.trim())), [items, keyword]);
 
   const handlePick = useCallback(
-    (s: Snippet, withEnter: boolean) => {
-      onInsert(s.Content, { withEnter });
+    async (s: Snippet, withEnter: boolean) => {
+      // 片段含 {{变量}} 时先弹填写表单；取消则不动（弹层保持打开）。
+      const content = await resolveSnippetContent(s.Content);
+      if (content === null) return;
+      onInsert(content, { withEnter });
       recordUse(s.ID);
       setOpen(false);
       setKeyword("");
@@ -186,11 +190,11 @@ export function SnippetPopover({
                 key={s.ID}
                 role="button"
                 tabIndex={0}
-                onClick={() => handlePick(s, false)}
+                onClick={() => void handlePick(s, false)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    handlePick(s, false);
+                    void handlePick(s, false);
                   }
                 }}
                 className={cn(
@@ -225,7 +229,7 @@ export function SnippetPopover({
                     aria-label={t("snippet.popover.sendWithEnter")}
                     onClick={(e) => {
                       e.stopPropagation();
-                      handlePick(s, true);
+                      void handlePick(s, true);
                     }}
                     data-testid="snippet-popover-row-enter"
                   >

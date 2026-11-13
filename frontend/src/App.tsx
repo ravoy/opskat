@@ -26,6 +26,7 @@ import { CommandReviewConfigErrorListener } from "@/components/settings/CommandR
 import { openGroupDetail, openInfoTab } from "@/lib/infoTab";
 import { OpsctlMFADialog } from "@/components/approval/OpsctlMFADialog";
 import { ExtensionInstallConfirmDialog } from "@/extension";
+import { SnippetVariablesDialog } from "@/components/snippet/SnippetVariablesDialog";
 import { TabCloseConfirmHost } from "@/components/layout/TabCloseConfirmHost";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ActiveTasksQuitDialog, type QuitActivity } from "@/components/ActiveTasksQuitDialog";
@@ -512,6 +513,7 @@ function App() {
           <CommandReviewConfigErrorListener />
           <OpsctlMFADialog />
           <ExtensionInstallConfirmDialog />
+          <SnippetVariablesDialog />
           <TabCloseConfirmHost />
           <ActiveTasksQuitDialog
             open={quitActivities !== null || workspaceWindow.activities !== null}

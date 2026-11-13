@@ -94,7 +94,8 @@ describe("SnippetPopover", () => {
 
     fireEvent.click(screen.getByText("list files"));
 
-    expect(onInsert).toHaveBeenCalledWith("ls -la", { withEnter: false });
+    // 插入可能先弹变量表单（异步），断言等它落地。
+    await waitFor(() => expect(onInsert).toHaveBeenCalledWith("ls -la", { withEnter: false }));
     await waitFor(() => expect(RecordSnippetUse).toHaveBeenCalledWith(1));
   });
 
@@ -107,6 +108,7 @@ describe("SnippetPopover", () => {
     const enterButtons = screen.getAllByTestId("snippet-popover-row-enter");
     expect(enterButtons.length).toBe(3);
     fireEvent.click(enterButtons[0]);
+    await waitFor(() => expect(onInsert).toHaveBeenCalledWith(expect.any(String), { withEnter: true }));
 
     expect(onInsert).toHaveBeenCalledWith("ls -la", { withEnter: true });
     await waitFor(() => expect(RecordSnippetUse).toHaveBeenCalledWith(1));

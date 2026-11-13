@@ -3646,7 +3646,8 @@
       "labelName": "Name",
       "labelDescription": "Description",
       "labelContent": "Content",
-      "duplicateNameHint": "Another snippet with this name exists in the same category."
+      "duplicateNameHint": "Another snippet with this name exists in the same category.",
+      "variablesHint": "Use {{variable}} / {{variable=default}} placeholders: picking the snippet prompts for values before inserting"
     },
     "actions": {
       "run": "Run",
@@ -3692,6 +3693,14 @@
       "noMatch": "No matching snippets",
       "empty": "No prompt snippets yet",
       "openManager": "Create in Snippets page"
+    },
+    "variables": {
+      "title": "Fill snippet variables",
+      "description": "Values for the snippet's variables; empty fields fall back to defaults, and variables without a default keep their placeholder.",
+      "placeholder": "required",
+      "clearMemory": "Clear remembered values",
+      "insertVerbatim": "Insert as-is",
+      "confirm": "Fill & insert"
     }
   },
   "oss": {
