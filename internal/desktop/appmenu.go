@@ -125,8 +125,8 @@ func InstallAppMenu(appName string, lang func() string, openSettings func(sectio
 		relabel(editSub, application.SelectAll, L.SelectAll)
 
 		winSub := menu.AddSubmenu(L.WindowMenu)
-		// application.Minimise 是 wails 的导出常量名（英式拼写），无法更名。
-		winSub.AddRole(application.Minimise) //nolint:misspell // wails 的常量名
+		// 最小化角色的常量是 wails 的导出名（英式拼写），无法更名，标签在下方重标。
+		winSub.AddRole(application.Minimise)              //nolint:misspell // wails 的常量名
 		relabel(winSub, application.Minimise, L.Minimize) //nolint:misspell // wails 的常量名
 		winSub.AddRole(application.Zoom)
 		relabel(winSub, application.Zoom, L.Zoom)

@@ -101,12 +101,14 @@ jobs:
       - name: Install frontend dependencies
         run: cd frontend && bun x --bun pnpm@10.11.0 install --frozen-lockfile
 
-      - name: Install Wails CLI
-        run: go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0
-
+      # Linux 的 gtk4/webkit 要先装：wails3 CLI 自身在 Linux 上经 cgo 链接它们，
+      # 顺序反了 CLI 安装就会因 pkg-config 找不到 gtk4 失败（后续步骤全部跳过）。
       - name: Install Linux dependencies
         if: matrix.goos == 'linux'
         run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libwebkitgtk-6.0-dev
+
+      - name: Install Wails CLI
+        run: go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0
 
       - name: Install NSIS
         if: matrix.goos == 'windows'

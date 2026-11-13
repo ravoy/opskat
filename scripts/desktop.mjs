@@ -27,6 +27,9 @@ if (goos === "darwin") {
   env.CGO_CFLAGS = `${env.CGO_CFLAGS || ""} -mmacosx-version-min=12.0`;
   env.CGO_LDFLAGS = `${env.CGO_LDFLAGS || ""} -mmacosx-version-min=12.0`;
   env.MACOSX_DEPLOYMENT_TARGET = "12.0";
+  // 交叉编译（如 arm64 机器出 amd64 包）时 Go 默认关 CGO，而 wails 的 darwin 壳
+  // 全是 cgo 符号——不显式打开会报一串 undefined: macosApp 之类。
+  env.CGO_ENABLED = "1";
 }
 function run(program, parameters, options = {}) {
   const result = spawnSync(program, parameters, { stdio: "inherit", env, ...options });
